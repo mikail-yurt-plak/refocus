@@ -1,0 +1,61 @@
+# Xcode
+build/
+DerivedData/
+*.xcuserstate
+*.xcworkspace/xcuserdata/
+*.xcodeproj/xcuserdata/
+*.xcodeproj/project.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
+
+# Swift Package Manager
+.build/
+Packages/
+Package.resolved
+
+# CocoaPods
+Pods/
+
+# Carthage
+Carthage/Build/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Xcode Playground
+*.xcplayground
+timeline.xctimeline
+playground.xcworkspace
+
+# Archives
+*.xcarchive
+
+# User-specific files
+*.moved-aside
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+xcuserdata/
+
+# Temporary files
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# Swift coverage
+.swiftpm/
+
+# IDE
+.idea/
+.vscode/
+
+# Environment
+.env
+.env.local
