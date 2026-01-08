@@ -129,20 +129,20 @@ struct SummaryView: View {
 
     private var statusIcon: String {
         switch summary.dayStatus {
-        case .stable: return "🟢"
-        case .fluctuating: return "🟡"
-        case .tough: return "🔵"
+        case .stable: return "✨"
+        case .fluctuating: return "🌊"
+        case .tough: return "💪"
         }
     }
 
     private var statusMessage: String {
         switch summary.dayStatus {
         case .stable:
-            return "Stabil bir gün geçirdin"
+            return "Dengeli bir gün geçirdin"
         case .fluctuating:
-            return "Dalgalı bir gündü"
+            return "İnişli çıkışlı bir gündü"
         case .tough:
-            return "Zor bir gündü, ama bitirdin"
+            return "Zorlu bir gündü, ama bitirdin"
         }
     }
 
@@ -194,31 +194,68 @@ struct StatBox: View {
 struct SessionFlowRow: View {
     let session: FocusSession
 
-    var body: some View {
-        HStack(spacing: 12) {
-            // Metod ikonu
-            Text(session.method.icon)
-                .font(.title2)
+    private var plannedDuration: Double {
+        Double(session.method.focusDuration * 60)
+    }
 
-            VStack(alignment: .leading, spacing: 4) {
+    private var actualDuration: Double {
+        session.totalFocusDuration + session.totalInterruptionDuration
+    }
+
+    private var remainingDuration: Double {
+        max(0, plannedDuration - actualDuration)
+    }
+
+    var body: some View {
+        VStack(spacing: 8) {
+            // Üst satır: ikon, saat ve süre
+            HStack(spacing: 12) {
+                // Metod ikonu
+                Text(session.method.icon)
+                    .font(.title2)
+
                 // Saat
                 Text(session.startTime.formatted(date: .omitted, time: .shortened))
                     .font(.caption)
                     .foregroundColor(.textSecondary)
 
-                // Odak akışı
-                Text(InterruptionTracker.generateFocusFlowVisualization(for: session))
-                    .font(.system(size: 12, design: .monospaced))
-                    .foregroundColor(.textPrimary)
+                Spacer()
+
+                // Süre
+                Text("\(Int(session.totalFocusDuration / 60)) dk")
+                    .font(.caption)
+                    .foregroundColor(.textSecondary)
             }
 
-            Spacer()
+            // Progress bar
+            SessionProgressBar(session: session)
 
-            // Süre
-            Text("\(Int(session.totalFocusDuration / 60)) dk")
-                .font(.caption)
-                .foregroundColor(.textSecondary)
+            // Legend with durations
+            HStack(spacing: 12) {
+                LegendItem(
+                    color: .focusGreen,
+                    label: "Odak",
+                    duration: session.totalFocusDuration
+                )
+
+                if !session.interruptions.isEmpty {
+                    LegendItem(
+                        color: .orange.opacity(0.6),
+                        label: "Bölünme",
+                        duration: session.totalInterruptionDuration
+                    )
+                }
+
+                if remainingDuration > 0 {
+                    LegendItem(
+                        color: Color.gray.opacity(0.2),
+                        label: "Kalan",
+                        duration: remainingDuration
+                    )
+                }
+            }
+            .padding(.top, 4)
         }
-        .padding(.vertical, 8)
+        .padding(.vertical, 12)
     }
 }

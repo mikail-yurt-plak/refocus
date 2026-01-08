@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// Onboarding ekranı - 4 soru, kart bazlı
+/// Onboarding ekranı - 4 soru + özet, kart bazlı
 struct OnboardingView: View {
     @EnvironmentObject var appState: AppState
     @State private var currentStep = 0
@@ -9,7 +9,40 @@ struct OnboardingView: View {
     @State private var hardestPart: OnboardingAnswers.HardestPart?
     @State private var phoneFrequency: OnboardingAnswers.PhoneCheckingFrequency?
 
-    private let totalSteps = 4
+    private let totalSteps = 5 // 4 soru + 1 özet
+
+    /// Kullanıcının profil tipini belirle
+    private var profileType: String {
+        guard let struggleTime = struggleTime else { return "Orta Odaklı" }
+
+        switch struggleTime {
+        case .short: return "Kısa Odaklı"
+        case .medium: return "Orta Odaklı"
+        case .long: return "Derin Odaklı"
+        }
+    }
+
+    /// Profil açıklaması
+    private var profileDescription: String {
+        guard let struggleTime = struggleTime else { return "20-30 dakikalık seanslar sana uygun." }
+
+        switch struggleTime {
+        case .short: return "10-15 dakikalık kısa seanslar sana en uygun.\nSık molalarla verimli çalışabilirsin."
+        case .medium: return "20-30 dakikalık seanslar sana uygun.\nDengeli bir tempo yakalayabilirsin."
+        case .long: return "40+ dakikalık derin odak seansları\nsana en uygun."
+        }
+    }
+
+    /// Önerilen başlangıç metodu
+    private var suggestedMethod: FocusMethod {
+        guard let struggleTime = struggleTime else { return .pomodoro }
+
+        switch struggleTime {
+        case .short: return .pomodoro
+        case .medium: return .extended
+        case .long: return .deepWork
+        }
+    }
 
     var body: some View {
         ZStack {
@@ -97,8 +130,68 @@ struct OnboardingView: View {
                     set: { phoneFrequency = $0.flatMap { OnboardingAnswers.PhoneCheckingFrequency(rawValue: $0) } }
                 )
             )
+        case 4:
+            // Özet ekranı
+            profileSummaryCard
         default:
             EmptyView()
+        }
+    }
+
+    /// Profil özet kartı
+    private var profileSummaryCard: some View {
+        VStack(spacing: 24) {
+            Text("🎯")
+                .font(.system(size: 64))
+
+            Text("Senin Profilin")
+                .font(.heading2)
+                .foregroundColor(.textPrimary)
+
+            Text(profileType)
+                .font(.heading1)
+                .foregroundColor(.focusGreen)
+
+            Text(profileDescription)
+                .font(.body)
+                .foregroundColor(.textSecondary)
+                .multilineTextAlignment(.center)
+                .lineSpacing(4)
+                .padding(.horizontal, 40)
+
+            // Önerilen metod
+            VStack(spacing: 8) {
+                Text("İlk seansın için öneri:")
+                    .font(.caption)
+                    .foregroundColor(.textSecondary)
+
+                HStack(spacing: 12) {
+                    Text(suggestedMethod.icon)
+                        .font(.title)
+
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(suggestedMethod.rawValue)
+                            .font(.bodyLarge)
+                            .foregroundColor(.textPrimary)
+
+                        Text("\(suggestedMethod.focusDuration) dk odak / \(suggestedMethod.breakDuration) dk mola")
+                            .font(.caption)
+                            .foregroundColor(.textSecondary)
+                    }
+                }
+                .padding(.horizontal, 24)
+                .padding(.vertical, 16)
+                .background(Color.cardBackground)
+                .cornerRadius(16)
+                .shadow(color: .black.opacity(0.05), radius: 8, y: 4)
+            }
+            .padding(.top, 8)
+
+            Text("Kullanımına göre önerilerimizi\nsürekli iyileştireceğiz.")
+                .font(.caption)
+                .foregroundColor(.textTertiary)
+                .multilineTextAlignment(.center)
+                .padding(.top, 8)
         }
     }
 
@@ -117,7 +210,7 @@ struct OnboardingView: View {
             }
 
             Button(action: handleNext) {
-                Text(currentStep == totalSteps - 1 ? "Başla" : "İleri")
+                Text(currentStep == totalSteps - 1 ? "Hadi Başlayalım!" : "İleri")
                     .font(.button)
                     .foregroundColor(.white)
                     .frame(maxWidth: .infinity)
@@ -125,6 +218,7 @@ struct OnboardingView: View {
                     .background(isCurrentStepValid ? Color.focusGreen : Color.gray)
                     .cornerRadius(16)
             }
+            .primaryButtonStyle()
             .disabled(!isCurrentStepValid)
         }
         .padding(.horizontal, 40)
@@ -136,11 +230,13 @@ struct OnboardingView: View {
         case 1: return struggleTime != nil
         case 2: return hardestPart != nil
         case 3: return phoneFrequency != nil
+        case 4: return true // Özet ekranı her zaman geçerli
         default: return false
         }
     }
 
     private func handleNext() {
+        HapticManager.shared.buttonTap()
         if currentStep < totalSteps - 1 {
             currentStep += 1
         } else {
@@ -184,7 +280,10 @@ struct QuestionCard: View {
 
             VStack(spacing: 12) {
                 ForEach(options, id: \.value) { option in
-                    Button(action: { selection = option.value }) {
+                    Button(action: {
+                        HapticManager.shared.selection()
+                        selection = option.value
+                    }) {
                         HStack {
                             Text(option.label)
                                 .font(.bodyLarge)

@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		2699BF8585C4C5D0C1C56C63 /* SessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61D88FD1830C6C6C5EA7A099 /* SessionManager.swift */; };
 		2E8D59C5D45B5E44683A6C27 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7089A3C2B68E95919A50A766 /* NotificationManager.swift */; };
+		2FFA7CEC9661F6D08414B741 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B1171B438E1DD87A894E5EC /* AppDelegate.swift */; };
 		332302A3E2F6D4B11C33120F /* HeatmapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B594375F43C97A9B51EE2D /* HeatmapView.swift */; };
 		3F71D0569E90E337D747AC78 /* FocusMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 099BBF234A735A602A222F37 /* FocusMethod.swift */; };
 		4352589DB660F096069FB5F1 /* MethodSelectionEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97FA5844EFB770BD9A293F22 /* MethodSelectionEngine.swift */; };
@@ -30,8 +31,11 @@
 		71B94C6BF6AD0210DE96C2DE /* Typography.swift in Sources */ = {isa = PBXBuildFile; fileRef = 381A27CA9A14A4803C0736B2 /* Typography.swift */; };
 		7B6422C651847D7D3205EB40 /* MethodPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD443658363DF8E0DA1076AB /* MethodPickerView.swift */; };
 		803C60C780928975969F50F2 /* ProfileType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B3AB5935958A0A4EFB24179 /* ProfileType.swift */; };
+		83C5BD01A6227B13D0C5EDA3 /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67A92BC2790981CC51B0755 /* HapticManager.swift */; };
 		84B22F2F3D838EA40CDF930B /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A89249D301328976AA9531E /* Colors.swift */; };
+		857B2E44E7546DF78F8CC599 /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67A92BC2790981CC51B0755 /* HapticManager.swift */; };
 		8A96552D1D2905237F914AC7 /* SummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 878CF3DF399F2F4189B357B1 /* SummaryView.swift */; };
+		8B59BDF6195625B529149D45 /* OrientationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 107BD8507C847B2406AB863A /* OrientationManager.swift */; };
 		8C5566379B96A2D37B5BFFD8 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA59C9856AB3ADC362DD13C /* RootView.swift */; };
 		8D3D794C7C67DE7EA47AE4AB /* ProfileEngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D185B077A59C55A14C6AF3 /* ProfileEngineTests.swift */; };
 		90194A36361187DE36164AA8 /* FocusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64869EC17B1DADC477235D98 /* FocusView.swift */; };
@@ -50,8 +54,10 @@
 		CEE7E61BBBAA598587E7BC96 /* ProfileEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25E5D57E9B6B18D5BD018CEA /* ProfileEngine.swift */; };
 		D0232C5CE3D03626898CABDA /* BreakView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 159DA45B0DB1080EB3E6C298 /* BreakView.swift */; };
 		D726C9EE7568F2AEE82CEA85 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A89249D301328976AA9531E /* Colors.swift */; };
+		DC063FA73C3380F9814BEF93 /* OrientationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 107BD8507C847B2406AB863A /* OrientationManager.swift */; };
 		DCB6A5850B915268E8A9B1C6 /* Typography.swift in Sources */ = {isa = PBXBuildFile; fileRef = 381A27CA9A14A4803C0736B2 /* Typography.swift */; };
 		DFAC1C5C5117BB137F7AD996 /* InterruptionTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83591C6DFF52DBA40543E869 /* InterruptionTracker.swift */; };
+		E70F6F196179338B5CA69DF8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B1171B438E1DD87A894E5EC /* AppDelegate.swift */; };
 		E8C5086686ECB0ECC89F7325 /* BreakView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 159DA45B0DB1080EB3E6C298 /* BreakView.swift */; };
 		F102B5C4F4E050E5F5BDD834 /* FocusMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 099BBF234A735A602A222F37 /* FocusMethod.swift */; };
 		F2408338C9D36B1F51EBCC9F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B4B8E3773F939123E5ECD6A6 /* Assets.xcassets */; };
@@ -73,6 +79,7 @@
 		099BBF234A735A602A222F37 /* FocusMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusMethod.swift; sourceTree = "<group>"; };
 		0B2F642A0B008063A66CE061 /* FocusSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSession.swift; sourceTree = "<group>"; };
 		0D4AE2C7DD3DBF4F26E5DC6F /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		107BD8507C847B2406AB863A /* OrientationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrientationManager.swift; sourceTree = "<group>"; };
 		159DA45B0DB1080EB3E6C298 /* BreakView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreakView.swift; sourceTree = "<group>"; };
 		15D185B077A59C55A14C6AF3 /* ProfileEngineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEngineTests.swift; sourceTree = "<group>"; };
 		1AA59C9856AB3ADC362DD13C /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
@@ -96,7 +103,9 @@
 		90DD4A35A7318251201C11B7 /* ReFocus.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = ReFocus.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		97FA5844EFB770BD9A293F22 /* MethodSelectionEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MethodSelectionEngine.swift; sourceTree = "<group>"; };
 		9A89249D301328976AA9531E /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		9B1171B438E1DD87A894E5EC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9B3AB5935958A0A4EFB24179 /* ProfileType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileType.swift; sourceTree = "<group>"; };
+		A67A92BC2790981CC51B0755 /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
 		B4B8E3773F939123E5ECD6A6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BD443658363DF8E0DA1076AB /* MethodPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MethodPickerView.swift; sourceTree = "<group>"; };
 		C50BD8F685C3E197EDB87292 /* DailyCheckInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyCheckInView.swift; sourceTree = "<group>"; };
@@ -220,7 +229,9 @@
 			isa = PBXGroup;
 			children = (
 				4A455690B09739BF21DC5717 /* AudioManager.swift */,
+				A67A92BC2790981CC51B0755 /* HapticManager.swift */,
 				7089A3C2B68E95919A50A766 /* NotificationManager.swift */,
+				107BD8507C847B2406AB863A /* OrientationManager.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -297,6 +308,7 @@
 		F310F7DBEB27291FB5FBB955 /* App */ = {
 			isa = PBXGroup;
 			children = (
+				9B1171B438E1DD87A894E5EC /* AppDelegate.swift */,
 				727638AFF29361D02D803697 /* ReFocusApp.swift */,
 				1AA59C9856AB3ADC362DD13C /* RootView.swift */,
 			);
@@ -424,6 +436,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E70F6F196179338B5CA69DF8 /* AppDelegate.swift in Sources */,
 				AD0AE30D5FFC4E3F811BCBCA /* AudioManager.swift in Sources */,
 				E8C5086686ECB0ECC89F7325 /* BreakView.swift in Sources */,
 				84B22F2F3D838EA40CDF930B /* Colors.swift in Sources */,
@@ -432,6 +445,7 @@
 				3F71D0569E90E337D747AC78 /* FocusMethod.swift in Sources */,
 				BEF575C93347A6DF42B66C61 /* FocusSession.swift in Sources */,
 				C7F4F44EAC426D520184051D /* FocusView.swift in Sources */,
+				83C5BD01A6227B13D0C5EDA3 /* HapticManager.swift in Sources */,
 				CCFB3EBA2BC609ED63DF6B25 /* HeatmapView.swift in Sources */,
 				554AE91BACA47AE9A1CCD275 /* HomeView.swift in Sources */,
 				DFAC1C5C5117BB137F7AD996 /* InterruptionTracker.swift in Sources */,
@@ -439,6 +453,7 @@
 				4D489ADB0328BF681B41D94B /* MethodSelectionEngine.swift in Sources */,
 				2E8D59C5D45B5E44683A6C27 /* NotificationManager.swift in Sources */,
 				B03ADF20BB18F007C8930117 /* OnboardingView.swift in Sources */,
+				DC063FA73C3380F9814BEF93 /* OrientationManager.swift in Sources */,
 				56347472EC61D1F08F8C7D5A /* ProfileEngine.swift in Sources */,
 				FCB2B024A4478F23E5C7E20D /* ProfileType.swift in Sources */,
 				B343820E22EAED0422197C1D /* ReFocusApp.swift in Sources */,
@@ -464,6 +479,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2FFA7CEC9661F6D08414B741 /* AppDelegate.swift in Sources */,
 				5F05FE1A55638A18F674ED75 /* AudioManager.swift in Sources */,
 				D0232C5CE3D03626898CABDA /* BreakView.swift in Sources */,
 				D726C9EE7568F2AEE82CEA85 /* Colors.swift in Sources */,
@@ -472,6 +488,7 @@
 				F102B5C4F4E050E5F5BDD834 /* FocusMethod.swift in Sources */,
 				9BF123671A8E671EF667AD75 /* FocusSession.swift in Sources */,
 				90194A36361187DE36164AA8 /* FocusView.swift in Sources */,
+				857B2E44E7546DF78F8CC599 /* HapticManager.swift in Sources */,
 				332302A3E2F6D4B11C33120F /* HeatmapView.swift in Sources */,
 				5332CD4E48FC1E134629D61D /* HomeView.swift in Sources */,
 				4A467EAA4DF6218AB7049E2A /* InterruptionTracker.swift in Sources */,
@@ -479,6 +496,7 @@
 				4352589DB660F096069FB5F1 /* MethodSelectionEngine.swift in Sources */,
 				B7AB272ECAF1FD664B46A294 /* NotificationManager.swift in Sources */,
 				5A37059CB458E86D36157FD8 /* OnboardingView.swift in Sources */,
+				8B59BDF6195625B529149D45 /* OrientationManager.swift in Sources */,
 				CEE7E61BBBAA598587E7BC96 /* ProfileEngine.swift in Sources */,
 				803C60C780928975969F50F2 /* ProfileType.swift in Sources */,
 				6370B50C15F2DF4FBA729DD1 /* ReFocusApp.swift in Sources */,

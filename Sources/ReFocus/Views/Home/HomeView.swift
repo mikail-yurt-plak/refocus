@@ -11,19 +11,23 @@ struct HomeView: View {
     @State private var showingSoundPicker = false
     @State private var showingDailyCheckIn = false
     @State private var showingMethodPicker = false
+    @State private var showingIntentPicker = false
     @State private var todaysMood: DailyMood?
+    @State private var selectedIntent: SessionIntent = .mixed
 
     var body: some View {
         NavigationStack {
             ZStack {
                 Color.appBackground.ignoresSafeArea()
 
-                if let session = sessionManager.currentSession {
+                if sessionManager.currentSession != nil {
                     // Aktif seans varsa FocusView göster
                     FocusView(sessionManager: sessionManager)
+                        .supportsAllOrientations()
                 } else {
-                    // Ana ekran
+                    // Ana ekran - yalnızca dikey mod
                     mainContent
+                        .portraitOnly()
                 }
             }
             .onAppear {
@@ -52,6 +56,20 @@ struct HomeView: View {
             }
             .sheet(isPresented: $showingMethodPicker) {
                 MethodPickerView(selectedMethod: $recommendedMethod)
+            }
+            .sheet(isPresented: $showingIntentPicker) {
+                if let method = recommendedMethod {
+                    SessionStartSheet(
+                        method: method,
+                        selectedIntent: $selectedIntent,
+                        onStart: {
+                            showingIntentPicker = false
+                            startSession()
+                        }
+                    )
+                    .presentationDetents([.medium])
+                    .presentationDragIndicator(.visible)
+                }
             }
         }
     }
@@ -118,6 +136,16 @@ struct HomeView: View {
 
             if let summary = sessionManager.getDailySummary(for: Date()) {
                 Text("Bugün \(summary.totalFocusTime) dakika odaklandın")
+                    .font(.bodySmall)
+                    .foregroundColor(.textSecondary)
+            } else if sessionManager.getAllSessions().isEmpty {
+                // İlk kez kullanan kullanıcı için hoşgeldin mesajı
+                Text("İlk seansına başlamaya hazır mısın?")
+                    .font(.bodySmall)
+                    .foregroundColor(.textSecondary)
+            } else {
+                // Bugün seans yok ama daha önce kullanmış
+                Text("Bugün henüz bir seans yapmadın")
                     .font(.bodySmall)
                     .foregroundColor(.textSecondary)
             }
@@ -205,8 +233,8 @@ struct HomeView: View {
             .cornerRadius(16)
             .shadow(color: .black.opacity(0.05), radius: 8, y: 4)
 
-            // Başla butonu
-            Button(action: startSession) {
+            // Başla butonu - intent picker'ı açar
+            Button(action: { showingIntentPicker = true }) {
                 Text("Başla")
                     .font(.buttonLarge)
                     .foregroundColor(.white)
@@ -215,6 +243,9 @@ struct HomeView: View {
                     .background(Color.focusGreen)
                     .cornerRadius(20)
             }
+            .primaryButtonStyle()
+            .accessibilityLabel("\(method.rawValue) seansı başlat")
+            .accessibilityHint("\(method.focusDuration) dakikalık odak seansı başlatmak için çift tıkla")
             .padding(.horizontal, 40)
             .padding(.top, 8)
         }
@@ -265,7 +296,7 @@ struct HomeView: View {
 
     private func startSession() {
         guard let method = recommendedMethod else { return }
-        sessionManager.startSession(method: method)
+        sessionManager.startSession(method: method, intent: selectedIntent)
         appState.startSession(sessionManager.currentSession!)
     }
 
@@ -296,6 +327,7 @@ struct StatCard: View {
             Image(systemName: icon)
                 .font(.system(size: 24))
                 .foregroundColor(.focusGreen)
+                .accessibilityHidden(true)
 
             Text(value)
                 .font(.heading2)
@@ -310,5 +342,125 @@ struct StatCard: View {
         .background(Color.cardBackground)
         .cornerRadius(16)
         .shadow(color: .black.opacity(0.05), radius: 8, y: 4)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(value) \(label)")
+    }
+}
+
+/// Seans başlatma sheet'i
+/// Niyet seçimi ve başlat butonu içerir
+struct SessionStartSheet: View {
+    let method: FocusMethod
+    @Binding var selectedIntent: SessionIntent
+    let onStart: () -> Void
+
+    var body: some View {
+        VStack(spacing: 24) {
+            // Başlık
+            VStack(spacing: 8) {
+                Text(method.icon)
+                    .font(.system(size: 48))
+
+                Text(method.rawValue)
+                    .font(.heading2)
+                    .foregroundColor(.textPrimary)
+
+                Text("\(method.focusDuration) dk odak / \(method.breakDuration) dk mola")
+                    .font(.caption)
+                    .foregroundColor(.textSecondary)
+            }
+            .padding(.top, 16)
+
+            // Niyet seçici
+            VStack(spacing: 12) {
+                Text("Bu seansı nasıl kullanacaksın?")
+                    .font(.bodyLarge)
+                    .foregroundColor(.textPrimary)
+
+                HStack(spacing: 12) {
+                    ForEach(SessionIntent.allCases, id: \.self) { intent in
+                        IntentButton(
+                            intent: intent,
+                            isSelected: selectedIntent == intent
+                        ) {
+                            HapticManager.shared.selection()
+                            selectedIntent = intent
+                        }
+                    }
+                }
+            }
+            .padding(.horizontal, 24)
+
+            // Seçili niyetin açıklaması
+            Text(intentDescription)
+                .font(.caption)
+                .foregroundColor(.textTertiary)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, 32)
+
+            // Başla butonu
+            Button(action: {
+                HapticManager.shared.sessionStarted()
+                onStart()
+            }) {
+                Text("Seansı Başlat")
+                    .font(.buttonLarge)
+                    .foregroundColor(.white)
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 56)
+                    .background(Color.focusGreen)
+                    .cornerRadius(16)
+            }
+            .primaryButtonStyle()
+            .padding(.horizontal, 24)
+
+            Spacer()
+        }
+        .background(Color.appBackground)
+    }
+
+    private var intentDescription: String {
+        switch selectedIntent {
+        case .reading:
+            return "Okuma/yazma modunda 30 saniyeden uzun ayrılmalar bölünme sayılır."
+        case .watching:
+            return "Video izleme modunda kısa geçişler normal kabul edilir."
+        case .mixed:
+            return "Karışık modda 60 saniyeden uzun ayrılmalar bölünme sayılır."
+        }
+    }
+}
+
+/// Tekil niyet butonu
+struct IntentButton: View {
+    let intent: SessionIntent
+    let isSelected: Bool
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            VStack(spacing: 6) {
+                Text(intent.icon)
+                    .font(.title2)
+
+                Text(intent.shortLabel)
+                    .font(.caption)
+                    .foregroundColor(isSelected ? .white : .textSecondary)
+            }
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 12)
+            .background(isSelected ? Color.focusGreen : Color.appBackground)
+            .cornerRadius(12)
+            .overlay(
+                RoundedRectangle(cornerRadius: 12)
+                    .strokeBorder(
+                        isSelected ? Color.clear : Color.gray.opacity(0.2),
+                        lineWidth: 1
+                    )
+            )
+        }
+        .buttonStyle(PlainButtonStyle())
+        .accessibilityLabel("\(intent.label) modu")
+        .accessibilityHint(isSelected ? "Seçili" : "Seçmek için çift tıkla")
     }
 }

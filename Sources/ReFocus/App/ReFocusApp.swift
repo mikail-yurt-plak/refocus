@@ -2,6 +2,9 @@ import SwiftUI
 
 @main
 struct ReFocusApp: App {
+    // AppDelegate bağlantısı - ekran yönelimi kontrolü için
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+
     @StateObject private var appState = AppState()
 
     init() {

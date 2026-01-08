@@ -1,9 +1,56 @@
 import Foundation
 
+/// Seans niyeti - kullanıcının bu seansı nasıl kullanacağı
+/// Bölünme algılama eşiklerini ve UX mesajlarını etkiler
+enum SessionIntent: String, Codable, CaseIterable {
+    case reading = "reading"      // 📖 Okuma / Yazma
+    case watching = "watching"    // 🎥 İzleyerek Öğrenme
+    case mixed = "mixed"          // 🧠 Karışık (varsayılan)
+
+    var icon: String {
+        switch self {
+        case .reading: return "📖"
+        case .watching: return "📺"
+        case .mixed: return "🧠"
+        }
+    }
+
+    var label: String {
+        switch self {
+        case .reading: return "Okuma / Yazma"
+        case .watching: return "İzleyerek Öğrenme"
+        case .mixed: return "Karışık"
+        }
+    }
+
+    var shortLabel: String {
+        switch self {
+        case .reading: return "Kitap"
+        case .watching: return "Video"
+        case .mixed: return "Karışık"
+        }
+    }
+
+    /// Bölünme sayılması için minimum arka plan süresi (saniye)
+    var interruptionThreshold: TimeInterval {
+        switch self {
+        case .reading: return 30    // 30 saniye sonra bölünme
+        case .watching: return -1   // Süre bazlı bölünme yok, sadece düzensizlik
+        case .mixed: return 60      // 60 saniye sonra bölünme
+        }
+    }
+
+    /// İzleme modunda düzensizlik tespiti için eşikler
+    /// 2 dakika içinde 5+ app switch = bölünme sinyali
+    static let watchingModeAppSwitchThreshold = 5
+    static let watchingModeTimeWindow: TimeInterval = 120 // 2 dakika
+}
+
 /// Bir odak seansını temsil eder
 struct FocusSession: Identifiable, Codable {
     let id: UUID
     let method: FocusMethod
+    let intent: SessionIntent
     let startTime: Date
     var endTime: Date?
 
@@ -19,9 +66,10 @@ struct FocusSession: Identifiable, Codable {
     // Geri bildirim
     var feedback: SessionFeedback?
 
-    init(method: FocusMethod) {
+    init(method: FocusMethod, intent: SessionIntent = .mixed) {
         self.id = UUID()
         self.method = method
+        self.intent = intent
         self.startTime = Date()
         self.isActive = true
         self.isBreak = false
@@ -47,11 +95,23 @@ struct FocusSession: Identifiable, Codable {
     }
 
     /// Odak akışı kalitesi (0.0 - 1.0)
-    /// 1.0 = hiç bölünme yok, 0.0 = tamamen bölünmüş
+    /// Hem tamamlama oranını hem de bölünme oranını hesaba katar
+    /// - Tamamlama oranı: Planlanan sürenin ne kadarı yapıldı?
+    /// - Akış sürekliliği: Yapılan sürenin ne kadarı gerçek odaktı?
     var focusFlowQuality: Double {
         guard totalFocusDuration > 0 else { return 0 }
-        let totalDuration = totalFocusDuration + totalInterruptionDuration
-        return totalFocusDuration / totalDuration
+
+        let plannedDuration = Double(method.focusDuration * 60)
+        let actualDuration = totalFocusDuration + totalInterruptionDuration
+
+        // Tamamlama oranı (maksimum %100)
+        let completionRatio = min(1.0, actualDuration / plannedDuration)
+
+        // Akış sürekliliği (bölünme olmadığında 1.0)
+        let flowContinuity = totalFocusDuration / actualDuration
+
+        // İkisinin çarpımı: hem tamamlamak hem de odaklı kalmak önemli
+        return completionRatio * flowContinuity
     }
 
     /// Seansı bitir

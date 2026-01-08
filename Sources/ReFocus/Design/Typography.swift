@@ -66,3 +66,36 @@ extension Text {
             .lineSpacing(6)
     }
 }
+
+// MARK: - Button Styles
+
+/// Ana butonlar için scale animasyonlu stil
+struct PrimaryButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .scaleEffect(configuration.isPressed ? 0.97 : 1.0)
+            .opacity(configuration.isPressed ? 0.9 : 1.0)
+            .animation(.easeInOut(duration: 0.15), value: configuration.isPressed)
+    }
+}
+
+/// İkincil butonlar için hafif scale animasyonlu stil
+struct SecondaryButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .scaleEffect(configuration.isPressed ? 0.98 : 1.0)
+            .animation(.easeInOut(duration: 0.1), value: configuration.isPressed)
+    }
+}
+
+extension View {
+    /// Ana buton stili uygula
+    func primaryButtonStyle() -> some View {
+        self.buttonStyle(PrimaryButtonStyle())
+    }
+
+    /// İkincil buton stili uygula
+    func secondaryButtonStyle() -> some View {
+        self.buttonStyle(SecondaryButtonStyle())
+    }
+}

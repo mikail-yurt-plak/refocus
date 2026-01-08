@@ -13,6 +13,12 @@ class SessionManager: ObservableObject {
     private var sessionHistory: [FocusSession] = []
     private let interruptionTracker: InterruptionTracker
 
+    /// Arka plana alınma zamanı (timer'ı yakalamak için)
+    private var backgroundStartTime: Date?
+
+    /// İzleme modunda düzensizlik tespiti için son app switch zamanları
+    private var recentAppSwitches: [Date] = []
+
     init() {
         self.interruptionTracker = InterruptionTracker()
         loadSessionHistory()
@@ -24,12 +30,15 @@ class SessionManager: ObservableObject {
     // MARK: - Session Control
 
     /// Yeni seans başlat
-    func startSession(method: FocusMethod) {
-        let session = FocusSession(method: method)
+    func startSession(method: FocusMethod, intent: SessionIntent = .mixed) {
+        let session = FocusSession(method: method, intent: intent)
         currentSession = session
         timeRemaining = TimeInterval(method.focusDuration * 60)
         isActive = true
         isBreak = false
+
+        // App switch geçmişini temizle
+        recentAppSwitches = []
 
         // Timer'ı başlat
         startTimer()
@@ -44,7 +53,7 @@ class SessionManager: ObservableObject {
         )
 
         // Debug: Bildirimleri listele
-        print("🎯 Seans başladı: \(method.rawValue), \(timeRemaining) saniye")
+        print("🎯 Seans başladı: \(method.rawValue), niyet: \(intent.label), \(timeRemaining) saniye")
         NotificationManager.shared.listPendingNotifications()
     }
 
@@ -79,12 +88,29 @@ class SessionManager: ObservableObject {
         }
     }
 
+    /// Seansı dondur (geri bildirim için endTime'ı ayarla)
+    /// Bu sayede totalFocusDuration değişmez
+    func freezeSession() {
+        guard var session = currentSession else { return }
+        if session.endTime == nil {
+            session.endTime = Date()
+            currentSession = session
+            print("❄️ Seans donduruldu - süre sabitlendi")
+        }
+    }
+
     /// Seansı bitir
     func endSession(feedback: SessionFeedback? = nil) {
         guard var session = currentSession else { return }
 
-        // Seansı tamamla
-        session.complete(feedback: feedback)
+        // Eğer henüz dondurulmamışsa, şimdi dondur
+        if session.endTime == nil {
+            session.endTime = Date()
+        }
+
+        // Seansı tamamla (feedback ekle, isActive = false)
+        session.isActive = false
+        session.feedback = feedback
 
         // Interruption tracker'ı durdur
         interruptionTracker.stopTracking()
@@ -177,8 +203,15 @@ class SessionManager: ObservableObject {
     }
 
     @objc private func appDidEnterBackground() {
-        guard let session = currentSession else { return }
-        interruptionTracker.recordBackgroundEvent(session: session, entering: true)
+        guard var session = currentSession else { return }
+
+        // Arka plana alınma zamanını kaydet
+        backgroundStartTime = Date()
+
+        // Background event ekle
+        let event = BackgroundEvent(timestamp: Date(), event: .didEnterBackground)
+        session.addBackgroundEvent(event)
+        currentSession = session
 
         // Aktif seans varsa ve mola değilse, nazik hatırlatma bildirimlerini planla
         if isActive && !isBreak {
@@ -188,12 +221,76 @@ class SessionManager: ObservableObject {
     }
 
     @objc private func appWillEnterForeground() {
-        guard let session = currentSession else { return }
-        interruptionTracker.recordBackgroundEvent(session: session, entering: false)
+        guard var session = currentSession else { return }
 
         // Arka plan bildirimlerini iptal et (kullanıcı döndü)
         NotificationManager.shared.cancelBackgroundNudgeNotifications()
         print("📱 Uygulama ön plana döndü - hatırlatmalar iptal edildi")
+
+        // App switch'i kaydet (düzensizlik tespiti için)
+        let now = Date()
+        recentAppSwitches.append(now)
+
+        // Eski switch'leri temizle (time window dışındakileri)
+        let timeWindow = SessionIntent.watchingModeTimeWindow
+        recentAppSwitches = recentAppSwitches.filter { now.timeIntervalSince($0) < timeWindow }
+
+        // Arka planda geçen süreyi hesapla
+        if let startTime = backgroundStartTime {
+            let elapsedTime = now.timeIntervalSince(startTime)
+
+            // Timer'ı güncelle - geçen süreyi düş
+            if isActive {
+                timeRemaining = max(0, timeRemaining - elapsedTime)
+
+                // Eğer süre bittiyse timer'ı tamamla
+                if timeRemaining <= 0 {
+                    handleTimerComplete()
+                }
+            }
+
+            // Bölünme kaydı - niyete göre farklı mantık
+            let shouldRecordInterruption = checkIfShouldRecordInterruption(
+                intent: session.intent,
+                elapsedTime: elapsedTime
+            )
+
+            if shouldRecordInterruption {
+                let interruption = Interruption(startTime: startTime, endTime: now)
+                session.addInterruption(interruption)
+                print("⚠️ Bölünme kaydedildi: \(Int(elapsedTime)) saniye (niyet: \(session.intent.shortLabel))")
+            }
+
+            backgroundStartTime = nil
+        }
+
+        // Foreground event ekle
+        let event = BackgroundEvent(timestamp: now, event: .willEnterForeground)
+        session.addBackgroundEvent(event)
+        currentSession = session
+    }
+
+    /// Niyete göre bölünme kaydedilmeli mi?
+    private func checkIfShouldRecordInterruption(intent: SessionIntent, elapsedTime: TimeInterval) -> Bool {
+        switch intent {
+        case .reading:
+            // Okuma modunda: threshold süresinden uzun = bölünme
+            return elapsedTime > intent.interruptionThreshold
+
+        case .watching:
+            // İzleme modunda: süre değil, düzensizlik önemli
+            // Çok sık app switch = bölünme sinyali
+            let switchCount = recentAppSwitches.count
+            let isIrregular = switchCount >= SessionIntent.watchingModeAppSwitchThreshold
+            if isIrregular {
+                print("📊 İzleme modunda düzensizlik tespit edildi: \(switchCount) switch son 2 dakikada")
+            }
+            return isIrregular
+
+        case .mixed:
+            // Karışık modda: daha uzun threshold
+            return elapsedTime > intent.interruptionThreshold
+        }
     }
 
     // MARK: - Data Persistence

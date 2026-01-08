@@ -6,11 +6,26 @@ struct FocusView: View {
     @EnvironmentObject var appState: AppState
     @State private var showingEndConfirmation = false
     @State private var showingFeedback = false
-    @Environment(\.verticalSizeClass) var verticalSizeClass
+    @State private var lastWarningTime: Int = -1 // Son uyarı zamanı (tekrar uyarı önlemek için)
 
-    /// Yatay mod kontrolü
-    private var isLandscape: Bool {
-        verticalSizeClass == .compact
+    /// Son 10 saniye mi?
+    private var isInFinalCountdown: Bool {
+        sessionManager.timeRemaining <= 10 && sessionManager.timeRemaining > 0 && sessionManager.isActive
+    }
+
+    /// Son 5 saniye mi?
+    private var isInCriticalCountdown: Bool {
+        sessionManager.timeRemaining <= 5 && sessionManager.timeRemaining > 0 && sessionManager.isActive
+    }
+
+    /// Timer rengi (son saniyelerde değişir)
+    private var timerColor: Color {
+        if isInCriticalCountdown {
+            return .orange
+        } else if isInFinalCountdown {
+            return Color.orange.opacity(0.8)
+        }
+        return .textPrimary
     }
 
     var body: some View {
@@ -20,12 +35,15 @@ struct FocusView: View {
                 .ignoresSafeArea()
 
             GeometryReader { geometry in
-                if isLandscape {
+                // Yatay mod tespiti - geometry'den doğrudan hesapla
+                let isLandscapeMode = geometry.size.width > geometry.size.height
+
+                if isLandscapeMode {
                     // Yatay mod düzeni
                     landscapeLayout(geometry: geometry)
                 } else {
                     // Dikey mod düzeni
-                    portraitLayout
+                    portraitLayout(geometry: geometry)
                 }
             }
         }
@@ -35,26 +53,54 @@ struct FocusView: View {
             }
         }
         .alert("Seansı Bitir?", isPresented: $showingEndConfirmation) {
-            Button("İptal", role: .cancel) {}
+            Button("İptal", role: .cancel) { }
             Button("Bitir", role: .destructive) {
                 endSession()
             }
         } message: {
             Text("Seansı şimdi bitirmek istediğinden emin misin?")
         }
+        .onChange(of: sessionManager.timeRemaining) { oldValue, newValue in
+            handleTimerChange(newValue: newValue)
+        }
+    }
+
+    /// Timer değişikliklerini işle (son saniyeler için haptic)
+    private func handleTimerChange(newValue: TimeInterval) {
+        let currentSecond = Int(newValue)
+
+        // 10 saniye kaldığında uyar
+        if currentSecond == 10 && lastWarningTime != 10 {
+            HapticManager.shared.timerWarning()
+            lastWarningTime = 10
+        }
+
+        // Son 5 saniyede her saniye hafif uyarı
+        if currentSecond <= 5 && currentSecond > 0 && currentSecond != lastWarningTime {
+            HapticManager.shared.timerWarning()
+            lastWarningTime = currentSecond
+        }
+
+        // Timer bittiğinde
+        if currentSecond == 0 && lastWarningTime != 0 {
+            HapticManager.shared.timerCompleted()
+            lastWarningTime = 0
+        }
     }
 
     // MARK: - Portrait Layout
 
-    private var portraitLayout: some View {
-        VStack(spacing: 40) {
+    private func portraitLayout(geometry: GeometryProxy) -> some View {
+        let ringSize = min(geometry.size.width * 0.65, 280.0)
+
+        return VStack(spacing: 32) {
             // Üst bar - Metod adı ve kapat butonu
             topBar
 
             Spacer()
 
-            // Ana timer
-            timerSection(ringSize: 200)
+            // Ana timer (süre çemberin içinde)
+            timerSection(ringSize: ringSize, isLandscapeMode: false)
 
             // Durum mesajı
             statusMessage
@@ -71,15 +117,19 @@ struct FocusView: View {
     // MARK: - Landscape Layout
 
     private func landscapeLayout(geometry: GeometryProxy) -> some View {
-        HStack(spacing: 0) {
+        let ringSize = min(geometry.size.height * 0.6, 180.0)
+
+        return HStack(spacing: 0) {
             // Sol taraf - Timer ve progress ring
-            VStack(spacing: 16) {
-                timerSection(ringSize: min(geometry.size.height * 0.5, 150))
+            VStack {
+                Spacer()
+                timerSection(ringSize: ringSize, isLandscapeMode: true)
+                Spacer()
             }
             .frame(width: geometry.size.width * 0.5)
 
             // Sağ taraf - Bilgi ve kontroller
-            VStack(spacing: 20) {
+            VStack(spacing: 16) {
                 // Üst bar - Metod adı ve kapat
                 landscapeTopBar
 
@@ -103,9 +153,15 @@ struct FocusView: View {
         HStack {
             if let session = sessionManager.currentSession {
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(session.method.rawValue)
-                        .font(.heading3)
-                        .foregroundColor(.textPrimary)
+                    HStack(spacing: 8) {
+                        Text(session.method.rawValue)
+                            .font(.heading3)
+                            .foregroundColor(.textPrimary)
+
+                        // Niyet göstergesi
+                        Text(session.intent.icon)
+                            .font(.caption)
+                    }
 
                     Text(sessionManager.isBreak ? "Mola" : "Odak")
                         .font(.caption)
@@ -128,9 +184,15 @@ struct FocusView: View {
         HStack {
             if let session = sessionManager.currentSession {
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(session.method.rawValue)
-                        .font(.heading3)
-                        .foregroundColor(.textPrimary)
+                    HStack(spacing: 8) {
+                        Text(session.method.rawValue)
+                            .font(.heading3)
+                            .foregroundColor(.textPrimary)
+
+                        // Niyet göstergesi
+                        Text(session.intent.icon)
+                            .font(.body)
+                    }
 
                     Text(sessionManager.isBreak ? "Mola" : "Odak")
                         .font(.caption)
@@ -149,23 +211,46 @@ struct FocusView: View {
         .padding(.horizontal, 24)
     }
 
-    private func timerSection(ringSize: CGFloat) -> some View {
-        VStack(spacing: isLandscape ? 8 : 16) {
-            // Büyük timer
-            Text(sessionManager.timeRemaining.formattedTime)
-                .font(isLandscape ? .system(size: 48, weight: .medium, design: .rounded) : .timerLarge)
-                .foregroundColor(.textPrimary)
-                .monospacedDigit()
-
-            // Progress ring
+    private func timerSection(ringSize: CGFloat, isLandscapeMode: Bool) -> some View {
+        // Progress ring with timer inside
+        ZStack {
             if let session = sessionManager.currentSession {
+                let ringColor: Color = {
+                    if isInFinalCountdown && !sessionManager.isBreak {
+                        return .orange
+                    }
+                    return sessionManager.isBreak ? .breakBlue : .focusGreen
+                }()
+
+                // Nefes animasyonu (arka planda)
+                if !sessionManager.isBreak && sessionManager.isActive {
+                    BreathingCircle(color: ringColor, size: ringSize + 40)
+                }
+
+                // Progress ring
                 ProgressRing(
                     progress: calculateProgress(session: session),
-                    color: sessionManager.isBreak ? .breakBlue : .focusGreen
+                    color: ringColor
                 )
                 .frame(width: ringSize, height: ringSize)
+
+                // Timer - çemberin içinde
+                VStack(spacing: 4) {
+                    Text(sessionManager.timeRemaining.formattedTime)
+                        .font(isLandscapeMode ? .system(size: 36, weight: .medium, design: .rounded) : .system(size: 48, weight: .medium, design: .rounded))
+                        .foregroundColor(timerColor)
+                        .monospacedDigit()
+                        .scaleEffect(isInCriticalCountdown ? 1.05 : 1.0)
+                        .animation(.easeInOut(duration: 0.3), value: isInCriticalCountdown)
+
+                    // Mod etiketi (Odak/Mola)
+                    Text(sessionManager.isBreak ? "Mola" : "Odak")
+                        .font(.caption)
+                        .foregroundColor(.textSecondary)
+                }
             }
         }
+        .accessibilityLabel("Kalan süre: \(Int(sessionManager.timeRemaining / 60)) dakika \(Int(sessionManager.timeRemaining) % 60) saniye")
     }
 
     private var statusMessage: some View {
@@ -173,8 +258,8 @@ struct FocusView: View {
             if sessionManager.isBreak {
                 Text("Biraz nefes al.\nBir sonraki seansa hazırlan.")
                     .gentleMessageStyle()
-            } else if let session = sessionManager.currentSession {
-                let engine = ProfileEngine(profile: appState.userProfile!)
+            } else if sessionManager.currentSession != nil, let profile = appState.userProfile {
+                let engine = ProfileEngine(profile: profile)
                 Text(engine.generateGentleMessage(for: .sessionStart))
                     .gentleMessageStyle()
             }
@@ -186,7 +271,10 @@ struct FocusView: View {
         HStack(spacing: 16) {
             if sessionManager.isBreak {
                 // Mola kontrolü
-                Button(action: { sessionManager.skipBreak() }) {
+                Button(action: {
+                    HapticManager.shared.buttonTap()
+                    sessionManager.skipBreak()
+                }) {
                     Text("Molayı Atla")
                         .font(.button)
                         .foregroundColor(.textSecondary)
@@ -196,12 +284,18 @@ struct FocusView: View {
                         .cornerRadius(16)
                 }
             } else {
-                // Odak kontrolü
-                Button(action: togglePause) {
-                    Image(systemName: sessionManager.isActive ? "pause.circle.fill" : "play.circle.fill")
-                        .font(.system(size: 64))
-                        .foregroundColor(.focusGreen)
+                // Seansı bitir butonu
+                Button(action: { showingEndConfirmation = true }) {
+                    Text("Seansı Bitir")
+                        .font(.button)
+                        .foregroundColor(.textSecondary)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 56)
+                        .background(Color.cardBackground)
+                        .cornerRadius(16)
                 }
+                .accessibilityLabel("Seansı Bitir")
+                .accessibilityHint("Odak seansını erken bitirmek için çift tıkla")
             }
         }
         .padding(.horizontal, 40)
@@ -215,15 +309,9 @@ struct FocusView: View {
         return 1.0 - (sessionManager.timeRemaining / totalDuration)
     }
 
-    private func togglePause() {
-        if sessionManager.isActive {
-            sessionManager.pauseSession()
-        } else {
-            sessionManager.resumeSession()
-        }
-    }
-
     private func endSession() {
+        // Seansı dondur - süre sabitlensin, feedback view'da değişmesin
+        sessionManager.freezeSession()
         showingFeedback = true
     }
 }
@@ -248,7 +336,32 @@ struct ProgressRing: View {
                     style: StrokeStyle(lineWidth: lineWidth, lineCap: .round)
                 )
                 .rotationEffect(.degrees(-90))
-                .animation(.linear(duration: 1), value: progress)
         }
+    }
+}
+
+/// Nefes animasyonu komponenti
+/// Sakinleştirici, yavaş pulse efekti - GPU ile render edilir
+struct BreathingCircle: View {
+    @State private var isAnimating = false
+    let color: Color
+    let size: CGFloat
+
+    var body: some View {
+        Circle()
+            .fill(color.opacity(0.15))
+            .frame(width: size, height: size)
+            .scaleEffect(isAnimating ? 1.08 : 0.95)
+            .opacity(isAnimating ? 0.7 : 0.3)
+            .frame(width: size * 1.2, height: size * 1.2) // Scale için ekstra alan
+            .drawingGroup() // GPU'ya yükle - CPU kullanımını azaltır
+            .animation(
+                .easeInOut(duration: 4)
+                    .repeatForever(autoreverses: true),
+                value: isAnimating
+            )
+            .onAppear {
+                isAnimating = true
+            }
     }
 }
