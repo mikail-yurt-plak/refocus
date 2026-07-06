@@ -16,6 +16,8 @@ struct HomeView: View {
     @State private var showingDailyCheckIn = false
     @State private var showingMethodPicker = false
     @State private var showingIntentPicker = false
+    @State private var showingLanguagePicker = false
+    @State private var showingFriends = false
     @State private var todaysMood: DailyMood?
     @State private var selectedIntent: SessionIntent = .mixed
     @State private var selectedWorkContext: WorkContext? = .general
@@ -48,6 +50,34 @@ struct HomeView: View {
             #if os(macOS)
             .navigationTitle(windowTitle)
             #endif
+            .toolbar {
+                if sessionManager.currentSession == nil {
+                    ToolbarItem(placement: .topBarTrailingCompat) {
+                        Button {
+                            showingFriends = true
+                        } label: {
+                            Image(systemName: "person.2")
+                                .foregroundColor(.textSecondary)
+                        }
+                        .accessibilityLabel(Text("friends.title"))
+                    }
+                    ToolbarItem(placement: .topBarTrailingCompat) {
+                        Button {
+                            showingLanguagePicker = true
+                        } label: {
+                            Image(systemName: "globe")
+                                .foregroundColor(.textSecondary)
+                        }
+                        .accessibilityLabel(Text("language.title"))
+                    }
+                }
+            }
+            .sheet(isPresented: $showingLanguagePicker) {
+                LanguagePickerView()
+            }
+            .sheet(isPresented: $showingFriends) {
+                FriendsView()
+            }
             .onAppear {
                 requestNotificationPermission()
                 checkDailyCheckIn()

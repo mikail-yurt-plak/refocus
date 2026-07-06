@@ -12,19 +12,19 @@ extension Color {
     // MARK: - Primary Colors
 
     /// Ana tema rengi - Odak Yeşili
-    static let focusGreen = Color(hex: "#2E7D6F")
+    static let focusGreen = Color(light: Color(hex: "#2E7D6F"), dark: Color(hex: "#4FA294"))
 
     /// Uygulama arka plan rengi - Açık gri-beyaz
-    static let appBackground = Color(hex: "#F6F8F7")
+    static let appBackground = Color(light: Color(hex: "#F6F8F7"), dark: Color(hex: "#121615"))
 
     /// Kart arka plan rengi - Beyaz
-    static let cardBackground = Color(hex: "#FFFFFF")
+    static let cardBackground = Color(light: Color(hex: "#FFFFFF"), dark: Color(hex: "#1E2422"))
 
     /// Mola ekranı rengi - Açık mavi
-    static let breakBlue = Color(hex: "#E8F1F8")
+    static let breakBlue = Color(light: Color(hex: "#E8F1F8"), dark: Color(hex: "#16222C"))
 
     /// Nazik uyarı rengi - Açık sarı
-    static let gentleWarning = Color(hex: "#FFF4E5")
+    static let gentleWarning = Color(light: Color(hex: "#FFF4E5"), dark: Color(hex: "#33291A"))
 
     // MARK: - Semantic Colors
 
@@ -39,14 +39,14 @@ extension Color {
 
     // MARK: - Text Colors
 
-    /// Ana metin rengi - koyu gri (light mode için optimize)
-    static let textPrimary = Color(hex: "#1C1C1E")
+    /// Ana metin rengi
+    static let textPrimary = Color(light: Color(hex: "#1C1C1E"), dark: Color(hex: "#EDEFEE"))
 
     /// İkincil metin rengi
-    static let textSecondary = Color(hex: "#6B6B6B")
+    static let textSecondary = Color(light: Color(hex: "#6B6B6B"), dark: Color(hex: "#A5ABA8"))
 
     /// Üçüncül metin rengi
-    static let textTertiary = Color(hex: "#999999")
+    static let textTertiary = Color(light: Color(hex: "#999999"), dark: Color(hex: "#767C79"))
 
     // MARK: - Helper
 

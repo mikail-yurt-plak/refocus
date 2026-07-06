@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <!-- ReFocus app icon: ripples converging into a single point of focus -->
+  <rect width="1024" height="1024" fill="#F6F8F7"/>
+  <circle cx="512" cy="512" r="400" fill="#D9E8E4"/>
+  <circle cx="512" cy="512" r="315" fill="#BAD5CF"/>
+  <circle cx="512" cy="512" r="235" fill="#8FBCB2"/>
+  <circle cx="512" cy="512" r="158" fill="#5C9D91"/>
+  <circle cx="512" cy="512" r="85"  fill="#2E7D6F"/>
+</svg>

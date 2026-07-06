@@ -686,6 +686,8 @@ class AppState: ObservableObject {
            let profile = try? JSONDecoder().decode(UserProfile.self, from: profileData) {
             self.userProfile = profile
         }
+
+        mergeProfileFromCloud()
     }
 
     func completeOnboarding(profile: UserProfile) {
@@ -694,9 +696,41 @@ class AppState: ObservableObject {
 
         // Kaydet
         UserDefaults.standard.set(true, forKey: "hasCompletedOnboarding")
-        if let encoded = try? JSONEncoder().encode(profile) {
-            UserDefaults.standard.set(encoded, forKey: "userProfile")
+        ProfileEngine.persist(profile)
+    }
+
+    /// iCloud'daki profil daha yeniyse onu benimse; yerel profil buluta hiç
+    /// gitmemişse gönder. Başka cihazda onboarding tamamlanmışsa burada atlanır.
+    func mergeProfileFromCloud() {
+        guard CloudStore.shared.isAvailable else { return }
+
+        let localDate = UserDefaults.standard.object(forKey: "userProfileUpdatedAt") as? Date ?? .distantPast
+        let cloud = CloudStore.shared.fetchAll(UserProfile.self, kind: .profile)
+            .first { $0.id == "userProfile" }
+
+        if let cloud, cloud.updatedAt > localDate || userProfile == nil {
+            userProfile = cloud.value
+            hasCompletedOnboarding = true
+            UserDefaults.standard.set(true, forKey: "hasCompletedOnboarding")
+            if let encoded = try? JSONEncoder().encode(cloud.value) {
+                UserDefaults.standard.set(encoded, forKey: "userProfile")
+                UserDefaults.standard.set(cloud.updatedAt, forKey: "userProfileUpdatedAt")
+            }
+        } else if cloud == nil, let profile = userProfile {
+            // İlk taşıma: mevcut yerel profili buluta gönder
+            CloudStore.shared.upsert(profile, kind: .profile, id: "userProfile", updatedAt: localDate)
         }
+    }
+
+    /// Uygulama öne geldiğinde iCloud'dan gelen değişiklikleri al
+    func refreshFromCloud() {
+        mergeProfileFromCloud()
+        sessionManager.mergeSessionsFromCloud()
+        WorkContextManager.shared.mergeFromCloud()
+
+        // Arkadaş özetlerini tazele ve kendi bugününü yayınla
+        FriendSyncManager.shared.publishToday(sessions: sessionManager.getAllSessions())
+        Task { await FriendSyncManager.shared.refreshFriends() }
     }
 
     func startSession(_ session: FocusSession) {

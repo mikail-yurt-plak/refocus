@@ -52,6 +52,9 @@ class SessionManager: ObservableObject {
             in: timeRemaining
         )
 
+        // Arkadaşlara "odakta" durumunu yayınla
+        FriendSyncManager.shared.setPresence(focusing: true, since: session.startTime)
+
         // Debug: Bildirimleri listele
         print("🎯 Seans başladı: \(method.rawValue), niyet: \(intent.label), \(timeRemaining) saniye")
         NotificationManager.shared.listPendingNotifications()
@@ -119,6 +122,10 @@ class SessionManager: ObservableObject {
         // Geçmişe ekle
         sessionHistory.append(session)
         saveSessionHistory()
+        CloudStore.shared.upsert(session, kind: .session, id: session.id.uuidString,
+                                 updatedAt: session.endTime ?? Date())
+        FriendSyncManager.shared.publishToday(sessions: sessionHistory)
+        FriendSyncManager.shared.setPresence(focusing: false)
 
         // Bekleyen bildirimleri iptal et
         NotificationManager.shared.cancelAllPendingNotifications()
@@ -310,6 +317,33 @@ class SessionManager: ObservableObject {
            let history = try? JSONDecoder().decode([FocusSession].self, from: data) {
             sessionHistory = history
         }
+        mergeSessionsFromCloud()
+    }
+
+    /// iCloud'dan gelen seansları yerel geçmişle birleştirir.
+    /// Seanslar salt-eklemeli olduğu için id bazında birleşim güvenlidir;
+    /// henüz buluta gitmemiş yerel seanslar da bu sırada yüklenir.
+    func mergeSessionsFromCloud() {
+        guard CloudStore.shared.isAvailable else { return }
+
+        let cloudSessions = CloudStore.shared.fetchAll(FocusSession.self, kind: .session)
+        let localIDs = Set(sessionHistory.map { $0.id })
+        let cloudIDs = Set(cloudSessions.map { $0.value.id })
+
+        // Bulutta olup yerelde olmayanları ekle
+        let incoming = cloudSessions.map(\.value).filter { !localIDs.contains($0.id) }
+
+        // Yerelde olup bulutta olmayanları buluta gönder (ilk taşıma dahil)
+        for session in sessionHistory where !cloudIDs.contains(session.id) {
+            CloudStore.shared.upsert(session, kind: .session, id: session.id.uuidString,
+                                     updatedAt: session.endTime ?? session.startTime)
+        }
+
+        guard !incoming.isEmpty else { return }
+        objectWillChange.send()
+        sessionHistory.append(contentsOf: incoming)
+        sessionHistory.sort { $0.startTime < $1.startTime }
+        saveSessionHistory()
     }
 
     // MARK: - Session History Access

@@ -64,9 +64,17 @@ class ProfileEngine: ObservableObject {
 
     /// Profili kaydet
     private func saveProfile() {
+        ProfileEngine.persist(profile)
+    }
+
+    /// Profili hem yerel olarak hem iCloud'a kaydeder (AppState de kullanır)
+    static func persist(_ profile: UserProfile) {
+        let now = Date()
         if let encoded = try? JSONEncoder().encode(profile) {
             UserDefaults.standard.set(encoded, forKey: "userProfile")
+            UserDefaults.standard.set(now, forKey: "userProfileUpdatedAt")
         }
+        CloudStore.shared.upsert(profile, kind: .profile, id: "userProfile", updatedAt: now)
     }
 
     /// Kullanıcıya nazik mesajlar oluştur

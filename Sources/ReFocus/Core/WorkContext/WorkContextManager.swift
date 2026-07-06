@@ -11,6 +11,10 @@ class WorkContextManager: ObservableObject {
 
     private let userDefaultsKey = "userWorkContexts"
     private let lastSelectedKey = "lastSelectedWorkContext"
+    private let updatedAtKey = "userWorkContextsUpdatedAt"
+    /// Tüm bağlamlar tek kayıt olarak senkronlanır: dizideki sıralama korunur
+    /// ve silmeler doğal olarak diğer cihazlara yayılır
+    private let cloudRecordID = "workContexts"
 
     init() {
         loadContexts()
@@ -95,15 +99,45 @@ class WorkContextManager: ObservableObject {
     // MARK: - Persistence
 
     private func saveContexts() {
+        let now = Date()
         if let encoded = try? JSONEncoder().encode(contexts) {
             UserDefaults.standard.set(encoded, forKey: userDefaultsKey)
+            UserDefaults.standard.set(now, forKey: updatedAtKey)
         }
+        CloudStore.shared.upsert(contexts, kind: .workContext, id: cloudRecordID, updatedAt: now)
     }
 
     private func loadContexts() {
         if let data = UserDefaults.standard.data(forKey: userDefaultsKey),
            let decoded = try? JSONDecoder().decode([WorkContext].self, from: data) {
             contexts = decoded
+        }
+        mergeFromCloud()
+    }
+
+    /// iCloud'daki bağlam listesiyle yereli birleştirir; daha yeni olan kazanır
+    func mergeFromCloud() {
+        guard CloudStore.shared.isAvailable else { return }
+
+        let localDate = UserDefaults.standard.object(forKey: updatedAtKey) as? Date ?? .distantPast
+        let cloud = CloudStore.shared.fetchAll([WorkContext].self, kind: .workContext)
+            .first { $0.id == cloudRecordID }
+
+        if let cloud, cloud.updatedAt > localDate {
+            contexts = cloud.value
+            if let encoded = try? JSONEncoder().encode(contexts) {
+                UserDefaults.standard.set(encoded, forKey: userDefaultsKey)
+                UserDefaults.standard.set(cloud.updatedAt, forKey: updatedAtKey)
+            }
+            // Seçili bağlam artık yoksa "Genel"e dön
+            if let selected = selectedContext,
+               !getAllContexts().contains(where: { $0.id == selected.id }) {
+                selectedContext = .general
+                saveLastSelected()
+            }
+        } else if cloud == nil, !contexts.isEmpty {
+            // İlk taşıma: yerel veriyi buluta gönder
+            CloudStore.shared.upsert(contexts, kind: .workContext, id: cloudRecordID, updatedAt: localDate)
         }
     }
 

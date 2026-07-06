@@ -46,6 +46,16 @@
 		857B2E44E7546DF78F8CC599 /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67A92BC2790981CC51B0755 /* HapticManager.swift */; };
 		8A96552D1D2905237F914AC7 /* SummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 878CF3DF399F2F4189B357B1 /* SummaryView.swift */; };
 		8B59BDF6195625B529149D45 /* OrientationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 107BD8507C847B2406AB863A /* OrientationManager.swift */; };
+		7F0E3456C2D3E4F5A6B70302 /* FriendSyncManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F0E3456C2D3E4F5A6B70301 /* FriendSyncManager.swift */; };
+		7F0E3456C2D3E4F5A6B70303 /* FriendSyncManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F0E3456C2D3E4F5A6B70301 /* FriendSyncManager.swift */; };
+		7F0E3456C2D3E4F5A6B70305 /* FriendsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F0E3456C2D3E4F5A6B70304 /* FriendsView.swift */; };
+		7F0E3456C2D3E4F5A6B70306 /* FriendsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F0E3456C2D3E4F5A6B70304 /* FriendsView.swift */; };
+		6E0D2345B1C2D3E4F5A60202 /* CloudStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E0D2345B1C2D3E4F5A60201 /* CloudStore.swift */; };
+		6E0D2345B1C2D3E4F5A60203 /* CloudStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E0D2345B1C2D3E4F5A60201 /* CloudStore.swift */; };
+		5D0C1234A1B2C3D4E5F60102 /* Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0C1234A1B2C3D4E5F60101 /* Localization.swift */; };
+		5D0C1234A1B2C3D4E5F60103 /* Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0C1234A1B2C3D4E5F60101 /* Localization.swift */; };
+		5D0C1234A1B2C3D4E5F60105 /* LanguagePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0C1234A1B2C3D4E5F60104 /* LanguagePickerView.swift */; };
+		5D0C1234A1B2C3D4E5F60106 /* LanguagePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0C1234A1B2C3D4E5F60104 /* LanguagePickerView.swift */; };
 		8C5566379B96A2D37B5BFFD8 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA59C9856AB3ADC362DD13C /* RootView.swift */; };
 		8D3D794C7C67DE7EA47AE4AB /* ProfileEngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D185B077A59C55A14C6AF3 /* ProfileEngineTests.swift */; };
 		90194A36361187DE36164AA8 /* FocusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64869EC17B1DADC477235D98 /* FocusView.swift */; };
@@ -53,6 +63,8 @@
 		9BF123671A8E671EF667AD75 /* FocusSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B2F642A0B008063A66CE061 /* FocusSession.swift */; };
 		AD0AE30D5FFC4E3F811BCBCA /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A455690B09739BF21DC5717 /* AudioManager.swift */; };
 		ADBB92A26915364AA530CD0C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B4B8E3773F939123E5ECD6A6 /* Assets.xcassets */; };
+		1C0DE5A11A2B3C4D5E6F7081 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 3C0DE5A31A2B3C4D5E6F7083 /* Localizable.xcstrings */; };
+		2C0DE5A21A2B3C4D5E6F7082 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 3C0DE5A31A2B3C4D5E6F7083 /* Localizable.xcstrings */; };
 		B03ADF20BB18F007C8930117 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DC9EC4DD402336D2A6D337F /* OnboardingView.swift */; };
 		B343820E22EAED0422197C1D /* ReFocusApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 727638AFF29361D02D803697 /* ReFocusApp.swift */; };
 		B78E32F3F9E3B86D8D415220 /* MethodPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD443658363DF8E0DA1076AB /* MethodPickerView.swift */; };
@@ -102,6 +114,13 @@
 		3C9392BD2F9B3C07944887E4 /* FeedbackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackView.swift; sourceTree = "<group>"; };
 		3DC9EC4DD402336D2A6D337F /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		4A455690B09739BF21DC5717 /* AudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioManager.swift; sourceTree = "<group>"; };
+		7F0E3456C2D3E4F5A6B70301 /* FriendSyncManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendSyncManager.swift; sourceTree = "<group>"; };
+		7F0E3456C2D3E4F5A6B70304 /* FriendsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsView.swift; sourceTree = "<group>"; };
+		6E0D2345B1C2D3E4F5A60201 /* CloudStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudStore.swift; sourceTree = "<group>"; };
+		6E0D2345B1C2D3E4F5A60205 /* ReFocus-iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "ReFocus-iOS.entitlements"; sourceTree = "<group>"; };
+		6E0D2345B1C2D3E4F5A60206 /* ReFocus-macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "ReFocus-macOS.entitlements"; sourceTree = "<group>"; };
+		5D0C1234A1B2C3D4E5F60101 /* Localization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Localization.swift; sourceTree = "<group>"; };
+		5D0C1234A1B2C3D4E5F60104 /* LanguagePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguagePickerView.swift; sourceTree = "<group>"; };
 		58B594375F43C97A9B51EE2D /* HeatmapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeatmapView.swift; sourceTree = "<group>"; };
 		61D88FD1830C6C6C5EA7A099 /* SessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionManager.swift; sourceTree = "<group>"; };
 		64869EC17B1DADC477235D98 /* FocusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusView.swift; sourceTree = "<group>"; };
@@ -120,6 +139,7 @@
 		A67A92BC2790981CC51B0755 /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
 		B2C3D4E5F6071829304A002 /* WorkContextPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkContextPickerView.swift; sourceTree = "<group>"; };
 		B4B8E3773F939123E5ECD6A6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		3C0DE5A31A2B3C4D5E6F7083 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		BD443658363DF8E0DA1076AB /* MethodPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MethodPickerView.swift; sourceTree = "<group>"; };
 		C3D4E5F60718293041B5003 /* AddWorkContextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWorkContextView.swift; sourceTree = "<group>"; };
 		C50BD8F685C3E197EDB87292 /* DailyCheckInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyCheckInView.swift; sourceTree = "<group>"; };
@@ -246,6 +266,7 @@
 			children = (
 				4A455690B09739BF21DC5717 /* AudioManager.swift */,
 				A67A92BC2790981CC51B0755 /* HapticManager.swift */,
+				5D0C1234A1B2C3D4E5F60101 /* Localization.swift */,
 				7089A3C2B68E95919A50A766 /* NotificationManager.swift */,
 				107BD8507C847B2406AB863A /* OrientationManager.swift */,
 			);
@@ -272,14 +293,24 @@
 			path = Onboarding;
 			sourceTree = "<group>";
 		};
+		5D0C1234A1B2C3D4E5F60107 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				5D0C1234A1B2C3D4E5F60104 /* LanguagePickerView.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
 		BB69CE8859BDF08C51309175 /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				A78937FAC30D645DE6258ACD /* Break */,
 				9648B980E5B21C3F9862E001 /* Feedback */,
+				7F0E3456C2D3E4F5A6B70308 /* Friends */,
 				32B52BBC9A3B9E9AEE566ABC /* Focus */,
 				235517BD58804DBE1B4378A6 /* Home */,
 				B3A6F6FFF1F7BEF4D30705B7 /* Onboarding */,
+				5D0C1234A1B2C3D4E5F60107 /* Settings */,
 				748B2CF9CE7F2DC287D619E0 /* Summary */,
 				F6071829304152C60050A2B2 /* WorkContext */,
 			);
@@ -294,9 +325,36 @@
 			path = Profile;
 			sourceTree = "<group>";
 		};
+		6E0D2345B1C2D3E4F5A60204 /* Sync */ = {
+			isa = PBXGroup;
+			children = (
+				6E0D2345B1C2D3E4F5A60201 /* CloudStore.swift */,
+			);
+			path = Sync;
+			sourceTree = "<group>";
+		};
+		7F0E3456C2D3E4F5A6B70307 /* Friends */ = {
+			isa = PBXGroup;
+			children = (
+				7F0E3456C2D3E4F5A6B70301 /* FriendSyncManager.swift */,
+			);
+			path = Friends;
+			sourceTree = "<group>";
+		};
+		7F0E3456C2D3E4F5A6B70308 /* FriendsUI */ = {
+			isa = PBXGroup;
+			children = (
+				7F0E3456C2D3E4F5A6B70304 /* FriendsView.swift */,
+			);
+			name = Friends;
+			path = Friends;
+			sourceTree = "<group>";
+		};
 		CE4B60D7C710125A2710AFFD /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				7F0E3456C2D3E4F5A6B70307 /* Friends */,
+				6E0D2345B1C2D3E4F5A60204 /* Sync */,
 				E9990CB158C8BCDA5F2EF475 /* Interruption */,
 				3277A6A5F28190FA9162E534 /* MethodSelection */,
 				9F870673C2F569FCA820922A /* Models */,
@@ -327,6 +385,7 @@
 			isa = PBXGroup;
 			children = (
 				B4B8E3773F939123E5ECD6A6 /* Assets.xcassets */,
+				3C0DE5A31A2B3C4D5E6F7083 /* Localizable.xcstrings */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -428,11 +487,30 @@
 			};
 			buildConfigurationList = 1794D54717BB0BA5899AADA4 /* Build configuration list for PBXProject "ReFocus" */;
 			compatibilityVersion = "Xcode 14.0";
-			developmentRegion = en;
+			developmentRegion = tr;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				Base,
+				ar,
+				de,
 				en,
+				es,
+				fr,
+				hi,
+				id,
+				it,
+				ja,
+				ko,
+				nl,
+				pl,
+				pt,
+				ru,
+				th,
+				tr,
+				uk,
+				vi,
+				"zh-Hans",
+				"zh-Hant",
 			);
 			mainGroup = 4782AABB6272CBF3E7B84BEA;
 			minimizedProjectReferenceProxies = 1;
@@ -452,6 +530,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				ADBB92A26915364AA530CD0C /* Assets.xcassets in Resources */,
+				1C0DE5A11A2B3C4D5E6F7081 /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -460,6 +539,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F2408338C9D36B1F51EBCC9F /* Assets.xcassets in Resources */,
+				2C0DE5A21A2B3C4D5E6F7082 /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -493,6 +573,11 @@
 				2A2B3C4D5E6F70819203B5C6 /* WorkContextPickerView.swift in Sources */,
 				B03ADF20BB18F007C8930117 /* OnboardingView.swift in Sources */,
 				DC063FA73C3380F9814BEF93 /* OrientationManager.swift in Sources */,
+				7F0E3456C2D3E4F5A6B70302 /* FriendSyncManager.swift in Sources */,
+				7F0E3456C2D3E4F5A6B70305 /* FriendsView.swift in Sources */,
+				6E0D2345B1C2D3E4F5A60202 /* CloudStore.swift in Sources */,
+				5D0C1234A1B2C3D4E5F60102 /* Localization.swift in Sources */,
+				5D0C1234A1B2C3D4E5F60105 /* LanguagePickerView.swift in Sources */,
 				56347472EC61D1F08F8C7D5A /* ProfileEngine.swift in Sources */,
 				FCB2B024A4478F23E5C7E20D /* ProfileType.swift in Sources */,
 				B343820E22EAED0422197C1D /* ReFocusApp.swift in Sources */,
@@ -541,6 +626,11 @@
 				4A4B5C6D7E8F90A30425D7E9 /* WorkContextManagementView.swift in Sources */,
 				5A37059CB458E86D36157FD8 /* OnboardingView.swift in Sources */,
 				8B59BDF6195625B529149D45 /* OrientationManager.swift in Sources */,
+				7F0E3456C2D3E4F5A6B70303 /* FriendSyncManager.swift in Sources */,
+				7F0E3456C2D3E4F5A6B70306 /* FriendsView.swift in Sources */,
+				6E0D2345B1C2D3E4F5A60203 /* CloudStore.swift in Sources */,
+				5D0C1234A1B2C3D4E5F60103 /* Localization.swift in Sources */,
+				5D0C1234A1B2C3D4E5F60106 /* LanguagePickerView.swift in Sources */,
 				CEE7E61BBBAA598587E7BC96 /* ProfileEngine.swift in Sources */,
 				803C60C780928975969F50F2 /* ProfileType.swift in Sources */,
 				6370B50C15F2DF4FBA729DD1 /* ReFocusApp.swift in Sources */,
@@ -621,10 +711,11 @@
 		5C0B54C6A0DDEA0E789E8031 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "Sources/ReFocus/ReFocus-macOS.entitlements";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = XZ826V4Q3F;
 				INFOPLIST_FILE = Sources/ReFocus/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -632,7 +723,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.refocus.app;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mikailyurt.refocus;
 				PRODUCT_NAME = ReFocus;
 				SDKROOT = macosx;
 				SUPPORTS_MACCATALYST = NO;
@@ -644,10 +735,11 @@
 		7F400D8B0EE2AD83CCDF8FFD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "Sources/ReFocus/ReFocus-macOS.entitlements";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = XZ826V4Q3F;
 				INFOPLIST_FILE = Sources/ReFocus/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -655,7 +747,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.refocus.app;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mikailyurt.refocus;
 				PRODUCT_NAME = ReFocus;
 				SDKROOT = macosx;
 				SUPPORTS_MACCATALYST = NO;
@@ -730,6 +822,7 @@
 		84BD4652C1FD443BC75FF3FF /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "Sources/ReFocus/ReFocus-iOS.entitlements";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
@@ -741,7 +834,7 @@
 					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.refocus.app;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mikailyurt.refocus;
 				PRODUCT_NAME = ReFocus;
 				SDKROOT = iphoneos;
 				SUPPORTS_MACCATALYST = NO;
@@ -760,7 +853,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.refocus.tests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mikailyurt.refocus.tests;
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.9;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -771,6 +864,7 @@
 		DECC22655ABF31BADF208ECF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "Sources/ReFocus/ReFocus-iOS.entitlements";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
@@ -782,7 +876,7 @@
 					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.refocus.app;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mikailyurt.refocus;
 				PRODUCT_NAME = ReFocus;
 				SDKROOT = iphoneos;
 				SUPPORTS_MACCATALYST = NO;
@@ -801,7 +895,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.refocus.tests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mikailyurt.refocus.tests;
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.9;
 				TARGETED_DEVICE_FAMILY = "1,2";

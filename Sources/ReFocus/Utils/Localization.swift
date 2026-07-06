@@ -23,6 +23,62 @@ extension LocalizedStringKey {
     }
 }
 
+// MARK: - Language Manager
+
+/// Uygulama dili seçimini yöneten sınıf.
+/// Seçim "AppleLanguages" üzerinden yapılır; değişiklik uygulama
+/// yeniden başlatıldığında etkinleşir (tüm String(localized:) ve
+/// Text çağrılarıyla uyumlu, en güvenilir yöntem).
+final class LanguageManager: ObservableObject {
+    static let shared = LanguageManager()
+
+    private static let overrideKey = "app.selectedLanguage"
+
+    /// Seçili dil kodu; nil = sistem dili
+    @Published private(set) var selectedCode: String?
+
+    private init() {
+        selectedCode = UserDefaults.standard.string(forKey: Self.overrideKey)
+    }
+
+    /// Desteklenen diller (katalogdaki 20 dil), kendi dillerindeki adlarıyla
+    static let supportedLanguages: [(code: String, nativeName: String)] = [
+        ("tr", "Türkçe"),
+        ("en", "English"),
+        ("ar", "العربية"),
+        ("de", "Deutsch"),
+        ("es", "Español"),
+        ("fr", "Français"),
+        ("hi", "हिन्दी"),
+        ("id", "Bahasa Indonesia"),
+        ("it", "Italiano"),
+        ("ja", "日本語"),
+        ("ko", "한국어"),
+        ("nl", "Nederlands"),
+        ("pl", "Polski"),
+        ("pt", "Português"),
+        ("ru", "Русский"),
+        ("th", "ไทย"),
+        ("uk", "Українська"),
+        ("vi", "Tiếng Việt"),
+        ("zh-Hans", "简体中文"),
+        ("zh-Hant", "繁體中文")
+    ]
+
+    /// Dili seç; nil sistem diline döndürür
+    func select(_ code: String?) {
+        selectedCode = code
+        let defaults = UserDefaults.standard
+        if let code {
+            defaults.set(code, forKey: Self.overrideKey)
+            defaults.set([code], forKey: "AppleLanguages")
+        } else {
+            defaults.removeObject(forKey: Self.overrideKey)
+            defaults.removeObject(forKey: "AppleLanguages")
+        }
+    }
+}
+
 // MARK: - Localization Keys
 
 /// Centralized localization key constants
