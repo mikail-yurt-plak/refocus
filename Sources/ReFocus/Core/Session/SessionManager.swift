@@ -30,8 +30,8 @@ class SessionManager: ObservableObject {
     // MARK: - Session Control
 
     /// Yeni seans başlat
-    func startSession(method: FocusMethod, intent: SessionIntent = .mixed) {
-        let session = FocusSession(method: method, intent: intent)
+    func startSession(method: FocusMethod, intent: SessionIntent = .mixed, workContext: WorkContext? = nil) {
+        let session = FocusSession(method: method, intent: intent, workContext: workContext)
         currentSession = session
         timeRemaining = TimeInterval(method.focusDuration * 60)
         isActive = true
@@ -100,7 +100,7 @@ class SessionManager: ObservableObject {
     }
 
     /// Seansı bitir
-    func endSession(feedback: SessionFeedback? = nil) {
+    func endSession(feedback: SessionFeedback? = nil, sessionNote: String? = nil) {
         guard var session = currentSession else { return }
 
         // Eğer henüz dondurulmamışsa, şimdi dondur
@@ -108,9 +108,10 @@ class SessionManager: ObservableObject {
             session.endTime = Date()
         }
 
-        // Seansı tamamla (feedback ekle, isActive = false)
+        // Seansı tamamla (feedback ve not ekle, isActive = false)
         session.isActive = false
         session.feedback = feedback
+        session.sessionNote = sessionNote
 
         // Interruption tracker'ı durdur
         interruptionTracker.stopTracking()
@@ -214,9 +215,12 @@ class SessionManager: ObservableObject {
         currentSession = session
 
         // Aktif seans varsa ve mola değilse, nazik hatırlatma bildirimlerini planla
-        if isActive && !isBreak {
+        // Ancak izleme modunda (watching) bildirim gönderme - kullanıcı video izliyor olabilir
+        if isActive && !isBreak && session.intent != .watching {
             print("📴 Uygulama arka plana alındı - nazik hatırlatmalar planlanıyor")
             NotificationManager.shared.scheduleBackgroundNudgeNotifications()
+        } else if session.intent == .watching {
+            print("📺 İzleme modunda - arka plan bildirimi gönderilmiyor")
         }
     }
 

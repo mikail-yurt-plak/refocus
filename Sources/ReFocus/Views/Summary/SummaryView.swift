@@ -29,11 +29,11 @@ struct SummaryView: View {
                     .padding(.vertical, 24)
                 }
             }
-            .navigationTitle("Günün Özeti")
-            .navigationBarTitleDisplayMode(.inline)
+            .navigationTitle(String(localized: "summary.title"))
+            .inlineNavigationTitle()
             .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button("Kapat") { dismiss() }
+                ToolbarItem(placement: .topBarTrailingCompat) {
+                    Button(String(localized: "common.button.close")) { dismiss() }
                 }
             }
         }
@@ -64,15 +64,15 @@ struct SummaryView: View {
             // Toplam odak süresi
             StatBox(
                 value: "\(summary.totalFocusTime)",
-                unit: "dk",
-                label: "Toplam Odak"
+                unit: String(localized: "common.unit.min"),
+                label: String(localized: "summary.total_focus")
             )
 
             // Seans sayısı
             StatBox(
                 value: "\(summary.sessions.count)",
                 unit: "",
-                label: "Seans"
+                label: String(localized: "common.label.session")
             )
 
             // En çok kullanılan metod
@@ -89,7 +89,7 @@ struct SummaryView: View {
 
     private var focusFlowSection: some View {
         VStack(spacing: 16) {
-            Text("Seansların")
+            Text("summary.your_sessions")
                 .font(.heading3)
                 .foregroundColor(.textPrimary)
 
@@ -108,7 +108,7 @@ struct SummaryView: View {
 
     private var tomorrowSection: some View {
         VStack(spacing: 16) {
-            Text("Yarın için")
+            Text("summary.for_tomorrow")
                 .font(.caption)
                 .foregroundColor(.textSecondary)
 
@@ -138,22 +138,22 @@ struct SummaryView: View {
     private var statusMessage: String {
         switch summary.dayStatus {
         case .stable:
-            return "Dengeli bir gün geçirdin"
+            return String(localized: "summary.status.stable")
         case .fluctuating:
-            return "İnişli çıkışlı bir gündü"
+            return String(localized: "summary.status.fluctuating")
         case .tough:
-            return "Zorlu bir gündü, ama bitirdin"
+            return String(localized: "summary.status.tough")
         }
     }
 
     private var tomorrowMessage: String {
         switch summary.dayStatus {
         case .stable:
-            return "Bu tempoyu sürdür. Yarın da aynı metotla devam edebilirsin."
+            return String(localized: "summary.tomorrow.stable")
         case .fluctuating:
-            return "Yarın daha kısa seanslarla başlamayı deneyebilirsin."
+            return String(localized: "summary.tomorrow.fluctuating")
         case .tough:
-            return "Yarın yeni bir başlangıç. Her gün farklı, bu normal."
+            return String(localized: "summary.tomorrow.tough")
         }
     }
 }
@@ -214,10 +214,23 @@ struct SessionFlowRow: View {
                 Text(session.method.icon)
                     .font(.title2)
 
-                // Saat
-                Text(session.startTime.formatted(date: .omitted, time: .shortened))
-                    .font(.caption)
-                    .foregroundColor(.textSecondary)
+                VStack(alignment: .leading, spacing: 2) {
+                    // Çalışma bağlamı (varsa)
+                    if let workContext = session.workContext, !workContext.isDefault {
+                        HStack(spacing: 4) {
+                            Text(workContext.icon)
+                                .font(.caption)
+                            Text(workContext.name)
+                                .font(.caption)
+                                .foregroundColor(.textPrimary)
+                        }
+                    }
+
+                    // Saat
+                    Text(session.startTime.formatted(date: .omitted, time: .shortened))
+                        .font(.caption)
+                        .foregroundColor(.textSecondary)
+                }
 
                 Spacer()
 
@@ -227,6 +240,18 @@ struct SessionFlowRow: View {
                     .foregroundColor(.textSecondary)
             }
 
+            // Seans notu (varsa)
+            if let note = session.sessionNote, !note.isEmpty {
+                Text(note)
+                    .font(.caption)
+                    .foregroundColor(.textSecondary)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.vertical, 8)
+                    .padding(.horizontal, 12)
+                    .background(Color.appBackground)
+                    .cornerRadius(8)
+            }
+
             // Progress bar
             SessionProgressBar(session: session)
 
@@ -234,14 +259,14 @@ struct SessionFlowRow: View {
             HStack(spacing: 12) {
                 LegendItem(
                     color: .focusGreen,
-                    label: "Odak",
+                    label: String(localized: "common.label.focus"),
                     duration: session.totalFocusDuration
                 )
 
                 if !session.interruptions.isEmpty {
                     LegendItem(
                         color: .orange.opacity(0.6),
-                        label: "Bölünme",
+                        label: String(localized: "feedback.interruption"),
                         duration: session.totalInterruptionDuration
                     )
                 }
@@ -249,7 +274,7 @@ struct SessionFlowRow: View {
                 if remainingDuration > 0 {
                     LegendItem(
                         color: Color.gray.opacity(0.2),
-                        label: "Kalan",
+                        label: String(localized: "feedback.remaining"),
                         duration: remainingDuration
                     )
                 }

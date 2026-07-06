@@ -11,6 +11,8 @@ struct FeedbackView: View {
     @State private var didStayFocused: Bool?
     @State private var wasDurationAppropriate: Bool?
     @State private var quickMood: QuickMood?
+    @State private var sessionNote: String = ""
+    @FocusState private var isNoteFocused: Bool
 
     // Mesajı bir kere hesapla ve sakla
     @State private var qualityMessage: String = ""
@@ -36,9 +38,9 @@ struct FeedbackView: View {
 
         var label: String {
             switch self {
-            case .great: return "İyi hissediyorum"
-            case .okay: return "Fena değildi"
-            case .struggled: return "Zorlandım"
+            case .great: return String(localized: "feedback.mood.great")
+            case .okay: return String(localized: "feedback.mood.okay")
+            case .struggled: return String(localized: "feedback.mood.struggled")
             }
         }
     }
@@ -63,6 +65,9 @@ struct FeedbackView: View {
                             feedbackQuestions
                         }
 
+                        // Seans notu (opsiyonel)
+                        sessionNoteSection
+
                         // Tamamla butonu
                         completeButton
 
@@ -71,11 +76,24 @@ struct FeedbackView: View {
                     }
                     .padding(.vertical, 40)
                 }
+
+                // Alt gradient fade - scroll ipucu
+                VStack {
+                    Spacer()
+                    LinearGradient(
+                        colors: [.clear, Color.appBackground.opacity(0.9)],
+                        startPoint: .top,
+                        endPoint: .bottom
+                    )
+                    .frame(height: 40)
+                    .allowsHitTesting(false)
+                }
+                .ignoresSafeArea()
             }
-            .navigationBarTitleDisplayMode(.inline)
+            .inlineNavigationTitle()
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    Text("Seans Tamamlandı")
+                    Text("feedback.title")
                         .font(.heading3)
                 }
             }
@@ -91,7 +109,7 @@ struct FeedbackView: View {
     /// Kısa seanslar için hızlı emoji feedback
     private var quickFeedbackSection: some View {
         VStack(spacing: 16) {
-            Text("Nasıl hissettin?")
+            Text("feedback.how_did_you_feel")
                 .font(.bodyLarge)
                 .foregroundColor(.textPrimary)
 
@@ -125,10 +143,57 @@ struct FeedbackView: View {
         .padding(.horizontal, 24)
     }
 
+    /// Seans notu - zihinsel kapanış için opsiyonel
+    private var sessionNoteSection: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack {
+                Text("feedback.session_note")
+                    .font(.bodyLarge)
+                    .foregroundColor(.textPrimary)
+
+                Spacer()
+
+                Text("common.label.optional")
+                    .font(.caption)
+                    .foregroundColor(.textTertiary)
+            }
+
+            // Çalışma bağlamı bilgisi (varsa)
+            if let workContext = session.workContext {
+                HStack(spacing: 6) {
+                    Text(workContext.icon)
+                        .font(.body)
+                    Text(workContext.name)
+                        .font(.caption)
+                        .foregroundColor(.textSecondary)
+                }
+            }
+
+            TextField(String(localized: "feedback.note_placeholder"), text: $sessionNote, axis: .vertical)
+                .textFieldStyle(.plain)
+                .font(.body)
+                .lineLimit(3...5)
+                .padding()
+                .background(Color.appBackground)
+                .cornerRadius(12)
+                .focused($isNoteFocused)
+
+            Text("feedback.note_hint")
+                .font(.caption)
+                .foregroundColor(.textTertiary)
+        }
+        .padding(.vertical, 20)
+        .padding(.horizontal, 20)
+        .background(Color.cardBackground)
+        .cornerRadius(16)
+        .shadow(color: .black.opacity(0.05), radius: 8, y: 4)
+        .padding(.horizontal, 24)
+    }
+
     /// Atla butonu - zorlamama prensibi
     private var skipButton: some View {
         Button(action: skipFeedback) {
-            Text("Atla")
+            Text("common.button.skip")
                 .font(.button)
                 .foregroundColor(.textSecondary)
         }
@@ -147,7 +212,7 @@ struct FeedbackView: View {
             Text(session.method.icon)
                 .font(.system(size: 64))
 
-            Text("\(Int(session.totalFocusDuration / 60)) dakika odaklandın")
+            Text("feedback.focused_minutes \(Int(session.totalFocusDuration / 60))")
                 .font(.heading2)
                 .foregroundColor(.textPrimary)
 
@@ -162,7 +227,7 @@ struct FeedbackView: View {
 
     private var focusFlowSection: some View {
         VStack(spacing: 16) {
-            Text("Seans İlerlemesi")
+            Text("feedback.session_progress")
                 .font(.captionBold)
                 .foregroundColor(.textSecondary)
 
@@ -190,19 +255,19 @@ struct FeedbackView: View {
 
                 LegendItem(
                     color: .focusGreen,
-                    label: "Odak",
+                    label: String(localized: "common.label.focus"),
                     duration: session.totalFocusDuration
                 )
                 if !session.interruptions.isEmpty {
                     LegendItem(
                         color: .orange.opacity(0.6),
-                        label: "Bölünme",
+                        label: String(localized: "feedback.interruption"),
                         duration: session.totalInterruptionDuration
                     )
                 }
                 LegendItem(
                     color: Color.gray.opacity(0.2),
-                    label: "Kalan",
+                    label: String(localized: "feedback.remaining"),
                     duration: remainingDuration
                 )
             }
@@ -218,23 +283,23 @@ struct FeedbackView: View {
     private var feedbackQuestions: some View {
         VStack(spacing: 20) {
             FeedbackQuestion(
-                question: "Zor muydu?",
-                yesLabel: "Evet, zorlandım",
-                noLabel: "Hayır, iyiydi",
+                question: String(localized: "feedback.q1.question"),
+                yesLabel: String(localized: "feedback.q1.yes"),
+                noLabel: String(localized: "feedback.q1.no"),
                 selection: $wasDifficult
             )
 
             FeedbackQuestion(
-                question: "Odaklandın mı?",
-                yesLabel: "Evet, odaklıydım",
-                noLabel: "Hayır, dağıldım",
+                question: String(localized: "feedback.q2.question"),
+                yesLabel: String(localized: "feedback.q2.yes"),
+                noLabel: String(localized: "feedback.q2.no"),
                 selection: $didStayFocused
             )
 
             FeedbackQuestion(
-                question: "Süre uygun muydu?",
-                yesLabel: "Evet, uygundu",
-                noLabel: "Hayır, değildi",
+                question: String(localized: "feedback.q3.question"),
+                yesLabel: String(localized: "feedback.q3.yes"),
+                noLabel: String(localized: "feedback.q3.no"),
                 selection: $wasDurationAppropriate
             )
         }
@@ -243,7 +308,7 @@ struct FeedbackView: View {
 
     private var completeButton: some View {
         Button(action: completeFeedback) {
-            Text("Tamamla")
+            Text("common.button.complete")
                 .font(.buttonLarge)
                 .foregroundColor(.white)
                 .frame(maxWidth: .infinity)
@@ -286,11 +351,15 @@ struct FeedbackView: View {
             additionalNotes: nil
         )
 
-        sessionManager.endSession(feedback: feedback)
+        // Boş not'u nil olarak gönder
+        let trimmedNote = sessionNote.trimmingCharacters(in: .whitespacesAndNewlines)
+        let finalNote: String? = trimmedNote.isEmpty ? nil : trimmedNote
+
+        sessionManager.endSession(feedback: feedback, sessionNote: finalNote)
 
         // Profili güncelle
-        if var profile = appState.userProfile {
-            var profileEngine = ProfileEngine(profile: profile)
+        if let profile = appState.userProfile {
+            let profileEngine = ProfileEngine(profile: profile)
             profileEngine.updateProfile(from: session)
             appState.userProfile = profileEngine.profile
         }

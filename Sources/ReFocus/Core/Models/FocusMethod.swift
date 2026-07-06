@@ -27,17 +27,17 @@ enum FocusMethod: String, Codable, CaseIterable {
         }
     }
 
-    /// Kullanıcıya gösterilen açıklama
+    /// Kullanıcıya gösterilen açıklama (localized)
     var description: String {
         switch self {
         case .pomodoro:
-            return "Kısa, yoğun odak seansları. Sık mola alarak enerjini taze tut."
+            return String(localized: "method.description.pomodoro")
         case .extended:
-            return "Pomodoro'dan biraz daha uzun. Daha derinlemesine odaklanmak için."
+            return String(localized: "method.description.extended")
         case .optimal:
-            return "Araştırmalara göre optimal odak süresi. Dengeli ve sürdürülebilir."
+            return String(localized: "method.description.optimal")
         case .deepWork:
-            return "Kesintisiz derin çalışma. Karmaşık görevler için ideal."
+            return String(localized: "method.description.deep_work")
         }
     }
 

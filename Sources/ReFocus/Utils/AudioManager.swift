@@ -221,9 +221,9 @@ struct SoundPickerView: View {
                 .padding(.vertical, 24)
             }
             .navigationTitle("Ambient Sesler")
-            .navigationBarTitleDisplayMode(.inline)
+            .inlineNavigationTitle()
             .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
+                ToolbarItem(placement: .topBarTrailingCompat) {
                     Button("Kapat") { dismiss() }
                 }
             }

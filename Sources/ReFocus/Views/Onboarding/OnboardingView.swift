@@ -1,35 +1,37 @@
 import SwiftUI
 
-/// Onboarding ekranı - 4 soru + özet, kart bazlı
+/// Onboarding ekranı - 4 soru + çalışma bağlamları + özet, kart bazlı
 struct OnboardingView: View {
     @EnvironmentObject var appState: AppState
+    @ObservedObject private var contextManager = WorkContextManager.shared
     @State private var currentStep = 0
     @State private var workType: OnboardingAnswers.WorkType?
     @State private var struggleTime: OnboardingAnswers.StruggleTime?
     @State private var hardestPart: OnboardingAnswers.HardestPart?
     @State private var phoneFrequency: OnboardingAnswers.PhoneCheckingFrequency?
+    @State private var selectedContexts: Set<UUID> = []
 
-    private let totalSteps = 5 // 4 soru + 1 özet
+    private let totalSteps = 6 // 4 soru + çalışma bağlamları + 1 özet
 
     /// Kullanıcının profil tipini belirle
     private var profileType: String {
-        guard let struggleTime = struggleTime else { return "Orta Odaklı" }
+        guard let struggleTime = struggleTime else { return String(localized: "onboarding.profile.medium") }
 
         switch struggleTime {
-        case .short: return "Kısa Odaklı"
-        case .medium: return "Orta Odaklı"
-        case .long: return "Derin Odaklı"
+        case .short: return String(localized: "onboarding.profile.short")
+        case .medium: return String(localized: "onboarding.profile.medium")
+        case .long: return String(localized: "onboarding.profile.deep")
         }
     }
 
     /// Profil açıklaması
     private var profileDescription: String {
-        guard let struggleTime = struggleTime else { return "20-30 dakikalık seanslar sana uygun." }
+        guard let struggleTime = struggleTime else { return String(localized: "onboarding.profile_desc.medium") }
 
         switch struggleTime {
-        case .short: return "10-15 dakikalık kısa seanslar sana en uygun.\nSık molalarla verimli çalışabilirsin."
-        case .medium: return "20-30 dakikalık seanslar sana uygun.\nDengeli bir tempo yakalayabilirsin."
-        case .long: return "40+ dakikalık derin odak seansları\nsana en uygun."
+        case .short: return String(localized: "onboarding.profile_desc.short")
+        case .medium: return String(localized: "onboarding.profile_desc.medium")
+        case .long: return String(localized: "onboarding.profile_desc.deep")
         }
     }
 
@@ -79,12 +81,12 @@ struct OnboardingView: View {
         switch currentStep {
         case 0:
             QuestionCard(
-                question: "Ne tür iş yapıyorsun?",
+                question: String(localized: "onboarding.q1.question"),
                 options: [
-                    ("Öğrenci", "student"),
-                    ("Bilgi Çalışanı", "knowledge_worker"),
-                    ("Yaratıcı", "creative"),
-                    ("Yönetici", "manager")
+                    (String(localized: "onboarding.q1.student"), "student"),
+                    (String(localized: "onboarding.q1.knowledge_worker"), "knowledge_worker"),
+                    (String(localized: "onboarding.q1.creative"), "creative"),
+                    (String(localized: "onboarding.q1.manager"), "manager")
                 ],
                 selection: Binding(
                     get: { workType?.rawValue },
@@ -93,11 +95,11 @@ struct OnboardingView: View {
             )
         case 1:
             QuestionCard(
-                question: "Bir işe başladıktan sonra ne zaman zorlanırsın?",
+                question: String(localized: "onboarding.q2.question"),
                 options: [
-                    ("10–15 dakika", "10-15"),
-                    ("20–30 dakika", "20-30"),
-                    ("40+ dakika", "40+")
+                    (String(localized: "onboarding.q2.short"), "10-15"),
+                    (String(localized: "onboarding.q2.medium"), "20-30"),
+                    (String(localized: "onboarding.q2.long"), "40+")
                 ],
                 selection: Binding(
                     get: { struggleTime?.rawValue },
@@ -106,11 +108,11 @@ struct OnboardingView: View {
             )
         case 2:
             QuestionCard(
-                question: "En zor olan hangisi?",
+                question: String(localized: "onboarding.q3.question"),
                 options: [
-                    ("Başlamak", "starting"),
-                    ("Sürdürmek", "continuing"),
-                    ("Bitirmek", "finishing")
+                    (String(localized: "onboarding.q3.starting"), "starting"),
+                    (String(localized: "onboarding.q3.continuing"), "continuing"),
+                    (String(localized: "onboarding.q3.finishing"), "finishing")
                 ],
                 selection: Binding(
                     get: { hardestPart?.rawValue },
@@ -119,11 +121,11 @@ struct OnboardingView: View {
             )
         case 3:
             QuestionCard(
-                question: "Çalışırken telefona bakma dürtüsü ne sıklıkta gelir?",
+                question: String(localized: "onboarding.q4.question"),
                 options: [
-                    ("Çok sık", "very_often"),
-                    ("Bazen", "sometimes"),
-                    ("Nadiren", "rarely")
+                    (String(localized: "onboarding.q4.very_often"), "very_often"),
+                    (String(localized: "onboarding.q4.sometimes"), "sometimes"),
+                    (String(localized: "onboarding.q4.rarely"), "rarely")
                 ],
                 selection: Binding(
                     get: { phoneFrequency?.rawValue },
@@ -131,10 +133,60 @@ struct OnboardingView: View {
                 )
             )
         case 4:
+            // Çalışma bağlamları seçimi
+            workContextSelectionCard
+        case 5:
             // Özet ekranı
             profileSummaryCard
         default:
             EmptyView()
+        }
+    }
+
+    /// Çalışma bağlamları seçim kartı
+    private var workContextSelectionCard: some View {
+        VStack(spacing: 24) {
+            Text("🎯")
+                .font(.system(size: 48))
+
+            Text("onboarding.context.title")
+                .font(.heading2)
+                .foregroundColor(.textPrimary)
+                .multilineTextAlignment(.center)
+
+            Text("onboarding.context.subtitle")
+                .font(.body)
+                .foregroundColor(.textSecondary)
+                .multilineTextAlignment(.center)
+                .lineSpacing(4)
+                .padding(.horizontal, 24)
+
+            // Önerilen bağlamlar grid
+            LazyVGrid(columns: [
+                GridItem(.flexible()),
+                GridItem(.flexible()),
+                GridItem(.flexible())
+            ], spacing: 12) {
+                ForEach(WorkContext.suggestions) { context in
+                    WorkContextOnboardingChip(
+                        context: context,
+                        isSelected: selectedContexts.contains(context.id)
+                    ) {
+                        HapticManager.shared.selection()
+                        if selectedContexts.contains(context.id) {
+                            selectedContexts.remove(context.id)
+                        } else {
+                            selectedContexts.insert(context.id)
+                        }
+                    }
+                }
+            }
+            .padding(.horizontal, 24)
+
+            Text("onboarding.context.hint")
+                .font(.caption)
+                .foregroundColor(.textTertiary)
+                .padding(.top, 8)
         }
     }
 
@@ -144,7 +196,7 @@ struct OnboardingView: View {
             Text("🎯")
                 .font(.system(size: 64))
 
-            Text("Senin Profilin")
+            Text("onboarding.summary.title")
                 .font(.heading2)
                 .foregroundColor(.textPrimary)
 
@@ -161,7 +213,7 @@ struct OnboardingView: View {
 
             // Önerilen metod
             VStack(spacing: 8) {
-                Text("İlk seansın için öneri:")
+                Text("onboarding.summary.suggestion")
                     .font(.caption)
                     .foregroundColor(.textSecondary)
 
@@ -174,7 +226,7 @@ struct OnboardingView: View {
                             .font(.bodyLarge)
                             .foregroundColor(.textPrimary)
 
-                        Text("\(suggestedMethod.focusDuration) dk odak / \(suggestedMethod.breakDuration) dk mola")
+                        Text("common.duration_format \(suggestedMethod.focusDuration) \(suggestedMethod.breakDuration)")
                             .font(.caption)
                             .foregroundColor(.textSecondary)
                     }
@@ -187,7 +239,7 @@ struct OnboardingView: View {
             }
             .padding(.top, 8)
 
-            Text("Kullanımına göre önerilerimizi\nsürekli iyileştireceğiz.")
+            Text("onboarding.summary.hint")
                 .font(.caption)
                 .foregroundColor(.textTertiary)
                 .multilineTextAlignment(.center)
@@ -199,7 +251,7 @@ struct OnboardingView: View {
         HStack(spacing: 16) {
             if currentStep > 0 {
                 Button(action: { currentStep -= 1 }) {
-                    Text("Geri")
+                    Text("common.button.back")
                         .font(.button)
                         .foregroundColor(.textSecondary)
                         .frame(maxWidth: .infinity)
@@ -210,7 +262,7 @@ struct OnboardingView: View {
             }
 
             Button(action: handleNext) {
-                Text(currentStep == totalSteps - 1 ? "Hadi Başlayalım!" : "İleri")
+                Text(currentStep == totalSteps - 1 ? "onboarding.button.start" : "common.button.next")
                     .font(.button)
                     .foregroundColor(.white)
                     .frame(maxWidth: .infinity)
@@ -230,7 +282,8 @@ struct OnboardingView: View {
         case 1: return struggleTime != nil
         case 2: return hardestPart != nil
         case 3: return phoneFrequency != nil
-        case 4: return true // Özet ekranı her zaman geçerli
+        case 4: return true // Çalışma bağlamları opsiyonel, her zaman geçerli
+        case 5: return true // Özet ekranı her zaman geçerli
         default: return false
         }
     }
@@ -252,6 +305,10 @@ struct OnboardingView: View {
             return
         }
 
+        // Seçilen çalışma bağlamlarını kaydet
+        let selectedSuggestions = WorkContext.suggestions.filter { selectedContexts.contains($0.id) }
+        contextManager.addSuggestedContexts(selectedSuggestions)
+
         let answers = OnboardingAnswers(
             workType: workType,
             struggleTime: struggleTime,
@@ -261,6 +318,39 @@ struct OnboardingView: View {
 
         let profile = UserProfile(onboardingAnswers: answers)
         appState.completeOnboarding(profile: profile)
+    }
+}
+
+/// Onboarding için çalışma bağlamı chip'i
+struct WorkContextOnboardingChip: View {
+    let context: WorkContext
+    let isSelected: Bool
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            VStack(spacing: 6) {
+                Text(context.icon)
+                    .font(.title2)
+
+                Text(context.name)
+                    .font(.caption)
+                    .foregroundColor(isSelected ? .white : .textSecondary)
+                    .lineLimit(1)
+            }
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 12)
+            .background(isSelected ? Color.focusGreen : Color.cardBackground)
+            .cornerRadius(12)
+            .overlay(
+                RoundedRectangle(cornerRadius: 12)
+                    .strokeBorder(
+                        isSelected ? Color.clear : Color.gray.opacity(0.2),
+                        lineWidth: 1
+                    )
+            )
+        }
+        .buttonStyle(PlainButtonStyle())
     }
 }
 
@@ -302,6 +392,7 @@ struct QuestionCard: View {
                         .cornerRadius(16)
                         .shadow(color: .black.opacity(0.05), radius: 8, y: 4)
                     }
+                    .buttonStyle(.plain)
                 }
             }
             .padding(.horizontal, 40)

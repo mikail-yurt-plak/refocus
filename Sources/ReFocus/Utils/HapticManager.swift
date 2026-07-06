@@ -1,3 +1,4 @@
+#if os(iOS)
 import UIKit
 
 /// Dokunsal geri bildirim yöneticisi
@@ -90,3 +91,34 @@ class HapticManager {
         notificationGenerator.notificationOccurred(.success)
     }
 }
+
+#elseif os(macOS)
+import AppKit
+
+/// macOS için HapticManager - haptic feedback yok, boş implementasyon
+class HapticManager {
+    static let shared = HapticManager()
+
+    private init() {}
+
+    func prepareGenerators() {}
+
+    // MARK: - Session Events
+    func sessionStarted() {}
+    func sessionCompleted() {}
+    func sessionCancelled() {}
+    func breakStarted() {}
+    func breakEnded() {}
+
+    // MARK: - Timer Events
+    func timerWarning() {}
+    func timerCompleted() {}
+
+    // MARK: - UI Interactions
+    func selection() {}
+    func buttonTap() {}
+    func toggle() {}
+    func error() {}
+    func success() {}
+}
+#endif

@@ -35,7 +35,7 @@ struct BreakView: View {
 
     private var timerSection: some View {
         VStack(spacing: 16) {
-            Text("Mola")
+            Text("common.label.break")
                 .font(.heading3)
                 .foregroundColor(.textSecondary)
 
@@ -77,7 +77,7 @@ struct BreakView: View {
         HStack(spacing: 16) {
             // Molayı atla
             Button(action: { sessionManager.skipBreak() }) {
-                Text("Molayı Atla")
+                Text("focus.button.skip_break")
                     .font(.button)
                     .foregroundColor(.textSecondary)
                     .frame(maxWidth: .infinity)
@@ -89,7 +89,7 @@ struct BreakView: View {
             // Yeni seansa başla
             if sessionManager.timeRemaining <= 0 {
                 Button(action: startNewSession) {
-                    Text("Devam Et")
+                    Text("break.button.continue")
                         .font(.button)
                         .foregroundColor(.white)
                         .frame(maxWidth: .infinity)
@@ -111,42 +111,28 @@ struct BreakView: View {
 
 /// Mola önerileri
 struct BreakSuggestion: Identifiable, Equatable {
-    let id = UUID()
+    let id: String
     let icon: String
-    let title: String
-    let description: String
+
+    var title: String {
+        String(localized: String.LocalizationValue("break.suggestion.\(id).title"))
+    }
+
+    var description: String {
+        String(localized: String.LocalizationValue("break.suggestion.\(id).description"))
+    }
+
+    static func == (lhs: BreakSuggestion, rhs: BreakSuggestion) -> Bool {
+        lhs.id == rhs.id
+    }
 
     static let suggestions: [BreakSuggestion] = [
-        BreakSuggestion(
-            icon: "🧘",
-            title: "Derin Nefes Al",
-            description: "4 saniye nefes al, 4 saniye tut, 4 saniye ver.\nBunu 3-4 kez tekrarla."
-        ),
-        BreakSuggestion(
-            icon: "🚶",
-            title: "Kısa Bir Yürüyüş",
-            description: "Masandan kalk ve birkaç adım at.\nKan dolaşımını artır."
-        ),
-        BreakSuggestion(
-            icon: "💧",
-            title: "Su İç",
-            description: "Bir bardak su iç.\nHidrasyon odaklanmayı artırır."
-        ),
-        BreakSuggestion(
-            icon: "👀",
-            title: "Gözlerini Dinlendir",
-            description: "20 saniye boyunca 20 metre uzağa bak.\nEkran yorgunluğunu azalt."
-        ),
-        BreakSuggestion(
-            icon: "🌿",
-            title: "Pencereden Dışarı Bak",
-            description: "Doğaya veya gökyüzüne bak.\nZihnini tazele."
-        ),
-        BreakSuggestion(
-            icon: "🙆",
-            title: "Germe Hareketleri",
-            description: "Boyun, omuz ve sırt germe hareketleri yap.\nKaslarını gevşet."
-        )
+        BreakSuggestion(id: "breathe", icon: "🧘"),
+        BreakSuggestion(id: "walk", icon: "🚶"),
+        BreakSuggestion(id: "water", icon: "💧"),
+        BreakSuggestion(id: "eyes", icon: "👀"),
+        BreakSuggestion(id: "window", icon: "🌿"),
+        BreakSuggestion(id: "stretch", icon: "🙆")
     ]
 
     static func random() -> BreakSuggestion {

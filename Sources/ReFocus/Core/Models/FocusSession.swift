@@ -17,17 +17,17 @@ enum SessionIntent: String, Codable, CaseIterable {
 
     var label: String {
         switch self {
-        case .reading: return "Okuma / Yazma"
-        case .watching: return "İzleyerek Öğrenme"
-        case .mixed: return "Karışık"
+        case .reading: return String(localized: "intent.label.reading")
+        case .watching: return String(localized: "intent.label.watching")
+        case .mixed: return String(localized: "intent.label.mixed")
         }
     }
 
     var shortLabel: String {
         switch self {
-        case .reading: return "Kitap"
-        case .watching: return "Video"
-        case .mixed: return "Karışık"
+        case .reading: return String(localized: "intent.short.reading")
+        case .watching: return String(localized: "intent.short.watching")
+        case .mixed: return String(localized: "intent.short.mixed")
         }
     }
 
@@ -51,6 +51,7 @@ struct FocusSession: Identifiable, Codable {
     let id: UUID
     let method: FocusMethod
     let intent: SessionIntent
+    let workContext: WorkContext?  // Çalışma bağlamı (opsiyonel)
     let startTime: Date
     var endTime: Date?
 
@@ -66,10 +67,14 @@ struct FocusSession: Identifiable, Codable {
     // Geri bildirim
     var feedback: SessionFeedback?
 
-    init(method: FocusMethod, intent: SessionIntent = .mixed) {
+    // Seans notu (zihinsel kapanış için)
+    var sessionNote: String?
+
+    init(method: FocusMethod, intent: SessionIntent = .mixed, workContext: WorkContext? = nil) {
         self.id = UUID()
         self.method = method
         self.intent = intent
+        self.workContext = workContext
         self.startTime = Date()
         self.isActive = true
         self.isBreak = false

@@ -1,3 +1,4 @@
+#if os(iOS)
 import UIKit
 
 /// AppDelegate - Ekran yönelimi kontrolü için
@@ -11,3 +12,11 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         return OrientationManager.shared.allowedOrientations
     }
 }
+#elseif os(macOS)
+import AppKit
+
+/// AppDelegate - macOS için boş implementasyon
+class AppDelegate: NSObject, NSApplicationDelegate {
+    // macOS için ekran yönelimi kontrolü gerekmiyor
+}
+#endif

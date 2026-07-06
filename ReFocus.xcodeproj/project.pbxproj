@@ -3,17 +3,25 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 77;
+	objectVersion = 63;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1A1B2C3D4E5F60718293A4B5 /* WorkContextManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F607182930001 /* WorkContextManager.swift */; };
+		1A1B2C3D4E5F60718293A4B6 /* WorkContextManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F607182930001 /* WorkContextManager.swift */; };
 		2699BF8585C4C5D0C1C56C63 /* SessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61D88FD1830C6C6C5EA7A099 /* SessionManager.swift */; };
+		2A2B3C4D5E6F70819203B5C6 /* WorkContextPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2C3D4E5F6071829304A002 /* WorkContextPickerView.swift */; };
+		2A2B3C4D5E6F70819203B5C7 /* WorkContextPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2C3D4E5F6071829304A002 /* WorkContextPickerView.swift */; };
 		2E8D59C5D45B5E44683A6C27 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7089A3C2B68E95919A50A766 /* NotificationManager.swift */; };
 		2FFA7CEC9661F6D08414B741 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B1171B438E1DD87A894E5EC /* AppDelegate.swift */; };
 		332302A3E2F6D4B11C33120F /* HeatmapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B594375F43C97A9B51EE2D /* HeatmapView.swift */; };
+		3A3B4C5D6E7F80920314C6D7 /* AddWorkContextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3D4E5F60718293041B5003 /* AddWorkContextView.swift */; };
+		3A3B4C5D6E7F80920314C6D8 /* AddWorkContextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3D4E5F60718293041B5003 /* AddWorkContextView.swift */; };
 		3F71D0569E90E337D747AC78 /* FocusMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 099BBF234A735A602A222F37 /* FocusMethod.swift */; };
 		4352589DB660F096069FB5F1 /* MethodSelectionEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97FA5844EFB770BD9A293F22 /* MethodSelectionEngine.swift */; };
 		4A467EAA4DF6218AB7049E2A /* InterruptionTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83591C6DFF52DBA40543E869 /* InterruptionTracker.swift */; };
+		4A4B5C6D7E8F90A30425D7E8 /* WorkContextManagementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E5F6071829304152C6004 /* WorkContextManagementView.swift */; };
+		4A4B5C6D7E8F90A30425D7E9 /* WorkContextManagementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E5F6071829304152C6004 /* WorkContextManagementView.swift */; };
 		4D489ADB0328BF681B41D94B /* MethodSelectionEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97FA5844EFB770BD9A293F22 /* MethodSelectionEngine.swift */; };
 		504B9630E03F4C8F4A0E7836 /* FocusSessionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2980B529959E8C49201CC5E8 /* FocusSessionTests.swift */; };
 		5332CD4E48FC1E134629D61D /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4AE2C7DD3DBF4F26E5DC6F /* HomeView.swift */; };
@@ -26,6 +34,8 @@
 		5F05FE1A55638A18F674ED75 /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A455690B09739BF21DC5717 /* AudioManager.swift */; };
 		60C1565C42A4C8A241BEC7E7 /* DailyCheckInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50BD8F685C3E197EDB87292 /* DailyCheckInView.swift */; };
 		6370B50C15F2DF4FBA729DD1 /* ReFocusApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 727638AFF29361D02D803697 /* ReFocusApp.swift */; };
+		669695FF2F1059C30017CA29 /* WorkContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669695FE2F1059C30017CA29 /* WorkContext.swift */; };
+		669696002F1059C30017CA29 /* WorkContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669695FE2F1059C30017CA29 /* WorkContext.swift */; };
 		6A6BAC5E340A8C1B72EF4D68 /* FeedbackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C9392BD2F9B3C07944887E4 /* FeedbackView.swift */; };
 		707DF2AE197B63EFB61E840B /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA59C9856AB3ADC362DD13C /* RootView.swift */; };
 		71B94C6BF6AD0210DE96C2DE /* Typography.swift in Sources */ = {isa = PBXBuildFile; fileRef = 381A27CA9A14A4803C0736B2 /* Typography.swift */; };
@@ -95,21 +105,26 @@
 		58B594375F43C97A9B51EE2D /* HeatmapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeatmapView.swift; sourceTree = "<group>"; };
 		61D88FD1830C6C6C5EA7A099 /* SessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionManager.swift; sourceTree = "<group>"; };
 		64869EC17B1DADC477235D98 /* FocusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusView.swift; sourceTree = "<group>"; };
+		669695FE2F1059C30017CA29 /* WorkContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkContext.swift; sourceTree = "<group>"; };
 		7089A3C2B68E95919A50A766 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		727638AFF29361D02D803697 /* ReFocusApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReFocusApp.swift; sourceTree = "<group>"; };
 		83591C6DFF52DBA40543E869 /* InterruptionTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterruptionTracker.swift; sourceTree = "<group>"; };
 		878CF3DF399F2F4189B357B1 /* SummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryView.swift; sourceTree = "<group>"; };
 		90085EA79A00DA35B73B6C21 /* ReFocus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ReFocus.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		90DD4A35A7318251201C11B7 /* ReFocus.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = ReFocus.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		90DD4A35A7318251201C11B7 /* ReFocus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ReFocus.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		97FA5844EFB770BD9A293F22 /* MethodSelectionEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MethodSelectionEngine.swift; sourceTree = "<group>"; };
 		9A89249D301328976AA9531E /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		9B1171B438E1DD87A894E5EC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9B3AB5935958A0A4EFB24179 /* ProfileType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileType.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F607182930001 /* WorkContextManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkContextManager.swift; sourceTree = "<group>"; };
 		A67A92BC2790981CC51B0755 /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
+		B2C3D4E5F6071829304A002 /* WorkContextPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkContextPickerView.swift; sourceTree = "<group>"; };
 		B4B8E3773F939123E5ECD6A6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BD443658363DF8E0DA1076AB /* MethodPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MethodPickerView.swift; sourceTree = "<group>"; };
+		C3D4E5F60718293041B5003 /* AddWorkContextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWorkContextView.swift; sourceTree = "<group>"; };
 		C50BD8F685C3E197EDB87292 /* DailyCheckInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyCheckInView.swift; sourceTree = "<group>"; };
 		D42BE3BBFBE4A5060AFB1BB7 /* MethodSelectionEngineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MethodSelectionEngineTests.swift; sourceTree = "<group>"; };
+		D4E5F6071829304152C6004 /* WorkContextManagementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkContextManagementView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -210,6 +225,7 @@
 		9F870673C2F569FCA820922A /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				669695FE2F1059C30017CA29 /* WorkContext.swift */,
 				099BBF234A735A602A222F37 /* FocusMethod.swift */,
 				0B2F642A0B008063A66CE061 /* FocusSession.swift */,
 				9B3AB5935958A0A4EFB24179 /* ProfileType.swift */,
@@ -265,6 +281,7 @@
 				235517BD58804DBE1B4378A6 /* Home */,
 				B3A6F6FFF1F7BEF4D30705B7 /* Onboarding */,
 				748B2CF9CE7F2DC287D619E0 /* Summary */,
+				F6071829304152C60050A2B2 /* WorkContext */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -285,8 +302,17 @@
 				9F870673C2F569FCA820922A /* Models */,
 				C8B40D1C27E46219551ADFED /* Profile */,
 				623FE6D207A0B5BAB8FCA950 /* Session */,
+				E5F6071829304152C60050A1 /* WorkContext */,
 			);
 			path = Core;
+			sourceTree = "<group>";
+		};
+		E5F6071829304152C60050A1 /* WorkContext */ = {
+			isa = PBXGroup;
+			children = (
+				A1B2C3D4E5F607182930001 /* WorkContextManager.swift */,
+			);
+			path = WorkContext;
 			sourceTree = "<group>";
 		};
 		E9990CB158C8BCDA5F2EF475 /* Interruption */ = {
@@ -313,6 +339,16 @@
 				1AA59C9856AB3ADC362DD13C /* RootView.swift */,
 			);
 			path = App;
+			sourceTree = "<group>";
+		};
+		F6071829304152C60050A2B2 /* WorkContext */ = {
+			isa = PBXGroup;
+			children = (
+				C3D4E5F60718293041B5003 /* AddWorkContextView.swift */,
+				D4E5F6071829304152C6004 /* WorkContextManagementView.swift */,
+				B2C3D4E5F6071829304A002 /* WorkContextPickerView.swift */,
+			);
+			path = WorkContext;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -382,7 +418,6 @@
 				LastUpgradeCheck = 1430;
 				TargetAttributes = {
 					C0DF35E7419B4D1018B5C66F = {
-						DevelopmentTeam = "";
 						ProvisioningStyle = Automatic;
 					};
 					FD40D62D35FE4132115B8688 = {
@@ -401,7 +436,6 @@
 			);
 			mainGroup = 4782AABB6272CBF3E7B84BEA;
 			minimizedProjectReferenceProxies = 1;
-			preferredProjectObjectVersion = 77;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -436,6 +470,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3A3B4C5D6E7F80920314C6D7 /* AddWorkContextView.swift in Sources */,
 				E70F6F196179338B5CA69DF8 /* AppDelegate.swift in Sources */,
 				AD0AE30D5FFC4E3F811BCBCA /* AudioManager.swift in Sources */,
 				E8C5086686ECB0ECC89F7325 /* BreakView.swift in Sources */,
@@ -452,6 +487,10 @@
 				7B6422C651847D7D3205EB40 /* MethodPickerView.swift in Sources */,
 				4D489ADB0328BF681B41D94B /* MethodSelectionEngine.swift in Sources */,
 				2E8D59C5D45B5E44683A6C27 /* NotificationManager.swift in Sources */,
+				669695FF2F1059C30017CA29 /* WorkContext.swift in Sources */,
+				1A1B2C3D4E5F60718293A4B5 /* WorkContextManager.swift in Sources */,
+				4A4B5C6D7E8F90A30425D7E8 /* WorkContextManagementView.swift in Sources */,
+				2A2B3C4D5E6F70819203B5C6 /* WorkContextPickerView.swift in Sources */,
 				B03ADF20BB18F007C8930117 /* OnboardingView.swift in Sources */,
 				DC063FA73C3380F9814BEF93 /* OrientationManager.swift in Sources */,
 				56347472EC61D1F08F8C7D5A /* ProfileEngine.swift in Sources */,
@@ -495,6 +534,11 @@
 				B78E32F3F9E3B86D8D415220 /* MethodPickerView.swift in Sources */,
 				4352589DB660F096069FB5F1 /* MethodSelectionEngine.swift in Sources */,
 				B7AB272ECAF1FD664B46A294 /* NotificationManager.swift in Sources */,
+				669696002F1059C30017CA29 /* WorkContext.swift in Sources */,
+				1A1B2C3D4E5F60718293A4B6 /* WorkContextManager.swift in Sources */,
+				2A2B3C4D5E6F70819203B5C7 /* WorkContextPickerView.swift in Sources */,
+				3A3B4C5D6E7F80920314C6D8 /* AddWorkContextView.swift in Sources */,
+				4A4B5C6D7E8F90A30425D7E9 /* WorkContextManagementView.swift in Sources */,
 				5A37059CB458E86D36157FD8 /* OnboardingView.swift in Sources */,
 				8B59BDF6195625B529149D45 /* OrientationManager.swift in Sources */,
 				CEE7E61BBBAA598587E7BC96 /* ProfileEngine.swift in Sources */,
@@ -689,7 +733,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = XZ826V4Q3F;
 				INFOPLIST_FILE = Sources/ReFocus/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -730,7 +774,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = XZ826V4Q3F;
 				INFOPLIST_FILE = Sources/ReFocus/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (

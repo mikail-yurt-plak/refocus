@@ -1,6 +1,8 @@
 import Foundation
-import UIKit
 import SwiftUI
+
+#if os(iOS)
+import UIKit
 
 /// Ekran yönelimini view bazında kontrol eden singleton
 class OrientationManager: ObservableObject {
@@ -23,7 +25,6 @@ class OrientationManager: ObservableObject {
 
     /// Cihazı dikey moda döndür
     private func rotateToPortrait() {
-        #if os(iOS)
         if #available(iOS 16.0, *) {
             // iOS 16+ için
             guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else { return }
@@ -32,9 +33,22 @@ class OrientationManager: ObservableObject {
             // iOS 15 ve altı için
             UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
         }
-        #endif
     }
 }
+
+#elseif os(macOS)
+import AppKit
+
+/// macOS için OrientationManager - ekran yönelimi kontrolü yok
+class OrientationManager: ObservableObject {
+    static let shared = OrientationManager()
+
+    private init() {}
+
+    func lockToPortrait() {}
+    func unlockOrientation() {}
+}
+#endif
 
 /// View modifier - Portrait-only view için
 struct PortraitOnlyModifier: ViewModifier {

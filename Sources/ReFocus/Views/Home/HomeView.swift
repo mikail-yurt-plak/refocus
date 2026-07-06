@@ -3,7 +3,11 @@ import SwiftUI
 /// Ana ekran - Günlük öneri
 struct HomeView: View {
     @EnvironmentObject var appState: AppState
-    @StateObject private var sessionManager = SessionManager()
+    @StateObject private var navigationAction = NavigationAction()
+    @ObservedObject private var contextManager = WorkContextManager.shared
+
+    /// Shared SessionManager - AppState üzerinden erişilir
+    private var sessionManager: SessionManager { appState.sessionManager }
     @State private var recommendedMethod: FocusMethod?
     @State private var showingFocusView = false
     @State private var showingSummary = false
@@ -14,6 +18,17 @@ struct HomeView: View {
     @State private var showingIntentPicker = false
     @State private var todaysMood: DailyMood?
     @State private var selectedIntent: SessionIntent = .mixed
+    @State private var selectedWorkContext: WorkContext? = .general
+
+    /// macOS pencere başlığı
+    private var windowTitle: String {
+        if let session = sessionManager.currentSession {
+            let timeStr = sessionManager.timeRemaining.formattedTime
+            let status = sessionManager.isBreak ? String(localized: "common.label.break") : String(localized: "common.label.focus")
+            return "\(status) - \(timeStr) • \(session.method.rawValue)"
+        }
+        return "ReFocus"
+    }
 
     var body: some View {
         NavigationStack {
@@ -30,9 +45,13 @@ struct HomeView: View {
                         .portraitOnly()
                 }
             }
+            #if os(macOS)
+            .navigationTitle(windowTitle)
+            #endif
             .onAppear {
                 requestNotificationPermission()
                 checkDailyCheckIn()
+                setupNavigationActions()
             }
             .onChange(of: todaysMood) { _, _ in
                 saveDailyCheckIn()
@@ -62,15 +81,32 @@ struct HomeView: View {
                     SessionStartSheet(
                         method: method,
                         selectedIntent: $selectedIntent,
+                        selectedWorkContext: $selectedWorkContext,
+                        contextManager: contextManager,
                         onStart: {
                             showingIntentPicker = false
                             startSession()
                         }
                     )
-                    .presentationDetents([.medium])
+                    .presentationDetents([.large])
                     .presentationDragIndicator(.visible)
                 }
             }
+        }
+        // macOS keyboard shortcuts için FocusedValues
+        .focusedSceneValue(\.sessionManager, sessionManager)
+        .focusedSceneValue(\.navigationAction, navigationAction)
+    }
+
+    /// Navigasyon aksiyonlarını ayarla (keyboard shortcuts için)
+    private func setupNavigationActions() {
+        navigationAction.startNewSession = { [self] in
+            if sessionManager.currentSession == nil {
+                showingIntentPicker = true
+            }
+        }
+        navigationAction.showSummary = { [self] in
+            showingSummary = true
         }
     }
 
@@ -135,17 +171,17 @@ struct HomeView: View {
                 .foregroundColor(.textPrimary)
 
             if let summary = sessionManager.getDailySummary(for: Date()) {
-                Text("Bugün \(summary.totalFocusTime) dakika odaklandın")
+                Text("home.today_focus_time \(summary.totalFocusTime)")
                     .font(.bodySmall)
                     .foregroundColor(.textSecondary)
             } else if sessionManager.getAllSessions().isEmpty {
                 // İlk kez kullanan kullanıcı için hoşgeldin mesajı
-                Text("İlk seansına başlamaya hazır mısın?")
+                Text("home.first_session_welcome")
                     .font(.bodySmall)
                     .foregroundColor(.textSecondary)
             } else {
                 // Bugün seans yok ama daha önce kullanmış
-                Text("Bugün henüz bir seans yapmadın")
+                Text("home.no_sessions_today")
                     .font(.bodySmall)
                     .foregroundColor(.textSecondary)
             }
@@ -186,7 +222,7 @@ struct HomeView: View {
 
                 Button(action: { showingMethodPicker = true }) {
                     HStack(spacing: 4) {
-                        Text("Değiştir")
+                        Text("common.button.change")
                             .font(.caption)
                         Image(systemName: "chevron.down")
                             .font(.caption2)
@@ -213,7 +249,7 @@ struct HomeView: View {
                     Text("\(method.focusDuration)")
                         .font(.heading2)
                         .foregroundColor(.focusGreen)
-                    Text("Odak")
+                    Text("common.label.focus")
                         .font(.caption)
                         .foregroundColor(.textSecondary)
                 }
@@ -222,7 +258,7 @@ struct HomeView: View {
                     Text("\(method.breakDuration)")
                         .font(.heading2)
                         .foregroundColor(.breakBlue)
-                    Text("Mola")
+                    Text("common.label.break")
                         .font(.caption)
                         .foregroundColor(.textSecondary)
                 }
@@ -235,7 +271,7 @@ struct HomeView: View {
 
             // Başla butonu - intent picker'ı açar
             Button(action: { showingIntentPicker = true }) {
-                Text("Başla")
+                Text("common.button.start")
                     .font(.buttonLarge)
                     .foregroundColor(.white)
                     .frame(maxWidth: .infinity)
@@ -263,7 +299,7 @@ struct HomeView: View {
                 StatCard(
                     icon: "chart.bar.fill",
                     value: "\(sessionManager.getTodaysSessions().count)",
-                    label: "Seans"
+                    label: String(localized: "common.label.session")
                 )
             }
             .disabled(sessionManager.getTodaysSessions().isEmpty)
@@ -273,7 +309,7 @@ struct HomeView: View {
                 StatCard(
                     icon: "calendar",
                     value: "\(getWeeklySessions())",
-                    label: "Bu Hafta"
+                    label: String(localized: "home.this_week")
                 )
             }
         }
@@ -296,17 +332,17 @@ struct HomeView: View {
 
     private func startSession() {
         guard let method = recommendedMethod else { return }
-        sessionManager.startSession(method: method, intent: selectedIntent)
+        sessionManager.startSession(method: method, intent: selectedIntent, workContext: selectedWorkContext)
         appState.startSession(sessionManager.currentSession!)
     }
 
     private func greetingForTimeOfDay() -> String {
         let hour = Calendar.current.component(.hour, from: Date())
         switch hour {
-        case 5..<12: return "Günaydın"
-        case 12..<17: return "İyi günler"
-        case 17..<21: return "İyi akşamlar"
-        default: return "Merhaba"
+        case 5..<12: return String(localized: "home.greeting.morning")
+        case 12..<17: return String(localized: "home.greeting.afternoon")
+        case 17..<21: return String(localized: "home.greeting.evening")
+        default: return String(localized: "home.greeting.default")
         }
     }
 
@@ -348,85 +384,107 @@ struct StatCard: View {
 }
 
 /// Seans başlatma sheet'i
-/// Niyet seçimi ve başlat butonu içerir
+/// Niyet seçimi, çalışma bağlamı ve başlat butonu içerir
 struct SessionStartSheet: View {
     let method: FocusMethod
     @Binding var selectedIntent: SessionIntent
+    @Binding var selectedWorkContext: WorkContext?
+    @ObservedObject var contextManager: WorkContextManager
     let onStart: () -> Void
 
+    @State private var showingAddContext = false
+
     var body: some View {
-        VStack(spacing: 24) {
-            // Başlık
-            VStack(spacing: 8) {
-                Text(method.icon)
-                    .font(.system(size: 48))
+        ScrollView {
+            VStack(spacing: 24) {
+                // Başlık
+                VStack(spacing: 8) {
+                    Text(method.icon)
+                        .font(.system(size: 48))
 
-                Text(method.rawValue)
-                    .font(.heading2)
-                    .foregroundColor(.textPrimary)
+                    Text(method.rawValue)
+                        .font(.heading2)
+                        .foregroundColor(.textPrimary)
 
-                Text("\(method.focusDuration) dk odak / \(method.breakDuration) dk mola")
-                    .font(.caption)
-                    .foregroundColor(.textSecondary)
-            }
-            .padding(.top, 16)
+                    Text("\(method.focusDuration) dk odak / \(method.breakDuration) dk mola")
+                        .font(.caption)
+                        .foregroundColor(.textSecondary)
+                }
+                .padding(.top, 16)
 
-            // Niyet seçici
-            VStack(spacing: 12) {
-                Text("Bu seansı nasıl kullanacaksın?")
-                    .font(.bodyLarge)
-                    .foregroundColor(.textPrimary)
+                // Çalışma bağlamı seçici
+                WorkContextPickerView(
+                    contextManager: contextManager,
+                    selectedContext: $selectedWorkContext,
+                    onAddNew: { showingAddContext = true }
+                )
+                .padding(.horizontal, 24)
 
-                HStack(spacing: 12) {
-                    ForEach(SessionIntent.allCases, id: \.self) { intent in
-                        IntentButton(
-                            intent: intent,
-                            isSelected: selectedIntent == intent
-                        ) {
-                            HapticManager.shared.selection()
-                            selectedIntent = intent
+                Divider()
+                    .padding(.horizontal, 24)
+
+                // Niyet seçici
+                VStack(spacing: 12) {
+                    Text("home.intent_prompt")
+                        .font(.bodyLarge)
+                        .foregroundColor(.textPrimary)
+
+                    HStack(spacing: 12) {
+                        ForEach(SessionIntent.allCases, id: \.self) { intent in
+                            IntentButton(
+                                intent: intent,
+                                isSelected: selectedIntent == intent
+                            ) {
+                                HapticManager.shared.selection()
+                                selectedIntent = intent
+                            }
                         }
                     }
                 }
+                .padding(.horizontal, 24)
+
+                // Seçili niyetin açıklaması
+                Text(intentDescription)
+                    .font(.caption)
+                    .foregroundColor(.textTertiary)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 32)
+
+                // Başla butonu
+                Button(action: {
+                    HapticManager.shared.sessionStarted()
+                    onStart()
+                }) {
+                    Text("home.start_session")
+                        .font(.buttonLarge)
+                        .foregroundColor(.white)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 56)
+                        .background(Color.focusGreen)
+                        .cornerRadius(16)
+                }
+                .primaryButtonStyle()
+                .padding(.horizontal, 24)
+                .padding(.bottom, 24)
             }
-            .padding(.horizontal, 24)
-
-            // Seçili niyetin açıklaması
-            Text(intentDescription)
-                .font(.caption)
-                .foregroundColor(.textTertiary)
-                .multilineTextAlignment(.center)
-                .padding(.horizontal, 32)
-
-            // Başla butonu
-            Button(action: {
-                HapticManager.shared.sessionStarted()
-                onStart()
-            }) {
-                Text("Seansı Başlat")
-                    .font(.buttonLarge)
-                    .foregroundColor(.white)
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 56)
-                    .background(Color.focusGreen)
-                    .cornerRadius(16)
-            }
-            .primaryButtonStyle()
-            .padding(.horizontal, 24)
-
-            Spacer()
         }
         .background(Color.appBackground)
+        .sheet(isPresented: $showingAddContext) {
+            AddWorkContextView(contextManager: contextManager) { newContext in
+                selectedWorkContext = newContext
+                showingAddContext = false
+            }
+        }
     }
 
     private var intentDescription: String {
         switch selectedIntent {
         case .reading:
-            return "Okuma/yazma modunda 30 saniyeden uzun ayrılmalar bölünme sayılır."
+            return String(localized: "intent.description.reading")
         case .watching:
-            return "Video izleme modunda kısa geçişler normal kabul edilir."
+            return String(localized: "intent.description.watching")
         case .mixed:
-            return "Karışık modda 60 saniyeden uzun ayrılmalar bölünme sayılır."
+            return String(localized: "intent.description.mixed")
         }
     }
 }

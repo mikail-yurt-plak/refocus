@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// Günlük check-in view - Bugün nasıl hissediyorsun?
+/// Günlük check-in view - Şu an nasıl hissediyorsun?
 struct DailyCheckInView: View {
     @Binding var todaysMood: DailyMood?
     @Environment(\.dismiss) var dismiss
@@ -13,11 +13,11 @@ struct DailyCheckInView: View {
                 VStack(spacing: 32) {
                     // Başlık
                     VStack(spacing: 12) {
-                        Text("Bugün nasıl hissediyorsun?")
+                        Text("checkin.title")
                             .font(.heading2)
                             .foregroundColor(.textPrimary)
 
-                        Text("Bu bilgi, sana en uygun metodu seçmemize yardımcı olacak")
+                        Text("checkin.subtitle")
                             .font(.body)
                             .foregroundColor(.textSecondary)
                             .multilineTextAlignment(.center)
@@ -42,7 +42,7 @@ struct DailyCheckInView: View {
 
                     // Devam butonu
                     Button(action: { dismiss() }) {
-                        Text(todaysMood != nil ? "Devam Et" : "Atla")
+                        Text(todaysMood != nil ? String(localized: "checkin.button.continue") : String(localized: "common.button.skip"))
                             .font(.buttonLarge)
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity)
@@ -54,7 +54,7 @@ struct DailyCheckInView: View {
                     .padding(.bottom, 40)
                 }
             }
-            .navigationBarTitleDisplayMode(.inline)
+            .inlineNavigationTitle()
         }
     }
 }
@@ -117,19 +117,19 @@ enum DailyMood: String, CaseIterable, Identifiable, Codable {
 
     var title: String {
         switch self {
-        case .energetic: return "Enerjik"
-        case .normal: return "Normal"
-        case .tired: return "Yorgun"
-        case .scattered: return "Dağınık"
+        case .energetic: return String(localized: "checkin.mood.energetic.title")
+        case .normal: return String(localized: "checkin.mood.normal.title")
+        case .tired: return String(localized: "checkin.mood.tired.title")
+        case .scattered: return String(localized: "checkin.mood.scattered.title")
         }
     }
 
     var description: String {
         switch self {
-        case .energetic: return "Bugün çok enerjiyim, uzun süre odaklanabilirim"
-        case .normal: return "Normal bir gün, dengeli çalışabilirim"
-        case .tired: return "Biraz yorgunum, kısa seanslar daha iyi olur"
-        case .scattered: return "Kafam dağınık, odaklanmakta zorlanıyorum"
+        case .energetic: return String(localized: "checkin.mood.energetic.description")
+        case .normal: return String(localized: "checkin.mood.normal.description")
+        case .tired: return String(localized: "checkin.mood.tired.description")
+        case .scattered: return String(localized: "checkin.mood.scattered.description")
         }
     }
 

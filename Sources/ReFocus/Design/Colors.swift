@@ -1,5 +1,11 @@
 import SwiftUI
 
+#if os(iOS)
+import UIKit
+#elseif os(macOS)
+import AppKit
+#endif
+
 /// ReFocus renk paleti
 /// Sakin, minimal ve rahatlatıcı bir deneyim için tasarlandı
 extension Color {
@@ -33,11 +39,33 @@ extension Color {
 
     // MARK: - Text Colors
 
-    static let textPrimary = Color.primary
-    static let textSecondary = Color.secondary
-    static let textTertiary = Color.gray
+    /// Ana metin rengi - koyu gri (light mode için optimize)
+    static let textPrimary = Color(hex: "#1C1C1E")
+
+    /// İkincil metin rengi
+    static let textSecondary = Color(hex: "#6B6B6B")
+
+    /// Üçüncül metin rengi
+    static let textTertiary = Color(hex: "#999999")
 
     // MARK: - Helper
+
+    /// Light/Dark mode için farklı renk tanımlar
+    init(light: Color, dark: Color) {
+        #if os(iOS)
+        self.init(uiColor: UIColor { traitCollection in
+            traitCollection.userInterfaceStyle == .dark
+                ? UIColor(dark)
+                : UIColor(light)
+        })
+        #elseif os(macOS)
+        self.init(nsColor: NSColor(name: nil) { appearance in
+            appearance.bestMatch(from: [.darkAqua, .vibrantDark]) != nil
+                ? NSColor(dark)
+                : NSColor(light)
+        })
+        #endif
+    }
 
     /// Hex string'den Color oluşturur
     init(hex: String) {
@@ -63,5 +91,51 @@ extension Color {
             blue:  Double(b) / 255,
             opacity: Double(a) / 255
         )
+    }
+}
+
+// MARK: - Cross-Platform Navigation Modifiers
+
+extension View {
+    /// Cross-platform navigation bar title display mode (inline)
+    @ViewBuilder
+    func inlineNavigationTitle() -> some View {
+        #if os(iOS)
+        self.navigationBarTitleDisplayMode(.inline)
+        #else
+        self
+        #endif
+    }
+
+    /// Cross-platform large navigation title
+    @ViewBuilder
+    func largeNavigationTitle() -> some View {
+        #if os(iOS)
+        self.navigationBarTitleDisplayMode(.large)
+        #else
+        self
+        #endif
+    }
+}
+
+// MARK: - Cross-Platform Toolbar Placement
+
+extension ToolbarItemPlacement {
+    /// Cross-platform trailing placement
+    static var topBarTrailingCompat: ToolbarItemPlacement {
+        #if os(iOS)
+        return .topBarTrailing
+        #else
+        return .automatic
+        #endif
+    }
+
+    /// Cross-platform leading placement
+    static var topBarLeadingCompat: ToolbarItemPlacement {
+        #if os(iOS)
+        return .topBarLeading
+        #else
+        return .automatic
+        #endif
     }
 }

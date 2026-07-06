@@ -8,9 +8,16 @@ struct HeatmapView: View {
     @State private var selectedPeriod: Period = .week
     @State private var selectedDate: Date?
 
-    enum Period: String, CaseIterable {
-        case week = "Hafta"
-        case month = "Ay"
+    enum Period: CaseIterable {
+        case week
+        case month
+
+        var label: String {
+            switch self {
+            case .week: return String(localized: "heatmap.period.week")
+            case .month: return String(localized: "heatmap.period.month")
+            }
+        }
     }
 
     var body: some View {
@@ -40,15 +47,15 @@ struct HeatmapView: View {
                     .padding(.vertical, 24)
                 }
             }
-            .navigationTitle("Geçmişin")
-            .navigationBarTitleDisplayMode(.large)
+            .navigationTitle(String(localized: "heatmap.title"))
+            .largeNavigationTitle()
         }
     }
 
     private var periodPicker: some View {
-        Picker("Periyod", selection: $selectedPeriod) {
+        Picker(String(localized: "heatmap.period"), selection: $selectedPeriod) {
             ForEach(Period.allCases, id: \.self) { period in
-                Text(period.rawValue).tag(period)
+                Text(period.label).tag(period)
             }
         }
         .pickerStyle(.segmented)
@@ -101,7 +108,7 @@ struct HeatmapView: View {
 
     private var colorScale: some View {
         HStack(spacing: 8) {
-            Text("Düşük")
+            Text("heatmap.scale.low")
                 .font(.caption)
                 .foregroundColor(.textSecondary)
 
@@ -113,7 +120,7 @@ struct HeatmapView: View {
                 }
             }
 
-            Text("Yüksek")
+            Text("heatmap.scale.high")
                 .font(.caption)
                 .foregroundColor(.textSecondary)
         }
@@ -145,7 +152,7 @@ struct HeatmapView: View {
                     Text("\(Int(avgQuality * 100))%")
                         .font(.heading2)
                         .foregroundColor(qualityColor(avgQuality))
-                    Text("kalite")
+                    Text("heatmap.stat.quality")
                         .font(.caption)
                         .foregroundColor(.textSecondary)
                 }
@@ -156,7 +163,7 @@ struct HeatmapView: View {
                     Text("\(summary.totalFocusTime)")
                         .font(.heading2)
                         .foregroundColor(.focusGreen)
-                    Text("dk odak")
+                    Text("heatmap.stat.focus_min")
                         .font(.caption)
                         .foregroundColor(.textSecondary)
                 }
@@ -167,7 +174,7 @@ struct HeatmapView: View {
                     Text("\(totalInterruptions)")
                         .font(.heading2)
                         .foregroundColor(totalInterruptions > 0 ? .orange : .focusGreen)
-                    Text("bölünme")
+                    Text("heatmap.stat.interruption")
                         .font(.caption)
                         .foregroundColor(.textSecondary)
                 }
@@ -180,7 +187,7 @@ struct HeatmapView: View {
                     Circle()
                         .fill(Color.orange.opacity(0.6))
                         .frame(width: 8, height: 8)
-                    Text("Toplam bölünme: \(formatDuration(totalInterruptionDuration))")
+                    Text("heatmap.total_interruption \(formatDuration(totalInterruptionDuration))")
                         .font(.caption)
                         .foregroundColor(.textSecondary)
                     Spacer()
@@ -191,7 +198,7 @@ struct HeatmapView: View {
 
             // Seans listesi
             VStack(spacing: 12) {
-                Text("Seanslar")
+                Text("heatmap.sessions")
                     .font(.captionBold)
                     .foregroundColor(.textSecondary)
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -250,11 +257,11 @@ struct HeatmapView: View {
             Text("🌱")
                 .font(.system(size: 48))
 
-            Text("Henüz yeterli verin yok")
+            Text("heatmap.empty.title")
                 .font(.heading3)
                 .foregroundColor(.textPrimary)
 
-            Text("Birkaç seans tamamladıktan sonra\nburada güzel bir görselleştirme olacak.")
+            Text("heatmap.empty.message")
                 .font(.body)
                 .foregroundColor(.textSecondary)
                 .multilineTextAlignment(.center)
@@ -271,7 +278,15 @@ struct HeatmapView: View {
     // MARK: - Helper Functions
 
     private var weekdayLabels: [String] {
-        ["Pzt", "Sal", "Çar", "Per", "Cum", "Cmt", "Paz"]
+        [
+            String(localized: "heatmap.weekday.mon"),
+            String(localized: "heatmap.weekday.tue"),
+            String(localized: "heatmap.weekday.wed"),
+            String(localized: "heatmap.weekday.thu"),
+            String(localized: "heatmap.weekday.fri"),
+            String(localized: "heatmap.weekday.sat"),
+            String(localized: "heatmap.weekday.sun")
+        ]
     }
 
     private var datesForPeriod: [Date] {
@@ -336,20 +351,20 @@ struct HeatmapView: View {
         let prevWeekAvg = previousWeekSessions.reduce(0.0) { $0 + $1.focusFlowQuality } / Double(max(1, previousWeekSessions.count))
 
         if lastWeekSessions.isEmpty {
-            return "İlk seansını tamamladığında burada güzel istatistikler göreceksin."
+            return String(localized: "heatmap.encouragement.first_session")
         }
 
         if previousWeekSessions.isEmpty {
-            return "İlk haftanı tamamladın. Devam et!"
+            return String(localized: "heatmap.encouragement.first_week")
         }
 
         if lastWeekAvg > prevWeekAvg {
-            return "Geçen haftaya göre daha iyi odaklanıyorsun."
+            return String(localized: "heatmap.encouragement.improving")
         } else if lastWeekAvg < prevWeekAvg - 0.1 {
-            return "Bu hafta biraz daha zordu. Bu normal, herkesin böyle haftaları olur."
+            return String(localized: "heatmap.encouragement.tough_week")
         }
 
-        return "İstikrarlı bir tempo yakaladın."
+        return String(localized: "heatmap.encouragement.stable")
     }
 
     /// Hiç seans olup olmadığını kontrol et
@@ -372,9 +387,22 @@ struct HeatmapSessionRow: View {
                 Text(session.method.icon)
                     .font(.body)
 
-                Text(session.startTime.formatted(date: .omitted, time: .shortened))
-                    .font(.caption)
-                    .foregroundColor(.textSecondary)
+                VStack(alignment: .leading, spacing: 2) {
+                    // Çalışma bağlamı (varsa)
+                    if let workContext = session.workContext, !workContext.isDefault {
+                        HStack(spacing: 4) {
+                            Text(workContext.icon)
+                                .font(.caption)
+                            Text(workContext.name)
+                                .font(.caption)
+                                .foregroundColor(.textPrimary)
+                        }
+                    }
+
+                    Text(session.startTime.formatted(date: .omitted, time: .shortened))
+                        .font(.caption)
+                        .foregroundColor(.textSecondary)
+                }
 
                 Spacer()
 
@@ -389,6 +417,15 @@ struct HeatmapSessionRow: View {
                     .foregroundColor(.textSecondary)
             }
 
+            // Seans notu (varsa)
+            if let note = session.sessionNote, !note.isEmpty {
+                Text(note)
+                    .font(.system(size: 11))
+                    .foregroundColor(.textSecondary)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .lineLimit(2)
+            }
+
             // Progress bar
             SessionProgressBar(session: session)
 
@@ -398,7 +435,7 @@ struct HeatmapSessionRow: View {
                     Circle()
                         .fill(Color.orange.opacity(0.6))
                         .frame(width: 6, height: 6)
-                    Text("\(session.interruptionCount) bölünme")
+                    Text("heatmap.interruption_count \(session.interruptionCount)")
                         .font(.system(size: 10))
                         .foregroundColor(.textTertiary)
                     Spacer()

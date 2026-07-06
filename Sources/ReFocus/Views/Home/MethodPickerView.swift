@@ -14,11 +14,11 @@ struct MethodPickerView: View {
                     VStack(spacing: 24) {
                         // Başlık
                         VStack(spacing: 8) {
-                            Text("Metod Seç")
+                            Text("methodpicker.title")
                                 .font(.heading2)
                                 .foregroundColor(.textPrimary)
 
-                            Text("Bugün hangi metodu denemek istersin?")
+                            Text("methodpicker.subtitle")
                                 .font(.body)
                                 .foregroundColor(.textSecondary)
                         }
@@ -42,10 +42,10 @@ struct MethodPickerView: View {
                     .padding(.bottom, 40)
                 }
             }
-            .navigationBarTitleDisplayMode(.inline)
+            .inlineNavigationTitle()
             .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button("İptal") {
+                ToolbarItem(placement: .topBarTrailingCompat) {
+                    Button(String(localized: "common.button.cancel")) {
                         dismiss()
                     }
                     .foregroundColor(.textSecondary)
@@ -76,7 +76,7 @@ struct MethodCard: View {
                             .foregroundColor(isSelected ? .white : .textPrimary)
 
                         // Süre bilgisi
-                        Text("\(method.focusDuration) dk odak, \(method.breakDuration) dk mola")
+                        Text("common.duration_format \(method.focusDuration) \(method.breakDuration)")
                             .font(.bodySmall)
                             .foregroundColor(isSelected ? .white.opacity(0.8) : .textSecondary)
                     }
