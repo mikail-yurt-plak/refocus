@@ -13,6 +13,14 @@ class SessionManager: ObservableObject {
     private var sessionHistory: [FocusSession] = []
     private let interruptionTracker: InterruptionTracker
 
+    /// Aktif fazın (odak/mola) duvar saatine göre bitiş anı.
+    /// Kalan süre her zaman bu tarihten hesaplanır; timer yalnızca ekranı
+    /// tazeler. Uygulama askıya alınsa/öldürülse bile süre doğru kalır.
+    private var phaseEndDate: Date?
+
+    /// Duraklatma anında kalan süre (devamda yeniden çapalanır)
+    private var pausedRemaining: TimeInterval?
+
     /// Arka plana alınma zamanı (timer'ı yakalamak için)
     private var backgroundStartTime: Date?
 
@@ -33,7 +41,10 @@ class SessionManager: ObservableObject {
     func startSession(method: FocusMethod, intent: SessionIntent = .mixed, workContext: WorkContext? = nil) {
         let session = FocusSession(method: method, intent: intent, workContext: workContext)
         currentSession = session
-        timeRemaining = TimeInterval(method.focusDuration * 60)
+        let duration = TimeInterval(method.focusDuration * 60)
+        timeRemaining = duration
+        phaseEndDate = Date().addingTimeInterval(duration)
+        pausedRemaining = nil
         isActive = true
         isBreak = false
 
@@ -66,6 +77,11 @@ class SessionManager: ObservableObject {
         session.isPaused = true
         currentSession = session
         isActive = false
+
+        // Kalan süreyi sabitle; bitiş çapası devamda yeniden kurulur
+        pausedRemaining = max(0, phaseEndDate?.timeIntervalSinceNow ?? timeRemaining)
+        timeRemaining = pausedRemaining ?? timeRemaining
+        phaseEndDate = nil
         stopTimer()
 
         // Bekleyen bildirimleri iptal et
@@ -78,15 +94,21 @@ class SessionManager: ObservableObject {
         session.isPaused = false
         currentSession = session
         isActive = true
+
+        // Bitiş anını kalan süreyle yeniden çapala
+        let remaining = pausedRemaining ?? timeRemaining
+        timeRemaining = remaining
+        phaseEndDate = Date().addingTimeInterval(remaining)
+        pausedRemaining = nil
         startTimer()
 
         // Bildirim yeniden planla
         if isBreak {
-            NotificationManager.shared.scheduleBreakEndNotification(in: timeRemaining)
+            NotificationManager.shared.scheduleBreakEndNotification(in: remaining)
         } else {
             NotificationManager.shared.scheduleSessionEndNotification(
                 for: session.method,
-                in: timeRemaining
+                in: remaining
             )
         }
     }
@@ -134,25 +156,35 @@ class SessionManager: ObservableObject {
         currentSession = nil
         isActive = false
         isBreak = false
+        phaseEndDate = nil
+        pausedRemaining = nil
         stopTimer()
     }
 
     /// Molayı başlat
-    func startBreak() {
+    /// - Parameter anchor: molanın başlangıç anı; odak süresi arka plandayken
+    ///   bittiyse gerçek bitiş anından başlatılır ki mola da doğru işlesin
+    func startBreak(from anchor: Date = Date()) {
         guard let session = currentSession else { return }
-        timeRemaining = TimeInterval(session.method.breakDuration * 60)
+        let duration = TimeInterval(session.method.breakDuration * 60)
+        let endDate = anchor.addingTimeInterval(duration)
+        phaseEndDate = endDate
+        timeRemaining = max(0, endDate.timeIntervalSinceNow)
         isBreak = true
         isActive = true
         startTimer()
 
-        // Mola bitiş bildirimi planla
-        NotificationManager.shared.scheduleBreakEndNotification(in: timeRemaining)
+        // Mola bitiş bildirimi planla (mola zaten geçmişte bitmediyse)
+        if timeRemaining > 0 {
+            NotificationManager.shared.scheduleBreakEndNotification(in: timeRemaining)
+        }
     }
 
     /// Molayı atla
     func skipBreak() {
         isBreak = false
         isActive = false
+        phaseEndDate = nil
         stopTimer()
     }
 
@@ -161,14 +193,9 @@ class SessionManager: ObservableObject {
     private func startTimer() {
         stopTimer() // Önceki timer'ı temizle
 
-        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
-            guard let self = self else { return }
-
-            if self.timeRemaining > 0 {
-                self.timeRemaining -= 1
-            } else {
-                self.handleTimerComplete()
-            }
+        updateTimeRemaining()
+        timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { [weak self] _ in
+            self?.updateTimeRemaining()
         }
     }
 
@@ -177,16 +204,32 @@ class SessionManager: ObservableObject {
         timer = nil
     }
 
-    private func handleTimerComplete() {
+    /// Kalan süreyi duvar saatinden yeniden hesaplar.
+    /// Timer yalnızca bunu tetikler; süre hiçbir zaman "azaltılarak" tutulmaz.
+    private func updateTimeRemaining() {
+        guard let endDate = phaseEndDate else { return }
+
+        let remaining = endDate.timeIntervalSinceNow
+        if remaining > 0 {
+            timeRemaining = remaining.rounded(.up)
+        } else {
+            timeRemaining = 0
+            handleTimerComplete(phaseEndedAt: endDate)
+        }
+    }
+
+    private func handleTimerComplete(phaseEndedAt: Date) {
         stopTimer()
+        phaseEndDate = nil
 
         if isBreak {
             // Mola bitti
             isBreak = false
             isActive = false
         } else {
-            // Odak süresi bitti, mola başlat
-            startBreak()
+            // Odak süresi bitti; mola gerçek bitiş anından başlar
+            // (arka planda geçen süre molaya da doğru yansır)
+            startBreak(from: phaseEndedAt)
         }
     }
 
@@ -232,6 +275,10 @@ class SessionManager: ObservableObject {
     }
 
     @objc private func appWillEnterForeground() {
+        // Sayacı duvar saatine göre hemen düzelt; faz arka plandayken
+        // bittiyse geçişleri (mola/bitiş) burada tetiklenir
+        updateTimeRemaining()
+
         guard var session = currentSession else { return }
 
         // Arka plan bildirimlerini iptal et (kullanıcı döndü)
@@ -247,18 +294,9 @@ class SessionManager: ObservableObject {
         recentAppSwitches = recentAppSwitches.filter { now.timeIntervalSince($0) < timeWindow }
 
         // Arka planda geçen süreyi hesapla
+        // (kalan süre düzeltmesi yukarıda updateTimeRemaining ile yapıldı)
         if let startTime = backgroundStartTime {
             let elapsedTime = now.timeIntervalSince(startTime)
-
-            // Timer'ı güncelle - geçen süreyi düş
-            if isActive {
-                timeRemaining = max(0, timeRemaining - elapsedTime)
-
-                // Eğer süre bittiyse timer'ı tamamla
-                if timeRemaining <= 0 {
-                    handleTimerComplete()
-                }
-            }
 
             // Bölünme kaydı - niyete göre farklı mantık
             let shouldRecordInterruption = checkIfShouldRecordInterruption(
