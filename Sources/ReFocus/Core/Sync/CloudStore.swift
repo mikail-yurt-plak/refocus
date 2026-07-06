@@ -37,6 +37,9 @@ final class CloudStore {
     /// Senkron deposu kullanılabilir mi
     var isAvailable: Bool { container != nil }
 
+    /// Depo iCloud destekli mi (false ise yalnızca yerel çalışıyor)
+    private(set) var isCloudBacked = false
+
     private init() {
         let schema = Schema([SyncedRecord.self])
         if let cloud = try? ModelContainer(
@@ -44,6 +47,7 @@ final class CloudStore {
             configurations: [ModelConfiguration(schema: schema, cloudKitDatabase: .automatic)]
         ) {
             container = cloud
+            isCloudBacked = true
         } else if let local = try? ModelContainer(
             for: schema,
             configurations: [ModelConfiguration(schema: schema, cloudKitDatabase: .none)]

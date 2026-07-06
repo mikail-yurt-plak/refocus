@@ -18,6 +18,7 @@ struct HomeView: View {
     @State private var showingIntentPicker = false
     @State private var showingLanguagePicker = false
     @State private var showingFriends = false
+    @State private var showingCloudStatus = false
     @State private var todaysMood: DailyMood?
     @State private var selectedIntent: SessionIntent = .mixed
     @State private var selectedWorkContext: WorkContext? = .general
@@ -54,6 +55,15 @@ struct HomeView: View {
                 if sessionManager.currentSession == nil {
                     ToolbarItem(placement: .topBarTrailingCompat) {
                         Button {
+                            showingCloudStatus = true
+                        } label: {
+                            Image(systemName: "icloud")
+                                .foregroundColor(.textSecondary)
+                        }
+                        .accessibilityLabel(Text("cloudstatus.title"))
+                    }
+                    ToolbarItem(placement: .topBarTrailingCompat) {
+                        Button {
                             showingFriends = true
                         } label: {
                             Image(systemName: "person.2")
@@ -77,6 +87,9 @@ struct HomeView: View {
             }
             .sheet(isPresented: $showingFriends) {
                 FriendsView()
+            }
+            .sheet(isPresented: $showingCloudStatus) {
+                CloudStatusView(sessionManager: sessionManager)
             }
             .onAppear {
                 requestNotificationPermission()
