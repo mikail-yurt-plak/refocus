@@ -27,20 +27,30 @@ struct WorkContext: Identifiable, Codable, Equatable, Hashable {
         )
     }
 
-    /// Önerilen başlangıç context'leri (onboarding'de gösterilecek, localized)
+    /// Önerilen başlangıç context'leri (onboarding'de gösterilecek, localized).
+    /// ID'ler sabittir: her erişimde aynı kalmalı ki seçim durumu (ve
+    /// kaydetme) doğru eşleşsin.
     static var suggestions: [WorkContext] {
         [
-            WorkContext(name: String(localized: "workcontext.coding"), icon: "💻"),
-            WorkContext(name: String(localized: "workcontext.reading"), icon: "📚"),
-            WorkContext(name: String(localized: "workcontext.writing"), icon: "✍️"),
-            WorkContext(name: String(localized: "workcontext.design"), icon: "🎨"),
-            WorkContext(name: String(localized: "workcontext.research"), icon: "🔍"),
-            WorkContext(name: String(localized: "workcontext.math"), icon: "🧮"),
-            WorkContext(name: String(localized: "workcontext.language"), icon: "🌍"),
-            WorkContext(name: String(localized: "workcontext.music"), icon: "🎵"),
-            WorkContext(name: String(localized: "workcontext.video"), icon: "🎬"),
-            WorkContext(name: String(localized: "workcontext.planning"), icon: "📋")
+            suggestion(1, key: "workcontext.coding", icon: "💻"),
+            suggestion(2, key: "workcontext.reading", icon: "📚"),
+            suggestion(3, key: "workcontext.writing", icon: "✍️"),
+            suggestion(4, key: "workcontext.design", icon: "🎨"),
+            suggestion(5, key: "workcontext.research", icon: "🔍"),
+            suggestion(6, key: "workcontext.math", icon: "🧮"),
+            suggestion(7, key: "workcontext.language", icon: "🌍"),
+            suggestion(8, key: "workcontext.music", icon: "🎵"),
+            suggestion(9, key: "workcontext.video", icon: "🎬"),
+            suggestion(10, key: "workcontext.planning", icon: "📋")
         ]
+    }
+
+    private static func suggestion(_ index: Int, key: String.LocalizationValue, icon: String) -> WorkContext {
+        WorkContext(
+            id: UUID(uuidString: String(format: "00000000-0000-0000-0000-%012d", 100 + index))!,
+            name: String(localized: key),
+            icon: icon
+        )
     }
 
     /// Icon önerileri (kullanıcı yeni context eklerken)
