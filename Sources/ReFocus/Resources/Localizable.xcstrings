@@ -30423,121 +30423,121 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Linki gönderdiğin kişi senin özetini görebilir. Sen de onunkini görmek istersen, o da sana davet göndermeli."
+            "value": "Karşılıklı görmek için arkadaşının da sana davet göndermesi gerekir."
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "The person you send the link to can see your summary. If you'd like to see theirs too, they need to send you an invite as well."
+            "value": "To see each other's summaries, your friend needs to send you an invite too."
           }
         },
         "ar": {
           "stringUnit": {
             "state": "translated",
-            "value": "الشخص الذي ترسل إليه الرابط يمكنه رؤية ملخصك. وإذا أردت رؤية ملخصه أيضًا، فعليه أن يرسل لك دعوة كذلك."
+            "value": "لكي تريا بعضكما، يحتاج صديقك أيضًا إلى إرسال دعوة إليك."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Die Person, der du den Link schickst, kann deine Zusammenfassung sehen. Wenn du ihre auch sehen möchtest, muss sie dir ebenfalls eine Einladung schicken."
+            "value": "Damit ihr euch gegenseitig sehen könnt, muss dir die andere Person ebenfalls eine Einladung senden."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "La persona a la que envíes el enlace podrá ver tu resumen. Si tú también quieres ver el suyo, esa persona debe enviarte una invitación."
+            "value": "Para verse mutuamente, tu amigo también tiene que enviarte una invitación."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "La personne à qui vous envoyez le lien peut voir votre résumé. Si vous souhaitez aussi voir le sien, elle doit également vous envoyer une invitation."
+            "value": "Pour vous voir mutuellement, ton ami(e) doit aussi t'envoyer une invitation."
           }
         },
         "hi": {
           "stringUnit": {
             "state": "translated",
-            "value": "जिसे आप लिंक भेजेंगे, वह आपकी समरी देख सकेगा। अगर आप भी उसकी समरी देखना चाहते हैं, तो उसे भी आपको आमंत्रण भेजना होगा।"
+            "value": "एक-दूसरे को देखने के लिए आपके दोस्त को भी आपको आमंत्रण भेजना होगा।"
           }
         },
         "id": {
           "stringUnit": {
             "state": "translated",
-            "value": "Orang yang kamu kirimi tautan bisa melihat ringkasanmu. Jika kamu juga ingin melihat ringkasannya, dia juga perlu mengirimkan undangan kepadamu."
+            "value": "Agar bisa saling melihat, temanmu juga perlu mengirim undangan kepadamu."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "La persona a cui invii il link potrà vedere il tuo riepilogo. Se vuoi vedere anche il suo, dovrà inviarti a sua volta un invito."
+            "value": "Per vedervi a vicenda, anche il tuo amico deve inviarti un invito."
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "リンクを送った相手はあなたのサマリーを見ることができます。相手のサマリーも見たい場合は、相手からも招待を送ってもらう必要があります。"
+            "value": "お互いに見られるようにするには、友達からもあなたに招待を送ってもらう必要があります。"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "링크를 보낸 상대는 내 요약을 볼 수 있어요. 상대의 요약도 보고 싶다면, 상대도 나에게 초대를 보내야 해요."
+            "value": "서로의 요약을 보려면 친구도 나에게 초대를 보내야 해요."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "De persoon naar wie je de link stuurt, kan jouw samenvatting zien. Wil je die van hen ook zien, dan moeten zij jou ook een uitnodiging sturen."
+            "value": "Om elkaar te kunnen zien, moet je vriend(in) jou ook een uitnodiging sturen."
           }
         },
         "pl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Osoba, której wyślesz link, będzie widzieć Twoje podsumowanie. Jeśli chcesz widzieć również jej podsumowanie, ona także musi wysłać Ci zaproszenie."
+            "value": "Aby widzieć się nawzajem, druga osoba również musi wysłać Ci zaproszenie."
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "A pessoa para quem você enviar o link poderá ver o seu resumo. Se você também quiser ver o dela, ela precisa enviar um convite para você."
+            "value": "Para verem um ao outro, seu amigo também precisa enviar um convite para você."
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Человек, которому вы отправите ссылку, сможет видеть вашу сводку. Если вы тоже хотите видеть его сводку, он также должен отправить вам приглашение."
+            "value": "Чтобы видеть друг друга, твой друг тоже должен отправить тебе приглашение."
           }
         },
         "th": {
           "stringUnit": {
             "state": "translated",
-            "value": "คนที่คุณส่งลิงก์ให้จะเห็นสรุปของคุณได้ หากคุณอยากเห็นสรุปของเขาด้วย เขาก็ต้องส่งคำเชิญให้คุณเช่นกัน"
+            "value": "หากต้องการเห็นกันและกัน เพื่อนของคุณต้องส่งคำเชิญให้คุณด้วย"
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Людина, якій ви надішлете посилання, зможе бачити ваш підсумок. Якщо ви теж хочете бачити її підсумок, вона також має надіслати вам запрошення."
+            "value": "Щоб бачити одне одного, твій друг також має надіслати тобі запрошення."
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Người nhận liên kết có thể xem tóm tắt của bạn. Nếu bạn cũng muốn xem tóm tắt của họ, họ cũng cần gửi lời mời cho bạn."
+            "value": "Để nhìn thấy nhau, bạn của bạn cũng cần gửi lời mời cho bạn."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "收到链接的人可以看到你的摘要。如果你也想看到对方的摘要，对方也需要向你发送邀请。"
+            "value": "要互相查看，朋友也需要向你发送邀请。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "收到連結的人可以看到你的摘要。如果你也想看到對方的摘要，對方也需要向你發送邀請。"
+            "value": "若要互相查看，朋友也需要向你傳送邀請。"
           }
         }
       }
@@ -32274,6 +32274,1370 @@
           "stringUnit": {
             "state": "translated",
             "value": "已專注 %@"
+          }
+        }
+      }
+    },
+    "friends.invite.send": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Davet oluştur"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Create invite"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "إنشاء دعوة"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Einladung erstellen"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Crear invitación"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Créer une invitation"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "आमंत्रण बनाएँ"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Buat undangan"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Crea invito"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "招待を作成"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "초대 만들기"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uitnodiging aanmaken"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Utwórz zaproszenie"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Criar convite"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Создать приглашение"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "สร้างคำเชิญ"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Створити запрошення"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tạo lời mời"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "创建邀请"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "建立邀請"
+          }
+        }
+      }
+    },
+    "friends.invite.error_lookup": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu numarayla bir Apple/iCloud hesabı bulunamadı. Numarayı ülke koduyla yazmayı dener misin?"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "We couldn't find an Apple/iCloud account with this number. Could you try entering it with the country code?"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لم نعثر على حساب Apple/iCloud بهذا الرقم. هل يمكنك تجربة كتابة الرقم مع رمز الدولة؟"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mit dieser Nummer wurde kein Apple/iCloud-Account gefunden. Magst du die Nummer einmal mit Ländervorwahl eingeben?"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No encontramos una cuenta de Apple/iCloud con este número. ¿Puedes probar a escribirlo con el código de país?"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aucun compte Apple/iCloud n'a été trouvé avec ce numéro. Peux-tu essayer de le saisir avec l'indicatif du pays ?"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "इस नंबर से कोई Apple/iCloud खाता नहीं मिला। क्या आप नंबर देश कोड के साथ लिखकर देखेंगे?"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Akun Apple/iCloud dengan nomor ini tidak ditemukan. Bisa coba tulis nomornya dengan kode negara?"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Non abbiamo trovato un account Apple/iCloud con questo numero. Puoi provare a inserirlo con il prefisso internazionale?"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "この番号のApple/iCloudアカウントが見つかりませんでした。国番号を付けて入力してみてください。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "이 번호로 등록된 Apple/iCloud 계정을 찾을 수 없어요. 국가 코드를 붙여서 다시 입력해 보시겠어요?"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "We konden geen Apple/iCloud-account met dit nummer vinden. Wil je het nummer eens met landcode proberen?"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nie znaleźliśmy konta Apple/iCloud z tym numerem. Możesz spróbować wpisać numer z kodem kraju?"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Não encontramos uma conta Apple/iCloud com este número. Pode tentar digitar o número com o código do país?"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Аккаунт Apple/iCloud с этим номером не найден. Попробуй, пожалуйста, ввести номер с кодом страны."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ไม่พบบัญชี Apple/iCloud ที่ใช้หมายเลขนี้ ลองพิมพ์หมายเลขพร้อมรหัสประเทศดูได้ไหม"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Обліковий запис Apple/iCloud із цим номером не знайдено. Спробуй, будь ласка, ввести номер із кодом країни."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Không tìm thấy tài khoản Apple/iCloud với số này. Bạn thử nhập số kèm mã quốc gia nhé?"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "没有找到使用此号码的 Apple/iCloud 账户。可以试试加上国家代码再输入吗？"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "找不到使用此號碼的 Apple/iCloud 帳號。可以試著加上國碼再輸入嗎？"
+          }
+        }
+      }
+    },
+    "friends.invite.channel_note": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Davet e-postayla gönderilmez — linki WhatsApp, Mesajlar veya dilediğin uygulamayla kendin paylaşırsın."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The invite isn't sent by email — you share the link yourself via WhatsApp, Messages, or any app you like."
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لا تُرسل الدعوة عبر البريد الإلكتروني — أنت من يشارك الرابط عبر واتساب أو الرسائل أو أي تطبيق تريده."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Einladung wird nicht per E-Mail verschickt — du teilst den Link selbst über WhatsApp, Nachrichten oder eine App deiner Wahl."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La invitación no se envía por correo — tú mismo compartes el enlace por WhatsApp, Mensajes o la app que prefieras."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L'invitation n'est pas envoyée par e-mail — tu partages toi-même le lien via WhatsApp, Messages ou l'app de ton choix."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "आमंत्रण ईमेल से नहीं भेजा जाता — आप लिंक खुद WhatsApp, Messages या किसी भी ऐप से साझा करते हैं।"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Undangan tidak dikirim lewat email — kamu sendiri yang membagikan tautannya lewat WhatsApp, Pesan, atau aplikasi apa pun."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L'invito non viene inviato via email — sei tu a condividere il link tramite WhatsApp, Messaggi o l'app che preferisci."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "招待はメールでは送信されません。リンクはWhatsAppやメッセージなど、お好きなアプリからあなた自身で共有します。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "초대는 이메일로 전송되지 않아요 — 링크는 WhatsApp, 메시지 등 원하는 앱에서 직접 공유하면 돼요."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "De uitnodiging wordt niet per e-mail verstuurd — je deelt de link zelf via WhatsApp, Berichten of een app naar keuze."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zaproszenie nie jest wysyłane e-mailem — link udostępniasz samodzielnie przez WhatsApp, Wiadomości lub dowolną aplikację."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O convite não é enviado por e-mail — você mesmo compartilha o link pelo WhatsApp, Mensagens ou o app que preferir."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Приглашение не отправляется по почте — ссылкой ты делишься самостоятельно через WhatsApp, «Сообщения» или любое другое приложение."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "คำเชิญจะไม่ถูกส่งทางอีเมล — คุณแชร์ลิงก์เองผ่าน WhatsApp, ข้อความ หรือแอปไหนก็ได้ที่ต้องการ"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Запрошення не надсилається електронною поштою — посиланням ти ділишся самостійно через WhatsApp, «Повідомлення» або будь-який інший застосунок."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lời mời không được gửi qua email — bạn tự chia sẻ liên kết qua WhatsApp, Tin nhắn hoặc bất kỳ ứng dụng nào bạn thích."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "邀请不会通过电子邮件发送——链接由你自己通过 WhatsApp、信息或任意应用分享。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "邀請不會透過電子郵件傳送——連結由你自己透過 WhatsApp、訊息或任何 App 分享。"
+          }
+        }
+      }
+    },
+    "friends.invite.ready_note": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Davet hazır — linki istediğin uygulamadan gönderebilirsin. Bu link yalnızca davet ettiğin kişi için çalışır."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Invite ready — you can send the link from any app you like. This link only works for the person you invited."
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الدعوة جاهزة — يمكنك إرسال الرابط من أي تطبيق تريده. هذا الرابط يعمل فقط للشخص الذي دعوته."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Einladung ist bereit — du kannst den Link über eine beliebige App senden. Dieser Link funktioniert nur für die Person, die du eingeladen hast."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La invitación está lista — puedes enviar el enlace desde la app que prefieras. Este enlace solo funciona para la persona que invitaste."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L'invitation est prête — tu peux envoyer le lien depuis l'app de ton choix. Ce lien ne fonctionne que pour la personne que tu as invitée."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "आमंत्रण तैयार है — आप लिंक किसी भी ऐप से भेज सकते हैं। यह लिंक केवल उसी व्यक्ति के लिए काम करेगा जिसे आपने आमंत्रित किया है।"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Undangan siap — kamu bisa mengirim tautannya lewat aplikasi apa pun. Tautan ini hanya berfungsi untuk orang yang kamu undang."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L'invito è pronto — puoi inviare il link dall'app che preferisci. Questo link funziona solo per la persona che hai invitato."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "招待の準備ができました。リンクはお好きなアプリから送れます。このリンクは招待した相手にだけ有効です。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "초대가 준비됐어요 — 원하는 앱에서 링크를 보낼 수 있어요. 이 링크는 초대한 사람에게만 작동해요."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "De uitnodiging is klaar — je kunt de link via elke app versturen. Deze link werkt alleen voor de persoon die je hebt uitgenodigd."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zaproszenie gotowe — link możesz wysłać z dowolnej aplikacji. Ten link działa tylko dla zaproszonej przez Ciebie osoby."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Convite pronto — você pode enviar o link pelo app que preferir. Este link só funciona para a pessoa que você convidou."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Приглашение готово — ссылку можно отправить из любого приложения. Эта ссылка работает только для приглашённого человека."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "คำเชิญพร้อมแล้ว — คุณส่งลิงก์ผ่านแอปไหนก็ได้ ลิงก์นี้ใช้ได้เฉพาะกับคนที่คุณเชิญเท่านั้น"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Запрошення готове — посилання можна надіслати з будь-якого застосунку. Це посилання працює лише для запрошеної людини."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lời mời đã sẵn sàng — bạn có thể gửi liên kết qua bất kỳ ứng dụng nào. Liên kết này chỉ hoạt động với người mà bạn đã mời."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "邀请已就绪，你可以通过任意应用发送链接。此链接仅对你邀请的人有效。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "邀請已準備好，你可以透過任何 App 傳送連結。此連結僅對你邀請的人有效。"
+          }
+        }
+      }
+    },
+    "friends.viewers.title": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Özetini görenler"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Who can see your summary"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "من يمكنه رؤية ملخصك"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wer deine Zusammenfassung sieht"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quién puede ver tu resumen"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Qui peut voir ton résumé"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "आपका सारांश कौन देख सकता है"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Siapa yang bisa melihat ringkasanmu"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chi può vedere il tuo riepilogo"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "サマリーを見られる人"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "내 요약을 볼 수 있는 사람"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wie je samenvatting kan zien"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kto widzi Twoje podsumowanie"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quem pode ver seu resumo"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Кто видит твою сводку"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ใครเห็นสรุปของคุณได้บ้าง"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Хто бачить твій підсумок"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ai có thể xem tóm tắt của bạn"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "谁能看到你的摘要"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "誰能看到你的摘要"
+          }
+        }
+      }
+    },
+    "friends.viewers.anonymous": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Davet edilen kişi"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Invited person"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الشخص المدعو"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eingeladene Person"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Persona invitada"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Personne invitée"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "आमंत्रित व्यक्ति"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Orang yang diundang"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Persona invitata"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "招待した相手"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "초대된 사람"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uitgenodigde persoon"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zaproszona osoba"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pessoa convidada"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Приглашённый человек"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ผู้ที่ได้รับเชิญ"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Запрошена людина"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Người được mời"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "受邀者"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "受邀請的人"
+          }
+        }
+      }
+    },
+    "friends.viewers.pending": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Daveti henüz kabul etmedi"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hasn't accepted the invite yet"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لم يقبل الدعوة بعد"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hat die Einladung noch nicht angenommen"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aún no ha aceptado la invitación"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "N'a pas encore accepté l'invitation"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "आमंत्रण अभी स्वीकार नहीं किया है"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Belum menerima undangan"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Non ha ancora accettato l'invito"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "まだ招待を受け入れていません"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "아직 초대를 수락하지 않았어요"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Heeft de uitnodiging nog niet geaccepteerd"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jeszcze nie zaakceptowano zaproszenia"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ainda não aceitou o convite"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Приглашение пока не принято"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ยังไม่ตอบรับคำเชิญ"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Запрошення ще не прийнято"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chưa chấp nhận lời mời"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "尚未接受邀请"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "尚未接受邀請"
+          }
+        }
+      }
+    },
+    "friends.viewers.remove": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erişimi kaldır"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remove access"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "إزالة الوصول"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zugriff entfernen"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quitar acceso"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Retirer l'accès"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "पहुँच हटाएँ"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hapus akses"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rimuovi accesso"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アクセスを解除"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "접근 권한 제거"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toegang verwijderen"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Usuń dostęp"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remover acesso"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Убрать доступ"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ยกเลิกการเข้าถึง"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Прибрати доступ"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gỡ quyền truy cập"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "移除访问权限"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "移除存取權限"
+          }
+        }
+      }
+    },
+    "friends.viewers.remove_confirm": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu kişi artık özetini göremeyecek. Devam edilsin mi?"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This person will no longer be able to see your summary. Continue?"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لن يتمكن هذا الشخص من رؤية ملخصك بعد الآن. هل تريد المتابعة؟"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diese Person kann deine Zusammenfassung dann nicht mehr sehen. Fortfahren?"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esta persona ya no podrá ver tu resumen. ¿Quieres continuar?"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cette personne ne pourra plus voir ton résumé. Continuer ?"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "यह व्यक्ति अब आपका सारांश नहीं देख पाएगा। क्या आगे बढ़ें?"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Orang ini tidak akan bisa lagi melihat ringkasanmu. Lanjutkan?"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Questa persona non potrà più vedere il tuo riepilogo. Vuoi continuare?"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "この人はあなたのサマリーを見られなくなります。続けますか？"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "이 사람은 더 이상 내 요약을 볼 수 없게 돼요. 계속할까요?"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deze persoon kan je samenvatting dan niet meer zien. Doorgaan?"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ta osoba nie będzie już widzieć Twojego podsumowania. Kontynuować?"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Essa pessoa não poderá mais ver seu resumo. Continuar?"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Этот человек больше не сможет видеть твою сводку. Продолжить?"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "คนนี้จะไม่เห็นสรุปของคุณอีกต่อไป ต้องการดำเนินการต่อไหม"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ця людина більше не бачитиме твій підсумок. Продовжити?"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Người này sẽ không còn xem được tóm tắt của bạn. Tiếp tục nhé?"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "此人将无法再看到你的摘要。要继续吗？"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "此人將無法再看到你的摘要。要繼續嗎？"
+          }
+        }
+      }
+    },
+    "friends.invite.phone_label": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Arkadaşının telefon numarası (Apple kimliğine kayıtlı)"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your friend's phone number (linked to their Apple Account)"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "رقم هاتف صديقك (المسجل في حساب Apple الخاص به)"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Telefonnummer deines Freundes oder deiner Freundin (mit dem Apple-Account verknüpft)"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El número de teléfono de tu amigo (vinculado a su cuenta de Apple)"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le numéro de téléphone de ton ami(e) (associé à son compte Apple)"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "आपके दोस्त का फ़ोन नंबर (उनके Apple खाते से जुड़ा)"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nomor telepon temanmu (terdaftar di akun Apple-nya)"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Il numero di telefono del tuo amico (collegato al suo account Apple)"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "友達の電話番号（Appleアカウントに登録されているもの）"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "친구의 전화번호 (Apple 계정에 등록된 번호)"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Telefoonnummer van je vriend(in) (gekoppeld aan diens Apple-account)"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Numer telefonu Twojego znajomego (powiązany z kontem Apple)"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Número de telefone do seu amigo (vinculado à Conta Apple dele)"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Номер телефона твоего друга (привязанный к его учётной записи Apple)"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "หมายเลขโทรศัพท์ของเพื่อนคุณ (ที่ลงทะเบียนกับบัญชี Apple)"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Номер телефону твого друга (прив'язаний до облікового запису Apple)"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Số điện thoại của người bạn muốn mời (liên kết với tài khoản Apple của họ)"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "朋友的电话号码（与其 Apple 账户绑定）"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "朋友的電話號碼（與其 Apple 帳號綁定）"
+          }
+        }
+      }
+    },
+    "friends.invite.phone_placeholder": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "+90 5xx xxx xx xx"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "+1 (555) xxx-xxxx"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "+966 5x xxx xxxx"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "+49 15x xxxxxxx"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "+34 6xx xxx xxx"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "+33 6 xx xx xx xx"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "+91 xxxxx xxxxx"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "+62 8xx-xxxx-xxxx"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "+39 3xx xxx xxxx"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "+81 90-xxxx-xxxx"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "+82 10-xxxx-xxxx"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "+31 6 xxxx xxxx"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "+48 xxx xxx xxx"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "+55 (11) 9xxxx-xxxx"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "+7 9xx xxx-xx-xx"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "+66 8x xxx xxxx"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "+380 xx xxx xx xx"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "+84 9xx xxx xxx"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "+86 13x xxxx xxxx"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "+886 9xx xxx xxx"
           }
         }
       }

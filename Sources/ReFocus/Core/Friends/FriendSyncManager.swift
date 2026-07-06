@@ -81,38 +81,118 @@ final class FriendSyncManager: ObservableObject {
         displayName = UserDefaults.standard.string(forKey: Self.displayNameKey) ?? ""
     }
 
-    // MARK: - Davet (paylaşım linki)
+    // MARK: - Davet (e-postayla hedefli paylaşım)
 
-    /// Kendi paylaşım bölgesini hazırlar ve davet linkini döndürür.
-    /// Bölge/paylaşım zaten varsa mevcut link döner.
-    func prepareInviteURL() async throws -> URL {
-        // 1. Bölgenin var olduğundan emin ol
+    /// Davet hatası: e-posta bir iCloud hesabıyla eşleşmedi
+    struct LookupFailedError: Error {}
+
+    /// iCloud e-postası veya telefon numarasıyla belirtilen kişiyi paylaşıma
+    /// ekler ve yalnızca o kişi için çalışan davet linkini döndürür; link
+    /// WhatsApp/Mesajlar gibi herhangi bir kanalla gönderilebilir (e-posta
+    /// gönderilmez). Herkese açık katılım kapalıdır (publicPermission = .none):
+    /// linki başkası açamaz, erişimi kaldırılan kişi eski linkle geri dönemez.
+    func createInvite(forContact contact: String) async throws -> URL {
+        // 1. Bölge + profil hazır olsun
         let zone = CKRecordZone(zoneID: zoneID)
         _ = try await privateDB.modifyRecordZones(saving: [zone], deleting: [])
-
-        // 2. Profil kaydını güncelle (davet edilen kişi ismi görebilsin)
         try await saveProfileRecord()
 
-        // 3. Mevcut bölge paylaşımı var mı?
-        let shareID = CKRecord.ID(recordName: CKRecordNameZoneWideShare, zoneID: zoneID)
-        if let existing = try? await privateDB.record(for: shareID) as? CKShare,
-           let url = existing.url {
-            return url
-        }
-
-        // 4. Yoksa oluştur: linki alan herkes salt-okunur katılabilir
-        let share = CKShare(recordZoneID: zoneID)
-        share.publicPermission = .readOnly
+        // 2. Mevcut paylaşımı getir veya oluştur
+        let share = await fetchShare() ?? CKShare(recordZoneID: zoneID)
+        share.publicPermission = .none
         share[CKShare.SystemFieldKey.title] = "ReFocus" as CKRecordValue
 
+        // 3. E-posta/telefondan katılımcıyı bul ve salt-okunur ekle
+        let participant = try await fetchParticipant(contact: contact)
+        participant.permission = .readOnly
+        share.addParticipant(participant)
+
+        // 4. Kaydet ve linki döndür
         let result = try await privateDB.modifyRecords(saving: [share], deleting: [])
         for (_, saveResult) in result.saveResults {
             if case .success(let record) = saveResult,
                let saved = record as? CKShare, let url = saved.url {
+                await refreshViewers()
                 return url
             }
         }
         throw CKError(.internalError)
+    }
+
+    private func fetchShare() async -> CKShare? {
+        let shareID = CKRecord.ID(recordName: CKRecordNameZoneWideShare, zoneID: zoneID)
+        return (try? await privateDB.record(for: shareID)) as? CKShare
+    }
+
+    private func fetchParticipant(contact: String) async throws -> CKShare.Participant {
+        try await withCheckedThrowingContinuation { continuation in
+            let handler: (CKShare.Participant?, Error?) -> Void = { participant, error in
+                if let participant {
+                    continuation.resume(returning: participant)
+                } else {
+                    continuation.resume(throwing: error ?? LookupFailedError())
+                }
+            }
+            if contact.contains("@") {
+                container.fetchShareParticipant(withEmailAddress: contact, completionHandler: handler)
+            } else {
+                // Telefon numarası: boşluk ve ayraçları temizle
+                let phone = contact.filter { $0.isNumber || $0 == "+" }
+                container.fetchShareParticipant(withPhoneNumber: phone, completionHandler: handler)
+            }
+        }
+    }
+
+    // MARK: - Özetimi görenler (katılımcı yönetimi)
+
+    /// Kullanıcının özetini görebilen bir kişi
+    struct ShareViewer: Identifiable {
+        let id: String
+        /// Karşılıklı arkadaşsa paylaştığı görünen ad; değilse davet e-postası
+        let name: String?
+        let email: String?
+        let hasAccepted: Bool
+        let participant: CKShare.Participant
+    }
+
+    @Published private(set) var viewers: [ShareViewer] = []
+
+    /// Paylaşımdaki katılımcıları okur ve isimleriyle eşleştirir
+    @MainActor
+    func refreshViewers() async {
+        guard isEnabled, let share = await fetchShare() else {
+            viewers = []
+            return
+        }
+
+        viewers = share.participants
+            .filter { $0.role != .owner }
+            .map { participant in
+                let recordName = participant.userIdentity.userRecordID?.recordName
+                // Karşılıklı arkadaşsa kendi seçtiği görünen adı göster
+                let mutualName = friends.first { $0.zoneID.ownerName == recordName }?.displayName
+                let email = participant.userIdentity.lookupInfo?.emailAddress
+                return ShareViewer(
+                    id: recordName ?? email ?? UUID().uuidString,
+                    name: mutualName,
+                    email: email,
+                    hasAccepted: participant.acceptanceStatus == .accepted,
+                    participant: participant
+                )
+            }
+    }
+
+    /// Kişinin erişimini kaldırır; herkese açık katılım kapalı olduğu için
+    /// eski davet linkiyle geri dönemez
+    func removeViewer(_ viewer: ShareViewer) async {
+        guard let share = await fetchShare() else { return }
+        let targetID = viewer.participant.userIdentity.userRecordID
+        for participant in share.participants
+        where participant.role != .owner && participant.userIdentity.userRecordID == targetID {
+            share.removeParticipant(participant)
+        }
+        _ = try? await privateDB.modifyRecords(saving: [share], deleting: [])
+        await refreshViewers()
     }
 
     /// Davet linkine tıklayan tarafta paylaşımı kabul eder

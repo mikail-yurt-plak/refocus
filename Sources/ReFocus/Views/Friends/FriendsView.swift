@@ -7,9 +7,12 @@ struct FriendsView: View {
     @ObservedObject private var manager = FriendSyncManager.shared
 
     @State private var nameInput = ""
+    @State private var phoneInput = ""
     @State private var inviteURL: URL?
     @State private var isPreparingInvite = false
+    @State private var inviteFailed = false
     @State private var friendToRemove: FriendSummary?
+    @State private var viewerToRemove: FriendSyncManager.ShareViewer?
 
     var body: some View {
         NavigationStack {
@@ -25,6 +28,7 @@ struct FriendsView: View {
                         if manager.isEnabled {
                             inviteSection
                             friendsSection
+                            viewersSection
                         } else {
                             setupSection
                         }
@@ -44,6 +48,22 @@ struct FriendsView: View {
             }
             .task {
                 await manager.refreshFriends()
+                await manager.refreshViewers()
+            }
+            .confirmationDialog(
+                Text("friends.viewers.remove_confirm"),
+                isPresented: Binding(
+                    get: { viewerToRemove != nil },
+                    set: { if !$0 { viewerToRemove = nil } }
+                ),
+                titleVisibility: .visible
+            ) {
+                Button(String(localized: "friends.viewers.remove"), role: .destructive) {
+                    if let viewer = viewerToRemove {
+                        Task { await manager.removeViewer(viewer) }
+                    }
+                    viewerToRemove = nil
+                }
             }
             .confirmationDialog(
                 Text("friends.remove_confirm"),
@@ -121,22 +141,58 @@ struct FriendsView: View {
                     inviteLabel(icon: "square.and.arrow.up", key: "friends.invite")
                 }
                 .buttonStyle(.plain)
+
+                Text("friends.invite.ready_note")
+                    .font(.caption)
+                    .foregroundColor(.textSecondary)
             } else {
+                Text("friends.invite.phone_label")
+                    .font(.caption)
+                    .foregroundColor(.textSecondary)
+
+                TextField(String(localized: "friends.invite.phone_placeholder"), text: $phoneInput)
+                    .textFieldStyle(.plain)
+                    .font(.body)
+                    #if os(iOS)
+                    .keyboardType(.phonePad)
+                    #endif
+                    .autocorrectionDisabled()
+                    .padding()
+                    .background(Color.appBackground)
+                    .cornerRadius(12)
+
+                Text("friends.invite.channel_note")
+                    .font(.caption)
+                    .foregroundColor(.textTertiary)
+
+                if inviteFailed {
+                    Text("friends.invite.error_lookup")
+                        .font(.caption)
+                        .foregroundColor(.orange)
+                }
+
                 Button {
                     isPreparingInvite = true
+                    inviteFailed = false
                     Task {
-                        inviteURL = try? await manager.prepareInviteURL()
+                        do {
+                            inviteURL = try await manager.createInvite(
+                                forContact: phoneInput.trimmingCharacters(in: .whitespaces)
+                            )
+                        } catch {
+                            inviteFailed = true
+                        }
                         isPreparingInvite = false
                     }
                 } label: {
                     if isPreparingInvite {
                         inviteLabel(icon: "hourglass", key: "friends.invite.preparing")
                     } else {
-                        inviteLabel(icon: "person.badge.plus", key: "friends.invite")
+                        inviteLabel(icon: "person.badge.plus", key: "friends.invite.send")
                     }
                 }
                 .buttonStyle(.plain)
-                .disabled(isPreparingInvite)
+                .disabled(isPreparingInvite || phoneInput.trimmingCharacters(in: .whitespaces).isEmpty)
             }
 
             Text("friends.invite.note")
@@ -146,6 +202,52 @@ struct FriendsView: View {
         .padding(20)
         .background(Color.cardBackground)
         .cornerRadius(16)
+    }
+
+    // MARK: - Özetimi görenler
+
+    @ViewBuilder
+    private var viewersSection: some View {
+        if !manager.viewers.isEmpty {
+            VStack(alignment: .leading, spacing: 12) {
+                Text("friends.viewers.title")
+                    .font(.caption)
+                    .foregroundColor(.textSecondary)
+
+                ForEach(manager.viewers) { viewer in
+                    HStack {
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(viewer.name ?? viewer.email
+                                 ?? String(localized: "friends.viewers.anonymous"))
+                                .font(.body)
+                                .foregroundColor(.textPrimary)
+
+                            if !viewer.hasAccepted {
+                                Text("friends.viewers.pending")
+                                    .font(.caption)
+                                    .foregroundColor(.textTertiary)
+                            }
+                        }
+
+                        Spacer()
+
+                        Button {
+                            viewerToRemove = viewer
+                        } label: {
+                            Image(systemName: "person.badge.minus")
+                                .foregroundColor(.textSecondary)
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityLabel(Text("friends.viewers.remove"))
+                    }
+                    .padding(.vertical, 4)
+                }
+            }
+            .padding(20)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(Color.cardBackground)
+            .cornerRadius(16)
+        }
     }
 
     private func inviteLabel(icon: String, key: LocalizedStringKey) -> some View {
