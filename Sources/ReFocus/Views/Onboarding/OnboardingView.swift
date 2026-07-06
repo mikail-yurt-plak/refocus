@@ -72,6 +72,9 @@ struct OnboardingView: View {
                 actionButtons
                     .padding(.bottom, 40)
             }
+            // Geniş pencerelerde (macOS/iPad) içerik yayılmasın, seçenekler okunur kalsın
+            .frame(maxWidth: 640)
+            .frame(maxWidth: .infinity)
         }
         .animation(.easeInOut(duration: 0.3), value: currentStep)
     }
@@ -329,23 +332,29 @@ struct WorkContextOnboardingChip: View {
 
     var body: some View {
         Button(action: action) {
-            VStack(spacing: 6) {
+            VStack(spacing: 8) {
                 Text(context.icon)
-                    .font(.title2)
+                    .font(.title)
 
                 Text(context.name)
-                    .font(.caption)
-                    .foregroundColor(isSelected ? .white : .textSecondary)
+                    .font(.subheadline.weight(isSelected ? .semibold : .regular))
+                    .foregroundColor(isSelected ? .white : .textPrimary)
                     .lineLimit(1)
+
+                if isSelected {
+                    Image(systemName: "checkmark.circle.fill")
+                        .font(.caption)
+                        .foregroundColor(.white)
+                }
             }
             .frame(maxWidth: .infinity)
-            .padding(.vertical, 12)
+            .padding(.vertical, 16)
             .background(isSelected ? Color.focusGreen : Color.cardBackground)
             .cornerRadius(12)
             .overlay(
                 RoundedRectangle(cornerRadius: 12)
                     .strokeBorder(
-                        isSelected ? Color.clear : Color.gray.opacity(0.2),
+                        isSelected ? Color.clear : Color.gray.opacity(0.25),
                         lineWidth: 1
                     )
             )

@@ -7,6 +7,8 @@ struct HeatmapView: View {
     @ObservedObject var sessionManager: SessionManager
     @State private var selectedPeriod: Period = .week
     @State private var selectedDate: Date?
+    /// 0 = güncel hafta/ay, -1 = bir önceki, ...
+    @State private var periodOffset = 0
 
     enum Period: CaseIterable {
         case week
@@ -49,6 +51,10 @@ struct HeatmapView: View {
             }
             .navigationTitle(String(localized: "heatmap.title"))
             .largeNavigationTitle()
+            .onChange(of: selectedPeriod) { _, _ in
+                periodOffset = 0
+                selectedDate = nil
+            }
         }
     }
 
@@ -64,6 +70,9 @@ struct HeatmapView: View {
 
     private var heatmapGrid: some View {
         VStack(spacing: 8) {
+            // Dönem gezintisi: önceki/sonraki hafta veya ay
+            periodNavigator
+
             // Gün etiketleri
             HStack(spacing: 4) {
                 ForEach(weekdayLabels, id: \.self) { label in
@@ -75,22 +84,27 @@ struct HeatmapView: View {
             }
             .padding(.horizontal, 24)
 
-            // Heatmap grid
+            // Heatmap grid (nil = ay hizalaması için boş hücre)
             LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 4), count: 7), spacing: 4) {
-                ForEach(datesForPeriod, id: \.self) { date in
-                    HeatmapCell(
-                        date: date,
-                        quality: getQualityForDate(date),
-                        isSelected: selectedDate == date
-                    )
-                    .onTapGesture {
-                        withAnimation {
-                            if selectedDate == date {
-                                selectedDate = nil
-                            } else {
-                                selectedDate = date
+                ForEach(Array(datesForPeriod.enumerated()), id: \.offset) { _, date in
+                    if let date {
+                        HeatmapCell(
+                            date: date,
+                            quality: getQualityForDate(date),
+                            isSelected: selectedDate == date
+                        )
+                        .onTapGesture {
+                            withAnimation {
+                                if selectedDate == date {
+                                    selectedDate = nil
+                                } else {
+                                    selectedDate = date
+                                }
                             }
                         }
+                    } else {
+                        Color.clear
+                            .aspectRatio(1, contentMode: .fit)
                     }
                 }
             }
@@ -104,6 +118,66 @@ struct HeatmapView: View {
         .cornerRadius(20)
         .shadow(color: .black.opacity(0.05), radius: 12, y: 6)
         .padding(.horizontal, 24)
+    }
+
+    private var periodNavigator: some View {
+        HStack {
+            Button {
+                withAnimation {
+                    periodOffset -= 1
+                    selectedDate = nil
+                }
+            } label: {
+                Image(systemName: "chevron.left")
+                    .font(.subheadline.weight(.semibold))
+                    .foregroundColor(.textSecondary)
+                    .frame(width: 32, height: 32)
+                    .background(Color.appBackground)
+                    .clipShape(Circle())
+            }
+            .buttonStyle(.plain)
+
+            Spacer()
+
+            Text(periodTitle)
+                .font(.subheadline.weight(.medium))
+                .foregroundColor(.textPrimary)
+
+            Spacer()
+
+            Button {
+                withAnimation {
+                    periodOffset += 1
+                    selectedDate = nil
+                }
+            } label: {
+                Image(systemName: "chevron.right")
+                    .font(.subheadline.weight(.semibold))
+                    .foregroundColor(.textSecondary)
+                    .frame(width: 32, height: 32)
+                    .background(Color.appBackground)
+                    .clipShape(Circle())
+            }
+            .buttonStyle(.plain)
+            .disabled(periodOffset >= 0)
+            .opacity(periodOffset >= 0 ? 0.3 : 1)
+        }
+        .padding(.horizontal, 24)
+        .padding(.bottom, 4)
+    }
+
+    /// Gösterilen dönemin başlığı: "Temmuz 2026" veya "30 Haz – 6 Tem"
+    private var periodTitle: String {
+        switch selectedPeriod {
+        case .month:
+            return displayedMonthStart.formatted(.dateTime.month(.wide).year())
+        case .week:
+            let start = displayedWeekStart
+            let end = Calendar.current.date(byAdding: .day, value: 6, to: start) ?? start
+            let startText = start.formatted(.dateTime.day().month(.abbreviated))
+            let endText = end.formatted(.dateTime.day().month(.abbreviated))
+            return "\(startText) – \(endText)"
+        }
     }
 
     private var colorScale: some View {
@@ -289,19 +363,41 @@ struct HeatmapView: View {
         ]
     }
 
-    private var datesForPeriod: [Date] {
+    /// Gösterilen haftanın pazartesi başlangıcı (etiketler Pzt..Paz sıralı)
+    private var displayedWeekStart: Date {
         let calendar = Calendar.current
-        let today = Date()
+        let today = calendar.startOfDay(for: Date())
+        let weekday = calendar.component(.weekday, from: today) // 1 = Pazar
+        let mondayOffset = (weekday + 5) % 7
+        let monday = calendar.date(byAdding: .day, value: -mondayOffset, to: today) ?? today
+        return calendar.date(byAdding: .day, value: periodOffset * 7, to: monday) ?? monday
+    }
+
+    /// Gösterilen ayın ilk günü
+    private var displayedMonthStart: Date {
+        let calendar = Calendar.current
+        let thisMonth = calendar.date(from: calendar.dateComponents([.year, .month], from: Date())) ?? Date()
+        return calendar.date(byAdding: .month, value: periodOffset, to: thisMonth) ?? thisMonth
+    }
+
+    /// Grid hücreleri; ay görünümünde ilk haftanın hizalanması için
+    /// baştaki boşluklar nil olarak döner
+    private var datesForPeriod: [Date?] {
+        let calendar = Calendar.current
 
         switch selectedPeriod {
         case .week:
-            return (0..<7).compactMap { offset in
-                calendar.date(byAdding: .day, value: -6 + offset, to: today)
-            }
+            let start = displayedWeekStart
+            return (0..<7).map { calendar.date(byAdding: .day, value: $0, to: start) }
+
         case .month:
-            return (0..<28).compactMap { offset in
-                calendar.date(byAdding: .day, value: -27 + offset, to: today)
-            }
+            let start = displayedMonthStart
+            let dayCount = calendar.range(of: .day, in: .month, for: start)?.count ?? 30
+            let weekday = calendar.component(.weekday, from: start)
+            let leadingBlanks = (weekday + 5) % 7 // Pazartesi hizalı
+            var cells: [Date?] = Array(repeating: nil, count: leadingBlanks)
+            cells += (0..<dayCount).map { calendar.date(byAdding: .day, value: $0, to: start) }
+            return cells
         }
     }
 
@@ -449,19 +545,38 @@ struct HeatmapSessionRow: View {
     }
 }
 
-/// Heatmap hücresi
+/// Heatmap hücresi - ayın gününü de gösterir
 struct HeatmapCell: View {
     let date: Date
     let quality: Double?
     let isSelected: Bool
+
+    private var isFuture: Bool {
+        date > Date()
+    }
+
+    private var dayNumber: String {
+        "\(Calendar.current.component(.day, from: date))"
+    }
 
     var body: some View {
         RoundedRectangle(cornerRadius: 4)
             .fill(cellColor)
             .aspectRatio(1, contentMode: .fit)
             .overlay(
+                Text(dayNumber)
+                    .font(.system(size: 10, weight: .medium))
+                    .foregroundColor(quality != nil ? .white : .textTertiary)
+                    .opacity(isFuture ? 0.35 : 1)
+            )
+            .overlay(
                 RoundedRectangle(cornerRadius: 4)
-                    .strokeBorder(isSelected ? Color.focusGreen : Color.clear, lineWidth: 2)
+                    .strokeBorder(
+                        isSelected ? Color.focusGreen
+                        : Calendar.current.isDateInToday(date) ? Color.focusGreen.opacity(0.4)
+                        : Color.clear,
+                        lineWidth: isSelected ? 2 : 1
+                    )
             )
     }
 

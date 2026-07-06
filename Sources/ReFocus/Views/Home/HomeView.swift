@@ -287,7 +287,7 @@ struct HomeView: View {
                 VStack(spacing: 4) {
                     Text("\(method.breakDuration)")
                         .font(.heading2)
-                        .foregroundColor(.breakBlue)
+                        .foregroundColor(.breakAccent)
                     Text("common.label.break")
                         .font(.caption)
                         .foregroundColor(.textSecondary)

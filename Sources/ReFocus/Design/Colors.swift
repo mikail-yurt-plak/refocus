@@ -20,8 +20,11 @@ extension Color {
     /// Kart arka plan rengi - Beyaz
     static let cardBackground = Color(light: Color(hex: "#FFFFFF"), dark: Color(hex: "#1E2422"))
 
-    /// Mola ekranı rengi - Açık mavi
+    /// Mola ekranı rengi - Açık mavi (zemin rengi)
     static let breakBlue = Color(light: Color(hex: "#E8F1F8"), dark: Color(hex: "#16222C"))
+
+    /// Mola vurgu rengi - metin/rakam için okunabilir mavi
+    static let breakAccent = Color(light: Color(hex: "#4A7FA5"), dark: Color(hex: "#8FBEE0"))
 
     /// Nazik uyarı rengi - Açık sarı
     static let gentleWarning = Color(light: Color(hex: "#FFF4E5"), dark: Color(hex: "#33291A"))
