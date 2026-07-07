@@ -217,7 +217,7 @@ struct FriendsView: View {
                 ForEach(manager.viewers) { viewer in
                     HStack {
                         VStack(alignment: .leading, spacing: 2) {
-                            Text(viewer.name ?? viewer.email
+                            Text(viewer.label
                                  ?? String(localized: "friends.viewers.anonymous"))
                                 .font(.body)
                                 .foregroundColor(.textPrimary)

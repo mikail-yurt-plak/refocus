@@ -160,11 +160,15 @@ final class FriendSyncManager: ObservableObject {
     /// Kullanıcının özetini görebilen bir kişi
     struct ShareViewer: Identifiable {
         let id: String
-        /// Karşılıklı arkadaşsa paylaştığı görünen ad; değilse davet e-postası
+        /// Karşılıklı arkadaşsa paylaştığı görünen ad
         let name: String?
-        let email: String?
+        /// Davette kullanılan iletişim bilgisi (e-posta veya telefon)
+        let contact: String?
         let hasAccepted: Bool
         let participant: CKShare.Participant
+
+        /// Satırda gösterilecek etiket: ad > iletişim bilgisi
+        var label: String? { name ?? contact }
     }
 
     @Published private(set) var viewers: [ShareViewer] = []
@@ -186,11 +190,13 @@ final class FriendSyncManager: ObservableObject {
                 let recordName = participant.userIdentity.userRecordID?.recordName
                 // Karşılıklı arkadaşsa kendi seçtiği görünen adı göster
                 let mutualName = friends.first { $0.zoneID.ownerName == recordName }?.displayName
-                let email = participant.userIdentity.lookupInfo?.emailAddress
+                // Davette kullanılan bilgi: e-posta veya telefon numarası
+                let lookup = participant.userIdentity.lookupInfo
+                let contact = lookup?.emailAddress ?? lookup?.phoneNumber
                 return ShareViewer(
-                    id: recordName ?? email ?? UUID().uuidString,
+                    id: recordName ?? contact ?? UUID().uuidString,
                     name: mutualName,
-                    email: email,
+                    contact: contact,
                     hasAccepted: participant.acceptanceStatus == .accepted,
                     participant: participant
                 )
@@ -198,7 +204,8 @@ final class FriendSyncManager: ObservableObject {
     }
 
     /// Kişinin erişimini kaldırır; herkese açık katılım kapalı olduğu için
-    /// eski davet linkiyle geri dönemez
+    /// eski davet linkiyle geri dönemez.
+    /// Sunucu yayılımı gecikebildiği için liste yerel olarak anında güncellenir.
     func removeViewer(_ viewer: ShareViewer) async {
         guard let share = await fetchShare() else { return }
         let targetID = viewer.participant.userIdentity.userRecordID
@@ -206,8 +213,12 @@ final class FriendSyncManager: ObservableObject {
         where participant.role != .owner && participant.userIdentity.userRecordID == targetID {
             share.removeParticipant(participant)
         }
-        _ = try? await privateDB.modifyRecords(saving: [share], deleting: [])
-        await refreshViewers()
+        guard (try? await privateDB.modifyRecords(saving: [share], deleting: [])) != nil else {
+            return // kaldırma başarısız: listeyi olduğu gibi bırak
+        }
+        await MainActor.run {
+            viewers.removeAll { $0.id == viewer.id }
+        }
     }
 
     /// Davet linkine tıklayan tarafta paylaşımı kabul eder

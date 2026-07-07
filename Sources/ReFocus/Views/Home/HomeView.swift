@@ -469,7 +469,7 @@ struct SessionStartSheet: View {
                         .font(.heading2)
                         .foregroundColor(.textPrimary)
 
-                    Text("\(method.focusDuration) dk odak / \(method.breakDuration) dk mola")
+                    Text("common.duration_format \(method.focusDuration) \(method.breakDuration)")
                         .font(.caption)
                         .foregroundColor(.textSecondary)
                 }

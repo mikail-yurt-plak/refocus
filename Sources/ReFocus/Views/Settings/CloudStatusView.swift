@@ -29,13 +29,25 @@ struct CloudStatusView: View {
                             .padding(.top, 8)
 
                         VStack(spacing: 0) {
-                            statusRow(
-                                label: Text("cloudstatus.account"),
-                                value: accountStatus == .available
-                                    ? Text("cloudstatus.account.connected")
-                                    : Text("cloudstatus.account.unavailable"),
-                                isPositive: accountStatus == .available
-                            )
+                            VStack(alignment: .leading, spacing: 0) {
+                                statusRow(
+                                    label: Text("cloudstatus.account"),
+                                    value: accountStatus == .available
+                                        ? Text("cloudstatus.account.connected")
+                                        : Text("cloudstatus.account.unavailable"),
+                                    isPositive: accountStatus == .available
+                                )
+
+                                if accountStatus == .available {
+                                    // Apple, hesap e-postasını uygulamalara vermez;
+                                    // hangi hesabın kullanıldığını böyle netleştiriyoruz
+                                    Text("cloudstatus.account.hint")
+                                        .font(.caption)
+                                        .foregroundColor(.textTertiary)
+                                        .padding(.horizontal, 16)
+                                        .padding(.bottom, 12)
+                                }
+                            }
 
                             Divider().padding(.leading, 16)
 

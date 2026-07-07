@@ -236,13 +236,15 @@ struct FeedbackView: View {
 
             // Süre bilgisi
             HStack {
-                Text("\(Int(session.totalFocusDuration / 60)) dk")
+                Text(String(format: String(localized: "common.minutes_format"),
+                            Int(session.totalFocusDuration / 60)))
                     .font(.caption)
                     .foregroundColor(.focusGreen)
 
                 Spacer()
 
-                Text("\(session.method.focusDuration) dk")
+                Text(String(format: String(localized: "common.minutes_format"),
+                            session.method.focusDuration))
                     .font(.caption)
                     .foregroundColor(.textTertiary)
             }
