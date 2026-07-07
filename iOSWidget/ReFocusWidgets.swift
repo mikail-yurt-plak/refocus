@@ -250,7 +250,8 @@ struct ReFocusLiveActivity: Widget {
                     .font(.system(size: 34, weight: .medium, design: .rounded))
                     .monospacedDigit()
                     .foregroundStyle(context.state.isBreak ? Color.blue : focusGreenLight)
-                    .frame(maxWidth: 120)
+                    .frame(maxWidth: 170)
+                    .minimumScaleFactor(0.7)
                     .multilineTextAlignment(.trailing)
             }
             .padding()
@@ -276,7 +277,8 @@ struct ReFocusLiveActivity: Widget {
                         .font(.system(size: 30, weight: .medium, design: .rounded))
                         .monospacedDigit()
                         .foregroundStyle(context.state.isBreak ? Color.blue : focusGreenLight)
-                        .frame(maxWidth: 100)
+                        .frame(maxWidth: 140)
+                        .minimumScaleFactor(0.7)
                         .multilineTextAlignment(.trailing)
                         .padding(.trailing, 4)
                 }
@@ -288,7 +290,8 @@ struct ReFocusLiveActivity: Widget {
                      countsDown: true)
                     .monospacedDigit()
                     .foregroundStyle(context.state.isBreak ? Color.blue : focusGreenLight)
-                    .frame(maxWidth: 44)
+                    .frame(maxWidth: 52)
+                    .minimumScaleFactor(0.8)
             } minimal: {
                 Image(systemName: "circle.circle")
                     .foregroundStyle(focusGreenLight)
