@@ -694,6 +694,11 @@ class AppState: ObservableObject {
         }
 
         mergeProfileFromCloud()
+
+        #if os(iOS)
+        // Apple Watch köprüsü: durum yayını + saatten komut alma
+        PhoneWatchBridge.shared.configure(appState: self)
+        #endif
     }
 
     func completeOnboarding(profile: UserProfile) {

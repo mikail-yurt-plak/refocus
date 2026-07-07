@@ -212,6 +212,9 @@ class SessionManager: ObservableObject {
     }
     #endif
 
+    /// Watch köprüsü için aktif fazın bitiş anı (salt okunur)
+    var phaseEndDateForWatch: Date? { phaseEndDate }
+
     // MARK: - Timer Management
 
     private func startTimer() {
