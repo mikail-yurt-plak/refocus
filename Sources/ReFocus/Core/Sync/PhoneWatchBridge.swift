@@ -33,18 +33,36 @@ final class PhoneWatchBridge: NSObject, WCSessionDelegate {
         pushStateIfChanged()
     }
 
+    private func recommendedMethod() -> FocusMethod {
+        guard let appState else { return .pomodoro }
+        let fallback = OnboardingAnswers(
+            workType: .knowledgeWorker, struggleTime: .medium,
+            hardestPart: .starting, phoneCheckingFrequency: .sometimes)
+        return MethodSelectionEngine.selectMethod(
+            for: appState.userProfile ?? UserProfile(onboardingAnswers: fallback),
+            previousSessions: appState.sessionManager.getAllSessions(),
+            todaysMood: nil
+        )
+    }
+
     private func snapshot() -> [String: String] {
-        guard let manager = appState?.sessionManager,
-              let session = manager.currentSession,
-              let endDate = manager.phaseEndDateForWatch else {
-            return ["active": "0"]
-        }
-        return [
-            "active": "1",
-            "isBreak": manager.isBreak ? "1" : "0",
-            "method": session.method.rawValue,
-            "endDate": String(endDate.timeIntervalSince1970)
+        guard let manager = appState?.sessionManager else { return ["active": "0"] }
+
+        let todayMinutes = manager.getTodaysSessions()
+            .reduce(0) { $0 + Int($1.totalFocusDuration / 60) }
+        var dict = [
+            "active": "0",
+            "recommended": recommendedMethod().rawValue,
+            "todayMinutes": String(todayMinutes)
         ]
+        if let session = manager.currentSession,
+           let endDate = manager.phaseEndDateForWatch {
+            dict["active"] = "1"
+            dict["isBreak"] = manager.isBreak ? "1" : "0"
+            dict["method"] = session.method.rawValue
+            dict["endDate"] = String(endDate.timeIntervalSince1970)
+        }
+        return dict
     }
 
     private func pushStateIfChanged() {
@@ -53,7 +71,11 @@ final class PhoneWatchBridge: NSObject, WCSessionDelegate {
               WCSession.default.activationState == .activated else { return }
         lastSnapshot = current
 
-        var context: [String: Any] = ["active": current["active"] == "1"]
+        var context: [String: Any] = [
+            "active": current["active"] == "1",
+            "recommended": current["recommended"] ?? "",
+            "todayMinutes": Int(current["todayMinutes"] ?? "") ?? 0
+        ]
         if current["active"] == "1" {
             context["isBreak"] = current["isBreak"] == "1"
             context["method"] = current["method"] ?? ""
@@ -73,14 +95,11 @@ final class PhoneWatchBridge: NSObject, WCSessionDelegate {
             switch command {
             case "start":
                 guard manager.currentSession == nil else { break }
-                // Telefondaki mantıkla aynı: önerilen metod + alışılmış niyet/bağlam
-                let method = MethodSelectionEngine.selectMethod(
-                    for: appState.userProfile ?? UserProfile(onboardingAnswers: OnboardingAnswers(
-                        workType: .knowledgeWorker, struggleTime: .medium,
-                        hardestPart: .starting, phoneCheckingFrequency: .sometimes)),
-                    previousSessions: manager.getAllSessions(),
-                    todaysMood: nil
-                )
+                // Saatte seçilen metod; seçilmediyse telefonun önerisi.
+                // Niyet ve bağlam her zaman alışılmış olanlar (karar yükü yok).
+                let method = (message["method"] as? String)
+                    .flatMap(FocusMethod.init(rawValue:))
+                    ?? self?.recommendedMethod() ?? .pomodoro
                 let context = WorkContextManager.shared.selectedContext
                 manager.startSession(
                     method: method,
@@ -91,6 +110,8 @@ final class PhoneWatchBridge: NSObject, WCSessionDelegate {
             case "end":
                 manager.endSession()
                 appState.endSession()
+            case "skipBreak":
+                manager.skipBreak()
             default:
                 break
             }

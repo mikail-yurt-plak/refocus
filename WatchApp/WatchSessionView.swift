@@ -1,11 +1,22 @@
 import SwiftUI
 
-/// Watch ana ekranı: aktif seansta canlı sayaç + bitir;
-/// boşta önerilen seansı tek dokunuşla başlat.
+/// Watch ana ekranı: aktif seansta canlı sayaç + bitir/molayı atla;
+/// boşta bugünün özeti, önerilen metod ve tek dokunuşla başlatma.
 struct WatchSessionView: View {
     @ObservedObject private var manager = WatchSessionManager.shared
+    @State private var showingMethodPicker = false
 
     private let focusGreen = Color(red: 0.18, green: 0.49, blue: 0.44)
+
+    private var recommended: FocusMethod {
+        manager.recommendedMethod.flatMap(FocusMethod.init(rawValue:)) ?? .pomodoro
+    }
+
+    /// Süre satırı; metodun adı zaten "52/17" gibi oranın kendisiyse tekrarlama
+    private func durationLine(_ method: FocusMethod) -> String? {
+        let line = "\(method.focusDuration)/\(method.breakDuration)"
+        return line == method.rawValue ? nil : line
+    }
 
     var body: some View {
         Group {
@@ -16,12 +27,15 @@ struct WatchSessionView: View {
             }
         }
         .padding(.horizontal, 4)
+        .sheet(isPresented: $showingMethodPicker) {
+            methodPicker
+        }
     }
 
     // MARK: - Aktif seans
 
     private func activeSession(_ state: WatchSessionManager.SessionState) -> some View {
-        VStack(spacing: 8) {
+        VStack(spacing: 6) {
             Text(state.methodName)
                 .font(.footnote)
                 .foregroundStyle(.secondary)
@@ -29,7 +43,7 @@ struct WatchSessionView: View {
             // Sistem kendisi sayar: duvar saatiyle her zaman tutarlı
             Text(timerInterval: Date.now...max(Date.now, state.endDate),
                  countsDown: true)
-                .font(.system(size: 40, weight: .medium, design: .rounded))
+                .font(.system(size: 38, weight: .medium, design: .rounded))
                 .monospacedDigit()
                 .foregroundStyle(state.isBreak ? Color.blue.opacity(0.85) : focusGreen)
                 .multilineTextAlignment(.center)
@@ -37,6 +51,17 @@ struct WatchSessionView: View {
             Text(state.isBreak ? "common.label.break" : "common.label.focus")
                 .font(.caption2)
                 .foregroundStyle(.secondary)
+
+            if state.isBreak {
+                Button {
+                    manager.skipBreak()
+                } label: {
+                    Text("focus.skip_break")
+                        .font(.footnote)
+                }
+                .tint(focusGreen)
+                .disabled(!manager.isReachable)
+            }
 
             Button {
                 manager.endSession()
@@ -52,11 +77,41 @@ struct WatchSessionView: View {
     // MARK: - Boş durum
 
     private var idleView: some View {
-        VStack(spacing: 10) {
-            Text("watch.start_hint")
-                .font(.footnote)
+        VStack(spacing: 8) {
+            // Bugünün özeti: sakin tek satır
+            if manager.todayMinutes > 0 {
+                HStack(spacing: 4) {
+                    Text("friends.today")
+                    Text("·")
+                    Text(String(format: String(localized: "common.minutes_format"),
+                                manager.todayMinutes))
+                }
+                .font(.caption2)
                 .foregroundStyle(.secondary)
-                .multilineTextAlignment(.center)
+            }
+
+            // Önerilen metod; dokununca seçici açılır
+            Button {
+                showingMethodPicker = true
+            } label: {
+                HStack(spacing: 6) {
+                    Text(recommended.icon)
+                    VStack(alignment: .leading, spacing: 0) {
+                        Text(recommended.rawValue)
+                            .font(.footnote.weight(.medium))
+                        if let durations = durationLine(recommended) {
+                            Text(durations)
+                                .font(.caption2)
+                                .foregroundStyle(.secondary)
+                        }
+                    }
+                    Spacer()
+                    Image(systemName: "chevron.down")
+                        .font(.caption2)
+                        .foregroundStyle(.tertiary)
+                }
+            }
+            .buttonStyle(.bordered)
 
             Button {
                 manager.startSession()
@@ -74,6 +129,37 @@ struct WatchSessionView: View {
                     .multilineTextAlignment(.center)
             }
         }
+    }
+
+    // MARK: - Metod seçici
+
+    private var methodPicker: some View {
+        List(FocusMethod.allCases, id: \.self) { method in
+            Button {
+                showingMethodPicker = false
+                manager.startSession(method: method)
+            } label: {
+                HStack(spacing: 8) {
+                    Text(method.icon)
+                    VStack(alignment: .leading, spacing: 1) {
+                        Text(method.rawValue)
+                            .font(.footnote.weight(.medium))
+                        if let durations = durationLine(method) {
+                            Text(durations)
+                                .font(.caption2)
+                                .foregroundStyle(.secondary)
+                        }
+                    }
+                    Spacer()
+                    if method == recommended {
+                        Image(systemName: "sparkles")
+                            .font(.caption2)
+                            .foregroundStyle(focusGreen)
+                    }
+                }
+            }
+        }
+        .navigationTitle(Text("method.choose_title"))
     }
 }
 

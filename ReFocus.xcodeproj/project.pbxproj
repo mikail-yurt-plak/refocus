@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CD3D89ABF7B8C9DAEBFC0806 /* ReFocusComplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3D89ABF7B8C9DAEBFC0801 /* ReFocusComplication.swift */; };
+		CD3D89ABF7B8C9DAEBFC0807 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 3C0DE5A31A2B3C4D5E6F7083 /* Localizable.xcstrings */; };
+		CD3D89ABF7B8C9DAEBFC0808 /* FocusMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 099BBF234A735A602A222F37 /* FocusMethod.swift */; };
+		CD3D89ABF7B8C9DAEBFC0809 /* ReFocusWatchWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = CD3D89ABF7B8C9DAEBFC0805 /* ReFocusWatchWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		AB1B6789F5A6B7C8D9E00606 /* ReFocusWatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB1B6789F5A6B7C8D9E00601 /* ReFocusWatchApp.swift */; };
 		AB1B6789F5A6B7C8D9E00607 /* WatchSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB1B6789F5A6B7C8D9E00602 /* WatchSessionManager.swift */; };
 		AB1B6789F5A6B7C8D9E00608 /* WatchSessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB1B6789F5A6B7C8D9E00603 /* WatchSessionView.swift */; };
@@ -100,6 +104,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		CD3D89ABF7B8C9DAEBFC0812 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F8FFB5F7CC2262CA38969DFF /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CD3D89ABF7B8C9DAEBFC0811;
+			remoteInfo = ReFocus_WatchWidget;
+		};
 		5A0FDCFB476687FDFA5BC62D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = F8FFB5F7CC2262CA38969DFF /* Project object */;
@@ -110,6 +121,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		CD3D89ABF7B8C9DAEBFC0801 /* ReFocusComplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReFocusComplication.swift; sourceTree = "<group>"; };
+		CD3D89ABF7B8C9DAEBFC0802 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CD3D89ABF7B8C9DAEBFC0803 /* ReFocusWatchWidget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ReFocusWatchWidget.entitlements; sourceTree = "<group>"; };
+		CD3D89ABF7B8C9DAEBFC0804 /* ReFocusWatch.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ReFocusWatch.entitlements; sourceTree = "<group>"; };
+		CD3D89ABF7B8C9DAEBFC0805 /* ReFocusWatchWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ReFocusWatchWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		AB1B6789F5A6B7C8D9E00601 /* ReFocusWatchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReFocusWatchApp.swift; sourceTree = "<group>"; };
 		AB1B6789F5A6B7C8D9E00602 /* WatchSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSessionManager.swift; sourceTree = "<group>"; };
 		AB1B6789F5A6B7C8D9E00603 /* WatchSessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSessionView.swift; sourceTree = "<group>"; };
@@ -168,6 +184,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		CD3D89ABF7B8C9DAEBFC080D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		AB1B6789F5A6B7C8D9E0060F /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -188,6 +211,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXTargetDependency section */
+		CD3D89ABF7B8C9DAEBFC0813 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CD3D89ABF7B8C9DAEBFC0811 /* ReFocus_WatchWidget */;
+			targetProxy = CD3D89ABF7B8C9DAEBFC0812 /* PBXContainerItemProxy */;
+		};
 		AB1B6789F5A6B7C8D9E00615 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = AB1B6789F5A6B7C8D9E00613 /* ReFocus_Watch */;
@@ -196,6 +224,17 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		CD3D89ABF7B8C9DAEBFC0814 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				CD3D89ABF7B8C9DAEBFC0809 /* ReFocusWatchWidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		AB1B6789F5A6B7C8D9E00616 /* Embed Watch Content */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -265,6 +304,7 @@
 			children = (
 				2E7CD58E7E6100DF82CFADC5 /* ReFocus */,
 				AB1B6789F5A6B7C8D9E0060C /* WatchApp */,
+				CD3D89ABF7B8C9DAEBFC080A /* WatchWidget */,
 				B2365F33E11A14A074A45B5C /* ReFocusTests */,
 				50BB6E3738E25B831AE20095 /* Products */,
 			);
@@ -277,8 +317,19 @@
 				AB1B6789F5A6B7C8D9E00602 /* WatchSessionManager.swift */,
 				AB1B6789F5A6B7C8D9E00603 /* WatchSessionView.swift */,
 				AB1B6789F5A6B7C8D9E00604 /* Assets.xcassets */,
+				CD3D89ABF7B8C9DAEBFC0804 /* ReFocusWatch.entitlements */,
 			);
 			path = WatchApp;
+			sourceTree = "<group>";
+		};
+		CD3D89ABF7B8C9DAEBFC080A /* WatchWidget */ = {
+			isa = PBXGroup;
+			children = (
+				CD3D89ABF7B8C9DAEBFC0801 /* ReFocusComplication.swift */,
+				CD3D89ABF7B8C9DAEBFC0802 /* Info.plist */,
+				CD3D89ABF7B8C9DAEBFC0803 /* ReFocusWatchWidget.entitlements */,
+			);
+			path = WatchWidget;
 			sourceTree = "<group>";
 		};
 		50BB6E3738E25B831AE20095 /* Products */ = {
@@ -287,6 +338,7 @@
 				90DD4A35A7318251201C11B7 /* ReFocus.app */,
 				90085EA79A00DA35B73B6C21 /* ReFocus.app */,
 				AB1B6789F5A6B7C8D9E00605 /* ReFocus Watch App.app */,
+				CD3D89ABF7B8C9DAEBFC0805 /* ReFocusWatchWidgetExtension.appex */,
 				203B641E94CD2BCFBC88A42D /* ReFocusTests.xctest */,
 			);
 			name = Products;
@@ -509,6 +561,23 @@
 			productReference = 203B641E94CD2BCFBC88A42D /* ReFocusTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		CD3D89ABF7B8C9DAEBFC0811 /* ReFocus_WatchWidget */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CD3D89ABF7B8C9DAEBFC0810 /* Build configuration list for PBXNativeTarget "ReFocus_WatchWidget" */;
+			buildPhases = (
+				CD3D89ABF7B8C9DAEBFC080B /* Sources */,
+				CD3D89ABF7B8C9DAEBFC080D /* Frameworks */,
+				CD3D89ABF7B8C9DAEBFC080C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ReFocus_WatchWidget;
+			productName = ReFocusWatchWidgetExtension;
+			productReference = CD3D89ABF7B8C9DAEBFC0805 /* ReFocusWatchWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		AB1B6789F5A6B7C8D9E00613 /* ReFocus_Watch */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = AB1B6789F5A6B7C8D9E00612 /* Build configuration list for PBXNativeTarget "ReFocus_Watch" */;
@@ -516,10 +585,12 @@
 				AB1B6789F5A6B7C8D9E0060D /* Sources */,
 				AB1B6789F5A6B7C8D9E0060F /* Frameworks */,
 				AB1B6789F5A6B7C8D9E0060E /* Resources */,
+				CD3D89ABF7B8C9DAEBFC0814 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				CD3D89ABF7B8C9DAEBFC0813 /* PBXTargetDependency */,
 			);
 			name = ReFocus_Watch;
 			productName = "ReFocus Watch App";
@@ -618,11 +689,20 @@
 				C0DF35E7419B4D1018B5C66F /* ReFocus_iOS */,
 				FD40D62D35FE4132115B8688 /* ReFocus_macOS */,
 				AB1B6789F5A6B7C8D9E00613 /* ReFocus_Watch */,
+				CD3D89ABF7B8C9DAEBFC0811 /* ReFocus_WatchWidget */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		CD3D89ABF7B8C9DAEBFC080C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CD3D89ABF7B8C9DAEBFC0807 /* Localizable.xcstrings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		AB1B6789F5A6B7C8D9E0060E /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -653,6 +733,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		CD3D89ABF7B8C9DAEBFC080B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CD3D89ABF7B8C9DAEBFC0806 /* ReFocusComplication.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		AB1B6789F5A6B7C8D9E0060D /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -660,6 +748,7 @@
 				AB1B6789F5A6B7C8D9E00606 /* ReFocusWatchApp.swift in Sources */,
 				AB1B6789F5A6B7C8D9E00607 /* WatchSessionManager.swift in Sources */,
 				AB1B6789F5A6B7C8D9E00608 /* WatchSessionView.swift in Sources */,
+				CD3D89ABF7B8C9DAEBFC0808 /* FocusMethod.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -775,9 +864,62 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		CD3D89ABF7B8C9DAEBFC080E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = WatchWidget/ReFocusWatchWidget.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = XZ826V4Q3F;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = WatchWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = ReFocus;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mikailyurt.refocus.watchkitapp.widget;
+				PRODUCT_NAME = ReFocusWatchWidgetExtension;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.9;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
+			};
+			name = Debug;
+		};
+		CD3D89ABF7B8C9DAEBFC080F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = WatchWidget/ReFocusWatchWidget.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = XZ826V4Q3F;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = WatchWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = ReFocus;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mikailyurt.refocus.watchkitapp.widget;
+				PRODUCT_NAME = ReFocusWatchWidgetExtension;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.9;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
+			};
+			name = Release;
+		};
 		AB1B6789F5A6B7C8D9E00610 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = WatchApp/ReFocusWatch.entitlements;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -803,6 +945,7 @@
 		AB1B6789F5A6B7C8D9E00611 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = WatchApp/ReFocusWatch.entitlements;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1079,6 +1222,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		CD3D89ABF7B8C9DAEBFC0810 /* Build configuration list for PBXNativeTarget "ReFocus_WatchWidget" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CD3D89ABF7B8C9DAEBFC080E /* Debug */,
+				CD3D89ABF7B8C9DAEBFC080F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		AB1B6789F5A6B7C8D9E00612 /* Build configuration list for PBXNativeTarget "ReFocus_Watch" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
