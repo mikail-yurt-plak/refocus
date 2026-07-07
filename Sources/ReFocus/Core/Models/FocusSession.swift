@@ -31,12 +31,14 @@ enum SessionIntent: String, Codable, CaseIterable {
         }
     }
 
-    /// Bölünme sayılması için minimum arka plan süresi (saniye)
+    /// Bölünme sayılması için minimum arka plan süresi (saniye).
+    /// Ekran kilidi hiçbir modda bölünme sayılmaz; bu eşikler yalnızca
+    /// başka uygulamaya geçişler için geçerlidir.
     var interruptionThreshold: TimeInterval {
         switch self {
         case .reading: return 30    // 30 saniye sonra bölünme
         case .watching: return -1   // Süre bazlı bölünme yok, sadece düzensizlik
-        case .mixed: return 60      // 60 saniye sonra bölünme
+        case .mixed: return 120     // Hızlı mesaj/arama cezasız; 2 dk üzeri kopuş sayılır
         }
     }
 

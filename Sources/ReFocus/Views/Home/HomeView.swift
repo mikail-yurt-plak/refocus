@@ -497,12 +497,18 @@ struct SessionStartSheet: View {
                 }
                 .padding(.horizontal, 24)
 
-                // Seçili niyetin açıklaması
+                // Seçili niyetin açıklaması: mod ne için, kural ne
                 Text(intentDescription)
-                    .font(.caption)
-                    .foregroundColor(.textTertiary)
+                    .font(.footnote)
+                    .foregroundColor(.textSecondary)
                     .multilineTextAlignment(.center)
-                    .padding(.horizontal, 32)
+                    .padding(.vertical, 12)
+                    .padding(.horizontal, 16)
+                    .frame(maxWidth: .infinity)
+                    .background(Color.cardBackground)
+                    .cornerRadius(12)
+                    .padding(.horizontal, 24)
+                    .animation(.easeInOut(duration: 0.15), value: selectedIntent)
 
                 // Başla butonu
                 Button(action: {

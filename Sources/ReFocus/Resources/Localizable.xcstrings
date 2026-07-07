@@ -19270,372 +19270,372 @@
     },
     "intent.description.mixed": {
       "localizations": {
-        "ar": {
+        "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "في الوضع المختلط، الفترات التي تزيد عن 60 ثانية تعتبر انقطاعات."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Im gemischten Modus zählen Pausen über 60 Sekunden als Unterbrechungen."
+            "value": "Genel çalışma için. Telefonu kilitleyebilirsin — yalnızca başka bir uygulamada 2 dakikadan uzun kalırsan bölünme sayılır."
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "In mixed mode, breaks longer than 60 seconds count as interruptions."
+            "value": "For general work. You can lock your phone — only staying in another app for more than 2 minutes counts as an interruption."
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "للعمل العام. يمكنك قفل الهاتف — لا يُحتسب انقطاعًا إلا البقاء في تطبيق آخر لأكثر من دقيقتين."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Für allgemeines Arbeiten. Du kannst das Telefon sperren — nur wenn du länger als 2 Minuten in einer anderen App bleibst, zählt das als Unterbrechung."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "En modo mixto, pausas mayores a 60 segundos cuentan como interrupciones."
+            "value": "Para trabajo general. Puedes bloquear el teléfono: solo cuenta como interrupción si pasas más de 2 minutos en otra aplicación."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "En mode mixte, les pauses de plus de 60 secondes comptent comme interruptions."
+            "value": "Pour le travail en général. Tu peux verrouiller le téléphone — seul un passage de plus de 2 minutes dans une autre app compte comme une interruption."
           }
         },
         "hi": {
           "stringUnit": {
             "state": "translated",
-            "value": "मिश्रित मोड में 60 सेकंड से अधिक का ब्रेक व्यवधान माना जाता है।"
+            "value": "सामान्य काम के लिए। आप फ़ोन लॉक कर सकते हैं — केवल किसी दूसरे ऐप में 2 मिनट से ज़्यादा रहना ही व्यवधान माना जाता है।"
           }
         },
         "id": {
           "stringUnit": {
             "state": "translated",
-            "value": "Dalam mode campuran, jeda lebih dari 60 detik dihitung sebagai gangguan."
+            "value": "Untuk pekerjaan umum. Kamu bisa mengunci ponsel — hanya berada di aplikasi lain lebih dari 2 menit yang dihitung sebagai interupsi."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "In modalità mista, pause superiori a 60 secondi contano come interruzioni."
+            "value": "Per il lavoro in generale. Puoi bloccare il telefono — solo restare in un'altra app per più di 2 minuti conta come interruzione."
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "ミックスモードでは60秒以上の離脱は中断としてカウントされます。"
+            "value": "一般的な作業に。スマホをロックしてもかまいません — 他のアプリに2分以上とどまった場合だけ、中断として数えられます。"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "혼합 모드에서는 60초 이상 이탈 시 방해로 집계됩니다."
+            "value": "일반적인 작업에 적합해요. 휴대폰을 잠가도 돼요 — 다른 앱에 2분 넘게 머무는 경우에만 중단으로 기록돼요."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "In gemengde modus tellen pauzes langer dan 60 seconden als onderbrekingen."
+            "value": "Voor algemeen werk. Je kunt je telefoon vergrendelen — alleen langer dan 2 minuten in een andere app telt als onderbreking."
           }
         },
         "pl": {
           "stringUnit": {
             "state": "translated",
-            "value": "W trybie mieszanym przerwy dłuższe niż 60 sekund liczą się jako przerwania."
+            "value": "Do ogólnej pracy. Możesz zablokować telefon; za przerwanie liczy się tylko pozostanie w innej aplikacji dłużej niż 2 minuty."
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "No modo misto, pausas maiores que 60 segundos contam como interrupções."
+            "value": "Para trabalho em geral. Você pode bloquear o telefone — só conta como interrupção se você ficar mais de 2 minutos em outro aplicativo."
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "В смешанном режиме перерывы более 60 секунд считаются прерываниями."
+            "value": "Для обычной работы. Можно заблокировать телефон: перерывом считается только пребывание в другом приложении дольше 2 минут."
           }
         },
         "th": {
           "stringUnit": {
             "state": "translated",
-            "value": "ในโหมดผสม การหยุดพักเกิน 60 วินาทีนับเป็นการขัดจังหวะ"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Karışık modda 60 saniyeden uzun ayrılmalar bölünme sayılır."
+            "value": "สำหรับการทำงานทั่วไป คุณล็อกโทรศัพท์ได้ — จะนับเป็นการขัดจังหวะก็ต่อเมื่ออยู่ในแอปอื่นนานกว่า 2 นาทีเท่านั้น"
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "У змішаному режимі перерви понад 60 секунд вважаються перериваннями."
+            "value": "Для загальної роботи. Можна заблокувати телефон: перервою вважається лише перебування в іншому застосунку довше 2 хвилин."
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Trong chế độ hỗn hợp, nghỉ hơn 60 giây được tính là gián đoạn."
+            "value": "Dành cho công việc nói chung. Bạn có thể khóa điện thoại — chỉ khi ở trong ứng dụng khác quá 2 phút mới được tính là gián đoạn."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "在混合模式下，超过60秒的离开将计为中断。"
+            "value": "适合一般性的工作。你可以锁定手机——只有在其他应用中停留超过 2 分钟才会计为一次中断。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "在混合模式下，超過60秒的離開將計為中斷。"
+            "value": "適合一般性的工作。你可以鎖定手機——只有在其他 App 停留超過 2 分鐘才會計為一次中斷。"
           }
         }
       }
     },
     "intent.description.reading": {
       "localizations": {
-        "ar": {
+        "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "في وضع القراءة/الكتابة، الفترات التي تزيد عن 30 ثانية تعتبر انقطاعات."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Im Lese-/Schreibmodus zählen Pausen über 30 Sekunden als Unterbrechungen."
+            "value": "Kitaptan ya da ekrandan okuma-yazma için. Telefonu kilitleyebilirsin — yalnızca başka bir uygulamada 30 saniyeden uzun kalırsan bölünme sayılır."
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "In reading/writing mode, breaks longer than 30 seconds count as interruptions."
+            "value": "For reading and writing, from a book or a screen. You can lock your phone — only staying in another app for more than 30 seconds counts as an interruption."
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "للقراءة والكتابة، من كتاب أو من الشاشة. يمكنك قفل الهاتف — لا يُحتسب انقطاعًا إلا البقاء في تطبيق آخر لأكثر من 30 ثانية."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zum Lesen und Schreiben – aus dem Buch oder am Bildschirm. Du kannst das Telefon sperren — nur wenn du länger als 30 Sekunden in einer anderen App bleibst, zählt das als Unterbrechung."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "En modo lectura/escritura, pausas mayores a 30 segundos cuentan como interrupciones."
+            "value": "Para leer y escribir, en un libro o en la pantalla. Puedes bloquear el teléfono: solo cuenta como interrupción si pasas más de 30 segundos en otra aplicación."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "En mode lecture/écriture, les pauses de plus de 30 secondes comptent comme interruptions."
+            "value": "Pour lire et écrire, sur un livre ou un écran. Tu peux verrouiller le téléphone — seul un passage de plus de 30 secondes dans une autre app compte comme une interruption."
           }
         },
         "hi": {
           "stringUnit": {
             "state": "translated",
-            "value": "पढ़ने/लिखने मोड में 30 सेकंड से अधिक का ब्रेक व्यवधान माना जाता है।"
+            "value": "किताब या स्क्रीन से पढ़ने-लिखने के लिए। आप फ़ोन लॉक कर सकते हैं — केवल किसी दूसरे ऐप में 30 सेकंड से ज़्यादा रहना ही व्यवधान माना जाता है।"
           }
         },
         "id": {
           "stringUnit": {
             "state": "translated",
-            "value": "Dalam mode membaca/menulis, jeda lebih dari 30 detik dihitung sebagai gangguan."
+            "value": "Untuk membaca dan menulis, dari buku atau layar. Kamu bisa mengunci ponsel — hanya berada di aplikasi lain lebih dari 30 detik yang dihitung sebagai interupsi."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "In modalità lettura/scrittura, pause superiori a 30 secondi contano come interruzioni."
+            "value": "Per leggere e scrivere, su libro o schermo. Puoi bloccare il telefono — solo restare in un'altra app per più di 30 secondi conta come interruzione."
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "読み書きモードでは30秒以上の離脱は中断としてカウントされます。"
+            "value": "本や画面での読み書きに。スマホをロックしてもかまいません — 他のアプリに30秒以上とどまった場合だけ、中断として数えられます。"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "읽기/쓰기 모드에서는 30초 이상 이탈 시 방해로 집계됩니다."
+            "value": "책이나 화면으로 읽고 쓰는 작업에 적합해요. 휴대폰을 잠가도 돼요 — 다른 앱에 30초 넘게 머무는 경우에만 중단으로 기록돼요."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "In lees-/schrijfmodus tellen pauzes langer dan 30 seconden als onderbrekingen."
+            "value": "Voor lezen en schrijven, uit een boek of van een scherm. Je kunt je telefoon vergrendelen — alleen langer dan 30 seconden in een andere app telt als onderbreking."
           }
         },
         "pl": {
           "stringUnit": {
             "state": "translated",
-            "value": "W trybie czytania/pisania przerwy dłuższe niż 30 sekund liczą się jako przerwania."
+            "value": "Do czytania i pisania — z książki lub z ekranu. Możesz zablokować telefon; za przerwanie liczy się tylko pozostanie w innej aplikacji dłużej niż 30 sekund."
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "No modo leitura/escrita, pausas maiores que 30 segundos contam como interrupções."
+            "value": "Para ler e escrever, no livro ou na tela. Você pode bloquear o telefone — só conta como interrupção se você ficar mais de 30 segundos em outro aplicativo."
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "В режиме чтения/письма перерывы более 30 секунд считаются прерываниями."
+            "value": "Для чтения и письма — по книге или с экрана. Можно заблокировать телефон: перерывом считается только пребывание в другом приложении дольше 30 секунд."
           }
         },
         "th": {
           "stringUnit": {
             "state": "translated",
-            "value": "ในโหมดอ่าน/เขียน การหยุดพักเกิน 30 วินาทีนับเป็นการขัดจังหวะ"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Okuma/yazma modunda 30 saniyeden uzun ayrılmalar bölünme sayılır."
+            "value": "สำหรับการอ่านและเขียน จากหนังสือหรือหน้าจอ คุณล็อกโทรศัพท์ได้ — จะนับเป็นการขัดจังหวะก็ต่อเมื่ออยู่ในแอปอื่นนานกว่า 30 วินาทีเท่านั้น"
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "У режимі читання/письма перерви понад 30 секунд вважаються перериваннями."
+            "value": "Для читання й письма — з книжки або з екрана. Можна заблокувати телефон: перервою вважається лише перебування в іншому застосунку довше 30 секунд."
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Trong chế độ đọc/viết, nghỉ hơn 30 giây được tính là gián đoạn."
+            "value": "Dành cho đọc và viết, từ sách hoặc màn hình. Bạn có thể khóa điện thoại — chỉ khi ở trong ứng dụng khác quá 30 giây mới được tính là gián đoạn."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "在阅读/写作模式下，超过30秒的离开将计为中断。"
+            "value": "适合从书本或屏幕进行读写。你可以锁定手机——只有在其他应用中停留超过 30 秒才会计为一次中断。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "在閱讀/寫作模式下，超過30秒的離開將計為中斷。"
+            "value": "適合從書本或螢幕進行讀寫。你可以鎖定手機——只有在其他 App 停留超過 30 秒才會計為一次中斷。"
           }
         }
       }
     },
     "intent.description.watching": {
       "localizations": {
-        "ar": {
+        "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "في وضع مشاهدة الفيديو، التنقلات القصيرة تعتبر طبيعية."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Im Videomodus gelten kurze Wechsel als normal."
+            "value": "Video dersler ve izleyerek öğrenme için. Başka uygulamada video izleyebilirsin, bu süre odak sayılır. Yalnızca çok sık uygulama değiştirmek düzensizlik olarak not edilir."
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "In video watching mode, short transitions are considered normal."
+            "value": "For video lessons and learning by watching. You can watch videos in another app — that time counts as focus. Only very frequent app switching is noted as irregularity."
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "للدروس المرئية والتعلّم بالمشاهدة. يمكنك مشاهدة الفيديو في تطبيق آخر، ويُحتسب هذا الوقت تركيزًا. فقط التنقّل المتكرر جدًا بين التطبيقات يُسجَّل كعدم انتظام."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Für Videokurse und Lernen durch Zuschauen. Du kannst in einer anderen App Videos ansehen – diese Zeit zählt als Fokus. Nur sehr häufiges App-Wechseln wird als Unregelmäßigkeit vermerkt."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "En modo video, las transiciones cortas se consideran normales."
+            "value": "Para clases en video y aprender viendo. Puedes ver videos en otra aplicación: ese tiempo cuenta como enfoque. Solo cambiar de aplicación con mucha frecuencia se anota como irregularidad."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "En mode vidéo, les transitions courtes sont considérées normales."
+            "value": "Pour les cours en vidéo et l'apprentissage par le visionnage. Tu peux regarder des vidéos dans une autre app : ce temps compte comme de la concentration. Seuls des changements d'app très fréquents sont notés comme une irrégularité."
           }
         },
         "hi": {
           "stringUnit": {
             "state": "translated",
-            "value": "वीडियो देखने के मोड में छोटे बदलाव सामान्य माने जाते हैं।"
+            "value": "वीडियो लेक्चर और देखकर सीखने के लिए। आप दूसरे ऐप में वीडियो देख सकते हैं, यह समय फ़ोकस में गिना जाता है। केवल बहुत बार ऐप बदलना ही अनियमितता के रूप में दर्ज होता है।"
           }
         },
         "id": {
           "stringUnit": {
             "state": "translated",
-            "value": "Dalam mode menonton video, perpindahan singkat dianggap normal."
+            "value": "Untuk pelajaran video dan belajar dengan menonton. Kamu bisa menonton video di aplikasi lain; waktu itu dihitung sebagai fokus. Hanya berpindah aplikasi terlalu sering yang dicatat sebagai ketidakteraturan."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "In modalità video, le transizioni brevi sono considerate normali."
+            "value": "Per videolezioni e apprendimento guardando. Puoi guardare video in un'altra app: quel tempo conta come concentrazione. Solo cambiare app molto spesso viene annotato come irregolarità."
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "動画視聴モードでは短い切り替えは正常とみなされます。"
+            "value": "動画講義や、見て学ぶ学習に。他のアプリで動画を見ても、その時間は集中として数えられます。あまりに頻繁なアプリの切り替えだけが、乱れとして記録されます。"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "비디오 시청 모드에서는 짧은 전환이 정상으로 간주됩니다."
+            "value": "영상 강의와 보면서 배우는 학습에 적합해요. 다른 앱에서 영상을 봐도 그 시간은 집중으로 인정돼요. 앱을 아주 자주 전환하는 것만 흐트러짐으로 기록돼요."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "In videomodus worden korte overgangen als normaal beschouwd."
+            "value": "Voor videolessen en leren door te kijken. Je kunt in een andere app video's kijken; die tijd telt als focus. Alleen heel vaak wisselen van app wordt genoteerd als onregelmatigheid."
           }
         },
         "pl": {
           "stringUnit": {
             "state": "translated",
-            "value": "W trybie wideo krótkie przejścia są uznawane za normalne."
+            "value": "Do lekcji wideo i nauki przez oglądanie. Możesz oglądać wideo w innej aplikacji — ten czas liczy się jako skupienie. Tylko bardzo częste przełączanie aplikacji jest odnotowywane jako nieregularność."
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "No modo vídeo, transições curtas são consideradas normais."
+            "value": "Para videoaulas e aprendizado assistindo. Você pode assistir a vídeos em outro aplicativo: esse tempo conta como foco. Só trocar de aplicativo com muita frequência é registrado como irregularidade."
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "В режиме просмотра видео короткие переключения считаются нормальными."
+            "value": "Для видеоуроков и обучения через просмотр. Можно смотреть видео в другом приложении — это время засчитывается как фокус. Лишь очень частое переключение между приложениями отмечается как неравномерность."
           }
         },
         "th": {
           "stringUnit": {
             "state": "translated",
-            "value": "ในโหมดดูวิดีโอ การสลับสั้นๆ ถือเป็นเรื่องปกติ"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Video izleme modunda kısa geçişler normal kabul edilir."
+            "value": "สำหรับบทเรียนวิดีโอและการเรียนรู้ด้วยการดู คุณดูวิดีโอในแอปอื่นได้ เวลานั้นนับเป็นการโฟกัส มีเพียงการสลับแอปบ่อยมากเท่านั้นที่จะถูกบันทึกว่าไม่สม่ำเสมอ"
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "У режимі перегляду відео короткі переходи вважаються нормальними."
+            "value": "Для відеоуроків і навчання через перегляд. Можна дивитися відео в іншому застосунку — цей час зараховується як фокус. Лише дуже часте перемикання між застосунками відзначається як нерівномірність."
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Trong chế độ xem video, chuyển đổi ngắn được coi là bình thường."
+            "value": "Dành cho bài giảng video và học qua xem. Bạn có thể xem video trong ứng dụng khác, thời gian đó vẫn được tính là tập trung. Chỉ việc chuyển ứng dụng quá thường xuyên mới được ghi nhận là thiếu ổn định."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "在视频观看模式下，短暂切换被认为是正常的。"
+            "value": "适合视频课程和通过观看来学习。你可以在其他应用中看视频，这段时间计入专注。只有非常频繁地切换应用才会被记为不规律。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "在影片觀看模式下，短暫切換被認為是正常的。"
+            "value": "適合影片課程與透過觀看來學習。你可以在其他 App 觀看影片，這段時間會計入專注。只有非常頻繁地切換 App 才會被記為不規律。"
           }
         }
       }
