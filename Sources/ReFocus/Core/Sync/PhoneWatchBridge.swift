@@ -67,21 +67,37 @@ final class PhoneWatchBridge: NSObject, WCSessionDelegate {
 
     private func pushStateIfChanged() {
         let current = snapshot()
-        guard current != lastSnapshot,
-              WCSession.default.activationState == .activated else { return }
+        guard current != lastSnapshot else { return }
         lastSnapshot = current
 
-        var context: [String: Any] = [
-            "active": current["active"] == "1",
-            "recommended": current["recommended"] ?? "",
-            "todayMinutes": Int(current["todayMinutes"] ?? "") ?? 0
-        ]
-        if current["active"] == "1" {
-            context["isBreak"] = current["isBreak"] == "1"
-            context["method"] = current["method"] ?? ""
-            context["endDate"] = Double(current["endDate"] ?? "") ?? 0
+        let isActive = current["active"] == "1"
+        let endDate = Double(current["endDate"] ?? "").map(Date.init(timeIntervalSince1970:))
+        let isBreak = current["isBreak"] == "1"
+
+        // 1. Saate yayınla
+        if WCSession.default.activationState == .activated {
+            var context: [String: Any] = [
+                "active": isActive,
+                "recommended": current["recommended"] ?? "",
+                "todayMinutes": Int(current["todayMinutes"] ?? "") ?? 0
+            ]
+            if isActive {
+                context["isBreak"] = isBreak
+                context["method"] = current["method"] ?? ""
+                context["endDate"] = (endDate ?? Date()).timeIntervalSince1970
+            }
+            try? WCSession.default.updateApplicationContext(context)
         }
-        try? WCSession.default.updateApplicationContext(context)
+
+        // 2. iPhone widget'larını besle (ana ekran + kilit ekranı)
+        WidgetFeed.publish(endDate: isActive ? endDate : nil, isBreak: isBreak)
+
+        // 3. Dynamic Island / Live Activity
+        LiveActivityManager.shared.sync(
+            methodName: current["method"],
+            endDate: isActive ? endDate : nil,
+            isBreak: isBreak
+        )
     }
 
     // MARK: - Saatten gelen komutlar
