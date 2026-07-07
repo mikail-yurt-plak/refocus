@@ -438,6 +438,17 @@ struct SessionStartSheet: View {
     @State private var showingAddContext = false
 
     var body: some View {
+        scrollContent
+            .onAppear {
+                selectedIntent = IntentMemory.recall(for: selectedWorkContext)
+            }
+            .onChange(of: selectedWorkContext) { _, newContext in
+                // Bağlam değişince o bağlamın alışkanlığını getir
+                selectedIntent = IntentMemory.recall(for: newContext)
+            }
+    }
+
+    private var scrollContent: some View {
         ScrollView {
             VStack(spacing: 24) {
                 // Başlık

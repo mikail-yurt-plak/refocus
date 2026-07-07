@@ -24,6 +24,11 @@ class SessionManager: ObservableObject {
     /// Arka plana alınma zamanı (timer'ı yakalamak için)
     private var backgroundStartTime: Date?
 
+    /// Bu arka plan dönemi ekran kilidiyle mi başladı?
+    /// Telefonu kilitleyip bırakmak (kitaptan çalışma, ders sesi dinleme)
+    /// dikkat dağınıklığı değildir — hiçbir modda kesinti sayılmaz.
+    private var backgroundIsScreenLock = false
+
     /// İzleme modunda düzensizlik tespiti için son app switch zamanları
     private var recentAppSwitches: [Date] = []
 
@@ -41,6 +46,7 @@ class SessionManager: ObservableObject {
     func startSession(method: FocusMethod, intent: SessionIntent = .mixed, workContext: WorkContext? = nil) {
         let session = FocusSession(method: method, intent: intent, workContext: workContext)
         currentSession = session
+        IntentMemory.save(intent, for: workContext)
         let duration = TimeInterval(method.focusDuration * 60)
         timeRemaining = duration
         phaseEndDate = Date().addingTimeInterval(duration)
@@ -250,8 +256,28 @@ class SessionManager: ObservableObject {
             name: UIApplication.willEnterForegroundNotification,
             object: nil
         )
+
+        // Ekran kilidi sinyali: cihaz kilitlenince tetiklenir (uygulama
+        // değiştirmede tetiklenmez) — kilit ile app switch'i böyle ayırırız
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(deviceDidLock),
+            name: UIApplication.protectedDataWillBecomeUnavailableNotification,
+            object: nil
+        )
         #endif
     }
+
+    #if os(iOS)
+    @objc private func deviceDidLock() {
+        guard currentSession != nil else { return }
+        backgroundIsScreenLock = true
+
+        // Kilitli telefon = odak; dürtme bildirimi anlamsız olur
+        NotificationManager.shared.cancelBackgroundNudgeNotifications()
+        print("🔒 Ekran kilitlendi - bu dönem kesinti sayılmayacak")
+    }
+    #endif
 
     @objc private func appDidEnterBackground() {
         guard var session = currentSession else { return }
@@ -265,12 +291,12 @@ class SessionManager: ObservableObject {
         currentSession = session
 
         // Aktif seans varsa ve mola değilse, nazik hatırlatma bildirimlerini planla
-        // Ancak izleme modunda (watching) bildirim gönderme - kullanıcı video izliyor olabilir
-        if isActive && !isBreak && session.intent != .watching {
+        // İstisnalar: izleme modu (video izliyor olabilir) ve ekran kilidi
+        // (kitaptan çalışıyor olabilir — kilit sinyali bazen bu çağrıdan
+        // önce gelir, o durumda hiç planlama)
+        if isActive && !isBreak && session.intent != .watching && !backgroundIsScreenLock {
             print("📴 Uygulama arka plana alındı - nazik hatırlatmalar planlanıyor")
             NotificationManager.shared.scheduleBackgroundNudgeNotifications()
-        } else if session.intent == .watching {
-            print("📺 İzleme modunda - arka plan bildirimi gönderilmiyor")
         }
     }
 
@@ -285,32 +311,42 @@ class SessionManager: ObservableObject {
         NotificationManager.shared.cancelBackgroundNudgeNotifications()
         print("📱 Uygulama ön plana döndü - hatırlatmalar iptal edildi")
 
-        // App switch'i kaydet (düzensizlik tespiti için)
         let now = Date()
-        recentAppSwitches.append(now)
+        let wasScreenLock = backgroundIsScreenLock
+        backgroundIsScreenLock = false
 
-        // Eski switch'leri temizle (time window dışındakileri)
-        let timeWindow = SessionIntent.watchingModeTimeWindow
-        recentAppSwitches = recentAppSwitches.filter { now.timeIntervalSince($0) < timeWindow }
-
-        // Arka planda geçen süreyi hesapla
-        // (kalan süre düzeltmesi yukarıda updateTimeRemaining ile yapıldı)
-        if let startTime = backgroundStartTime {
-            let elapsedTime = now.timeIntervalSince(startTime)
-
-            // Bölünme kaydı - niyete göre farklı mantık
-            let shouldRecordInterruption = checkIfShouldRecordInterruption(
-                intent: session.intent,
-                elapsedTime: elapsedTime
-            )
-
-            if shouldRecordInterruption {
-                let interruption = Interruption(startTime: startTime, endTime: now)
-                session.addInterruption(interruption)
-                print("⚠️ Bölünme kaydedildi: \(Int(elapsedTime)) saniye (niyet: \(session.intent.shortLabel))")
-            }
-
+        if wasScreenLock {
+            // Ekran kilidiyle başlayan dönem: kesinti DEĞİL, app switch de
+            // değil. Kitaptan çalışma / ders sesi dinleme odak sayılır.
+            print("🔓 Kilitten dönüldü - kesinti sayılmadı")
             backgroundStartTime = nil
+        } else {
+            // App switch'i kaydet (düzensizlik tespiti için)
+            recentAppSwitches.append(now)
+
+            // Eski switch'leri temizle (time window dışındakileri)
+            let timeWindow = SessionIntent.watchingModeTimeWindow
+            recentAppSwitches = recentAppSwitches.filter { now.timeIntervalSince($0) < timeWindow }
+
+            // Arka planda geçen süreyi hesapla
+            // (kalan süre düzeltmesi yukarıda updateTimeRemaining ile yapıldı)
+            if let startTime = backgroundStartTime {
+                let elapsedTime = now.timeIntervalSince(startTime)
+
+                // Bölünme kaydı - niyete göre farklı mantık
+                let shouldRecordInterruption = checkIfShouldRecordInterruption(
+                    intent: session.intent,
+                    elapsedTime: elapsedTime
+                )
+
+                if shouldRecordInterruption {
+                    let interruption = Interruption(startTime: startTime, endTime: now)
+                    session.addInterruption(interruption)
+                    print("⚠️ Bölünme kaydedildi: \(Int(elapsedTime)) saniye (niyet: \(session.intent.shortLabel))")
+                }
+
+                backgroundStartTime = nil
+            }
         }
 
         // Foreground event ekle

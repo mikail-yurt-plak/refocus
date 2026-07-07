@@ -3,8 +3,10 @@ import Foundation
 /// Bölünmeleri izleyen ve kaydeden sınıf
 class InterruptionTracker {
     private var currentSession: FocusSession?
-    private var backgroundStartTime: Date?
     private var isTracking = false
+
+    // Not: Bölünme kayıt mantığı SessionManager'dadır (niyet bazlı kurallar
+    // + ekran kilidi ayrımı). Buradaki eski süre-bazlı kayıt yolu kaldırıldı.
 
     /// Bir seans için izlemeye başla
     func startTracking(for session: FocusSession) {
@@ -16,42 +18,6 @@ class InterruptionTracker {
     func stopTracking() {
         self.isTracking = false
         self.currentSession = nil
-        self.backgroundStartTime = nil
-    }
-
-    /// Arka plan eventi kaydet
-    func recordBackgroundEvent(session: FocusSession, entering: Bool) {
-        guard isTracking else { return }
-
-        if entering {
-            // Uygulama arka plana alındı
-            backgroundStartTime = Date()
-            let event = BackgroundEvent(timestamp: Date(), event: .didEnterBackground)
-            var updatedSession = session
-            updatedSession.addBackgroundEvent(event)
-            currentSession = updatedSession
-        } else {
-            // Uygulama ön plana döndü
-            if let startTime = backgroundStartTime {
-                let endTime = Date()
-                let duration = endTime.timeIntervalSince(startTime)
-
-                // Eğer 5 saniyeden uzun sürdüyse, bölünme olarak kaydet
-                if duration > 5 {
-                    let interruption = Interruption(startTime: startTime, endTime: endTime)
-                    var updatedSession = session
-                    updatedSession.addInterruption(interruption)
-                    currentSession = updatedSession
-                }
-
-                backgroundStartTime = nil
-            }
-
-            let event = BackgroundEvent(timestamp: Date(), event: .willEnterForeground)
-            var updatedSession = session
-            updatedSession.addBackgroundEvent(event)
-            currentSession = updatedSession
-        }
     }
 
     /// Nazik mesaj durumu belirle

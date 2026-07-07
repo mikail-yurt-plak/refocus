@@ -46,6 +46,39 @@ enum SessionIntent: String, Codable, CaseIterable {
     static let watchingModeTimeWindow: TimeInterval = 120 // 2 dakika
 }
 
+/// Kullanıcının niyet tercihini bağlam bazında hatırlar.
+/// "Ders" bağlamında hep İzleme seçen kullanıcı bir daha seçmek zorunda
+/// kalmaz — karar yükü bindirmeme ilkesinin gereği.
+enum IntentMemory {
+    private static let globalKey = "lastIntent.global"
+
+    private static func key(for context: WorkContext?) -> String? {
+        context.map { "lastIntent.\($0.id.uuidString)" }
+    }
+
+    static func save(_ intent: SessionIntent, for context: WorkContext?) {
+        let defaults = UserDefaults.standard
+        defaults.set(intent.rawValue, forKey: globalKey)
+        if let contextKey = key(for: context) {
+            defaults.set(intent.rawValue, forKey: contextKey)
+        }
+    }
+
+    static func recall(for context: WorkContext?) -> SessionIntent {
+        let defaults = UserDefaults.standard
+        if let contextKey = key(for: context),
+           let raw = defaults.string(forKey: contextKey),
+           let intent = SessionIntent(rawValue: raw) {
+            return intent
+        }
+        if let raw = defaults.string(forKey: globalKey),
+           let intent = SessionIntent(rawValue: raw) {
+            return intent
+        }
+        return .mixed
+    }
+}
+
 /// Bir odak seansını temsil eder
 struct FocusSession: Identifiable, Codable {
     let id: UUID
