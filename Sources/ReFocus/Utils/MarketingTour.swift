@@ -95,6 +95,12 @@ enum MarketingTour {
             ))
         }
         session.isActive = false
+        session.feedback = SessionFeedback(
+            wasDifficult: withInterruption,
+            didStayFocused: !withInterruption,
+            wasDurationAppropriate: true,
+            additionalNotes: nil
+        )
 
         guard let data = try? JSONEncoder().encode(session),
               var object = (try? JSONSerialization.jsonObject(with: data)) as? [String: Any] else {
@@ -179,7 +185,14 @@ struct MarketingShotView: View {
                 onStart: {}
             )
         case 4:
-            HeatmapView(sessionManager: appState.sessionManager, initialPeriod: .month)
+            HeatmapView(
+                sessionManager: appState.sessionManager,
+                initialPeriod: .month,
+                initialSelectedDate: Calendar.current.date(
+                    byAdding: .day, value: -1,
+                    to: Calendar.current.startOfDay(for: Date())
+                )
+            )
         case 5:
             FriendsView()
                 .onAppear {

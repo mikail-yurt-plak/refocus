@@ -10,9 +10,12 @@ struct HeatmapView: View {
     /// 0 = güncel hafta/ay, -1 = bir önceki, ...
     @State private var periodOffset = 0
 
-    init(sessionManager: SessionManager, initialPeriod: Period = .week) {
+    init(sessionManager: SessionManager,
+         initialPeriod: Period = .week,
+         initialSelectedDate: Date? = nil) {
         self.sessionManager = sessionManager
         _selectedPeriod = State(initialValue: initialPeriod)
+        _selectedDate = State(initialValue: initialSelectedDate)
     }
 
     enum Period: CaseIterable {
@@ -478,6 +481,24 @@ struct HeatmapView: View {
 struct HeatmapSessionRow: View {
     let session: FocusSession
 
+    /// Seans sonu cevaplarını kısa çiplere çevirir (mevcut çeviriler kullanılır)
+    private func feedbackChips(_ feedback: SessionFeedback) -> [String] {
+        var chips: [String] = []
+        if let focused = feedback.didStayFocused {
+            chips.append(String(localized: focused
+                ? "feedback.answer.yes_focused" : "feedback.answer.no_distracted"))
+        }
+        if let difficult = feedback.wasDifficult {
+            chips.append(String(localized: difficult
+                ? "feedback.answer.yes_struggled" : "feedback.answer.no_good"))
+        }
+        if let appropriate = feedback.wasDurationAppropriate {
+            chips.append(String(localized: appropriate
+                ? "feedback.answer.yes_appropriate" : "feedback.answer.no_not_appropriate"))
+        }
+        return chips
+    }
+
     private var plannedDuration: Double {
         Double(session.method.focusDuration * 60)
     }
@@ -516,6 +537,22 @@ struct HeatmapSessionRow: View {
                 Text("\(Int(session.totalFocusDuration / 60))dk")
                     .font(.caption)
                     .foregroundColor(.textSecondary)
+            }
+
+            // Seans sonu geri bildirim cevapları (varsa)
+            if let feedback = session.feedback {
+                HStack(spacing: 6) {
+                    ForEach(feedbackChips(feedback), id: \.self) { chip in
+                        Text(chip)
+                            .font(.system(size: 10))
+                            .foregroundColor(.textSecondary)
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 3)
+                            .background(Color.cardBackground)
+                            .cornerRadius(6)
+                    }
+                    Spacer()
+                }
             }
 
             // Seans notu (varsa)

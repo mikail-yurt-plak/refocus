@@ -394,8 +394,13 @@ struct HomeView: View {
     }
 
     private func getWeeklySessions() -> Int {
-        let weekAgo = Calendar.current.date(byAdding: .day, value: -7, to: Date())!
-        return sessionManager.getAllSessions().filter { $0.startTime >= weekAgo }.count
+        // Geçmiş ekranındaki hafta görünümüyle aynı tanım:
+        // Pazartesi başlangıçlı takvim haftası
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date())
+        let weekday = calendar.component(.weekday, from: today)
+        let monday = calendar.date(byAdding: .day, value: -((weekday + 5) % 7), to: today) ?? today
+        return sessionManager.getAllSessions().filter { $0.startTime >= monday }.count
     }
 }
 
