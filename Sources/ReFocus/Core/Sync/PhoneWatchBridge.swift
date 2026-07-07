@@ -45,15 +45,36 @@ final class PhoneWatchBridge: NSObject, WCSessionDelegate {
         )
     }
 
+    /// Pazartesi başlangıçlı takvim haftası (Geçmiş ekranıyla aynı tanım)
+    private func mondayOfCurrentWeek() -> Date {
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date())
+        let weekday = calendar.component(.weekday, from: today)
+        return calendar.date(byAdding: .day, value: -((weekday + 5) % 7), to: today) ?? today
+    }
+
     private func snapshot() -> [String: String] {
         guard let manager = appState?.sessionManager else { return ["active": "0"] }
+
+        let calendar = Calendar.current
+        let monday = mondayOfCurrentWeek()
+        let monthStart = calendar.date(
+            from: calendar.dateComponents([.year, .month], from: Date())) ?? Date()
+
+        func minutes(since start: Date) -> Int {
+            manager.getAllSessions()
+                .filter { $0.startTime >= start }
+                .reduce(0) { $0 + Int($1.totalFocusDuration / 60) }
+        }
 
         let todayMinutes = manager.getTodaysSessions()
             .reduce(0) { $0 + Int($1.totalFocusDuration / 60) }
         var dict = [
             "active": "0",
             "recommended": recommendedMethod().rawValue,
-            "todayMinutes": String(todayMinutes)
+            "todayMinutes": String(todayMinutes),
+            "weekMinutes": String(minutes(since: monday)),
+            "monthMinutes": String(minutes(since: monthStart))
         ]
         if let session = manager.currentSession,
            let endDate = manager.phaseEndDateForWatch {
@@ -90,7 +111,13 @@ final class PhoneWatchBridge: NSObject, WCSessionDelegate {
         }
 
         // 2. iPhone widget'larını besle (ana ekran + kilit ekranı)
-        WidgetFeed.publish(endDate: isActive ? endDate : nil, isBreak: isBreak)
+        WidgetFeed.publish(
+            endDate: isActive ? endDate : nil,
+            isBreak: isBreak,
+            todayMinutes: Int(current["todayMinutes"] ?? "") ?? 0,
+            weekMinutes: Int(current["weekMinutes"] ?? "") ?? 0,
+            monthMinutes: Int(current["monthMinutes"] ?? "") ?? 0
+        )
 
         // 3. Dynamic Island / Live Activity
         LiveActivityManager.shared.sync(
