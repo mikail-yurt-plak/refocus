@@ -154,6 +154,10 @@ struct HomeView: View {
     }
 
     private func requestNotificationPermission() {
+        #if DEBUG
+        // Vitrin modunda sistem izin uyarısı ekranı kapatmasın
+        if MarketingTour.isActive { return }
+        #endif
         Task {
             await NotificationManager.shared.requestAuthorization()
         }

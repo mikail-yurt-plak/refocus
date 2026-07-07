@@ -41,6 +41,14 @@ final class CloudStore {
     private(set) var isCloudBacked = false
 
     private init() {
+        #if DEBUG
+        // Vitrin modunda kalıcı depo devre dışı: her açılış yalnızca
+        // o anki tohum verisini göstersin, birikme olmasın
+        if MarketingTour.isActive {
+            container = nil
+            return
+        }
+        #endif
         let schema = Schema([SyncedRecord.self])
         if let cloud = try? ModelContainer(
             for: schema,

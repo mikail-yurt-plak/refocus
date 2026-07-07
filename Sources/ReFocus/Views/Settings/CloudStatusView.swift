@@ -9,7 +9,10 @@ struct CloudStatusView: View {
     @State private var accountStatus: CKAccountStatus?
 
     private var isCloudWorking: Bool {
-        accountStatus == .available && CloudStore.shared.isCloudBacked
+        #if DEBUG
+        if MarketingTour.isActive { return true }
+        #endif
+        return accountStatus == .available && CloudStore.shared.isCloudBacked
     }
 
     var body: some View {
@@ -83,6 +86,12 @@ struct CloudStatusView: View {
                 }
             }
             .task {
+                #if DEBUG
+                if MarketingTour.isActive {
+                    accountStatus = .available
+                    return
+                }
+                #endif
                 accountStatus = try? await CKContainer(
                     identifier: "iCloud.com.mikailyurt.refocus"
                 ).accountStatus()

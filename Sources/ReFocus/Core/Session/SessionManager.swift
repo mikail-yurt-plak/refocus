@@ -194,6 +194,24 @@ class SessionManager: ObservableObject {
         stopTimer()
     }
 
+    #if DEBUG
+    /// Vitrin modu: ekran görüntüsü için yan etkisiz (bildirim/presence yok)
+    /// sahte bir seans başlatır
+    func startDemoSession(remaining: TimeInterval) {
+        guard currentSession == nil else { return }
+        currentSession = FocusSession(
+            method: .pomodoro,
+            intent: .mixed,
+            workContext: WorkContext.suggestions.first
+        )
+        isActive = true
+        isBreak = false
+        phaseEndDate = Date().addingTimeInterval(remaining)
+        timeRemaining = remaining
+        startTimer()
+    }
+    #endif
+
     // MARK: - Timer Management
 
     private func startTimer() {

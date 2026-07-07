@@ -41,6 +41,12 @@ struct ReFocusApp: App {
     @StateObject private var appState = AppState()
 
     init() {
+        #if DEBUG
+        // Vitrin modu: store ekran görüntüleri için örnek veriyi,
+        // AppState/SessionManager oluşturulmadan önce yaz
+        MarketingTour.seedIfNeeded()
+        #endif
+
         // NotificationManager'ı erken başlat - delegate'in ayarlanması için gerekli
         _ = NotificationManager.shared
     }

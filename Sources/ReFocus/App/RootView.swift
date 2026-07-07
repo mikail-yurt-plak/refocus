@@ -15,15 +15,28 @@ struct RootView: View {
 
     var body: some View {
         Group {
-            if appState.hasCompletedOnboarding, appState.userProfile != nil {
-                HomeView()
+            #if DEBUG
+            if let shot = MarketingTour.shotNumber {
+                MarketingShotView(shot: shot)
             } else {
-                OnboardingView()
+                normalContent
             }
+            #else
+            normalContent
+            #endif
         }
         .onReceive(didBecomeActive) { _ in
             // iCloud'dan gelen değişiklikleri al (cihazlar arası senkron)
             appState.refreshFromCloud()
+        }
+    }
+
+    @ViewBuilder
+    private var normalContent: some View {
+        if appState.hasCompletedOnboarding, appState.userProfile != nil {
+            HomeView()
+        } else {
+            OnboardingView()
         }
     }
 }

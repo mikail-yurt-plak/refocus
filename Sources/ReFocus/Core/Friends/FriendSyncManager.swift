@@ -81,6 +81,18 @@ final class FriendSyncManager: ObservableObject {
         displayName = UserDefaults.standard.string(forKey: Self.displayNameKey) ?? ""
     }
 
+    #if DEBUG
+    /// Vitrin modu: ekran görüntüleri için örnek arkadaşlar gösterir
+    private(set) var isDemoMode = false
+
+    func enableDemoMode() {
+        isDemoMode = true
+        if displayName.isEmpty { displayName = "Alex" }
+        friends = MarketingTour.demoFriends()
+        viewers = []
+    }
+    #endif
+
     // MARK: - Davet (e-postayla hedefli paylaşım)
 
     /// Davet hatası: e-posta bir iCloud hesabıyla eşleşmedi
@@ -160,6 +172,9 @@ final class FriendSyncManager: ObservableObject {
     /// Paylaşımdaki katılımcıları okur ve isimleriyle eşleştirir
     @MainActor
     func refreshViewers() async {
+        #if DEBUG
+        if isDemoMode { return }
+        #endif
         guard isEnabled, let share = await fetchShare() else {
             viewers = []
             return
@@ -349,6 +364,9 @@ final class FriendSyncManager: ObservableObject {
     /// Paylaşılan veritabanındaki tüm arkadaş bölgelerini okur
     @MainActor
     func refreshFriends() async {
+        #if DEBUG
+        if isDemoMode { return }
+        #endif
         guard isEnabled else { return }
         isRefreshing = true
         defer { isRefreshing = false }

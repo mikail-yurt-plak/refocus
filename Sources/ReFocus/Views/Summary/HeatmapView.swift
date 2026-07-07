@@ -5,10 +5,15 @@ import SwiftUI
 /// Sayı ve karşılaştırma yok
 struct HeatmapView: View {
     @ObservedObject var sessionManager: SessionManager
-    @State private var selectedPeriod: Period = .week
+    @State private var selectedPeriod: Period
     @State private var selectedDate: Date?
     /// 0 = güncel hafta/ay, -1 = bir önceki, ...
     @State private var periodOffset = 0
+
+    init(sessionManager: SessionManager, initialPeriod: Period = .week) {
+        self.sessionManager = sessionManager
+        _selectedPeriod = State(initialValue: initialPeriod)
+    }
 
     enum Period: CaseIterable {
         case week

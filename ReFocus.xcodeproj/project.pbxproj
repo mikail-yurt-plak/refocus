@@ -46,6 +46,8 @@
 		857B2E44E7546DF78F8CC599 /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67A92BC2790981CC51B0755 /* HapticManager.swift */; };
 		8A96552D1D2905237F914AC7 /* SummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 878CF3DF399F2F4189B357B1 /* SummaryView.swift */; };
 		8B59BDF6195625B529149D45 /* OrientationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 107BD8507C847B2406AB863A /* OrientationManager.swift */; };
+		9B1A5678E4F5A6B7C8D90502 /* MarketingTour.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B1A5678E4F5A6B7C8D90501 /* MarketingTour.swift */; };
+		9B1A5678E4F5A6B7C8D90503 /* MarketingTour.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B1A5678E4F5A6B7C8D90501 /* MarketingTour.swift */; };
 		8A0F4567D3E4F5A6B7C80402 /* CloudStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0F4567D3E4F5A6B7C80401 /* CloudStatusView.swift */; };
 		8A0F4567D3E4F5A6B7C80403 /* CloudStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0F4567D3E4F5A6B7C80401 /* CloudStatusView.swift */; };
 		7F0E3456C2D3E4F5A6B70302 /* FriendSyncManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F0E3456C2D3E4F5A6B70301 /* FriendSyncManager.swift */; };
@@ -116,6 +118,7 @@
 		3C9392BD2F9B3C07944887E4 /* FeedbackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackView.swift; sourceTree = "<group>"; };
 		3DC9EC4DD402336D2A6D337F /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		4A455690B09739BF21DC5717 /* AudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioManager.swift; sourceTree = "<group>"; };
+		9B1A5678E4F5A6B7C8D90501 /* MarketingTour.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketingTour.swift; sourceTree = "<group>"; };
 		8A0F4567D3E4F5A6B7C80401 /* CloudStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudStatusView.swift; sourceTree = "<group>"; };
 		7F0E3456C2D3E4F5A6B70301 /* FriendSyncManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendSyncManager.swift; sourceTree = "<group>"; };
 		7F0E3456C2D3E4F5A6B70304 /* FriendsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsView.swift; sourceTree = "<group>"; };
@@ -270,6 +273,7 @@
 				4A455690B09739BF21DC5717 /* AudioManager.swift */,
 				A67A92BC2790981CC51B0755 /* HapticManager.swift */,
 				5D0C1234A1B2C3D4E5F60101 /* Localization.swift */,
+				9B1A5678E4F5A6B7C8D90501 /* MarketingTour.swift */,
 				7089A3C2B68E95919A50A766 /* NotificationManager.swift */,
 				107BD8507C847B2406AB863A /* OrientationManager.swift */,
 			);
@@ -577,6 +581,7 @@
 				2A2B3C4D5E6F70819203B5C6 /* WorkContextPickerView.swift in Sources */,
 				B03ADF20BB18F007C8930117 /* OnboardingView.swift in Sources */,
 				DC063FA73C3380F9814BEF93 /* OrientationManager.swift in Sources */,
+				9B1A5678E4F5A6B7C8D90502 /* MarketingTour.swift in Sources */,
 				8A0F4567D3E4F5A6B7C80402 /* CloudStatusView.swift in Sources */,
 				7F0E3456C2D3E4F5A6B70302 /* FriendSyncManager.swift in Sources */,
 				7F0E3456C2D3E4F5A6B70305 /* FriendsView.swift in Sources */,
@@ -631,6 +636,7 @@
 				4A4B5C6D7E8F90A30425D7E9 /* WorkContextManagementView.swift in Sources */,
 				5A37059CB458E86D36157FD8 /* OnboardingView.swift in Sources */,
 				8B59BDF6195625B529149D45 /* OrientationManager.swift in Sources */,
+				9B1A5678E4F5A6B7C8D90503 /* MarketingTour.swift in Sources */,
 				8A0F4567D3E4F5A6B7C80403 /* CloudStatusView.swift in Sources */,
 				7F0E3456C2D3E4F5A6B70303 /* FriendSyncManager.swift in Sources */,
 				7F0E3456C2D3E4F5A6B70306 /* FriendsView.swift in Sources */,
