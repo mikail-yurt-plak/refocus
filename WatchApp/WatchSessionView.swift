@@ -5,6 +5,8 @@ import SwiftUI
 struct WatchSessionView: View {
     @ObservedObject private var manager = WatchSessionManager.shared
     @State private var showingMethodPicker = false
+    /// Kullanıcının listeden seçtiği metod; nil = telefonun önerisi
+    @State private var selectedMethod: FocusMethod?
 
     private let focusGreen = Color(red: 0.18, green: 0.49, blue: 0.44)
 
@@ -16,6 +18,11 @@ struct WatchSessionView: View {
     private func durationLine(_ method: FocusMethod) -> String? {
         let line = "\(method.focusDuration)/\(method.breakDuration)"
         return line == method.rawValue ? nil : line
+    }
+
+    /// Kartta gösterilen metod: kullanıcının seçimi, yoksa öneri
+    private var displayMethod: FocusMethod {
+        selectedMethod ?? recommended
     }
 
     var body: some View {
@@ -95,11 +102,11 @@ struct WatchSessionView: View {
                 showingMethodPicker = true
             } label: {
                 HStack(spacing: 6) {
-                    Text(recommended.icon)
+                    Text(displayMethod.icon)
                     VStack(alignment: .leading, spacing: 0) {
-                        Text(recommended.rawValue)
+                        Text(displayMethod.rawValue)
                             .font(.footnote.weight(.medium))
-                        if let durations = durationLine(recommended) {
+                        if let durations = durationLine(displayMethod) {
                             Text(durations)
                                 .font(.caption2)
                                 .foregroundStyle(.secondary)
@@ -114,7 +121,8 @@ struct WatchSessionView: View {
             .buttonStyle(.bordered)
 
             Button {
-                manager.startSession()
+                manager.startSession(method: selectedMethod)
+                selectedMethod = nil // sonraki seansta öneri yeniden öne çıksın
             } label: {
                 Text("home.start_session")
                     .font(.headline)
@@ -136,8 +144,9 @@ struct WatchSessionView: View {
     private var methodPicker: some View {
         List(FocusMethod.allCases, id: \.self) { method in
             Button {
+                // Yalnızca seçer; başlatma her zaman "Seansı Başlat" ile
+                selectedMethod = method
                 showingMethodPicker = false
-                manager.startSession(method: method)
             } label: {
                 HStack(spacing: 8) {
                     Text(method.icon)
@@ -151,10 +160,14 @@ struct WatchSessionView: View {
                         }
                     }
                     Spacer()
-                    if method == recommended {
+                    if method == displayMethod {
+                        Image(systemName: "checkmark")
+                            .font(.caption2.weight(.semibold))
+                            .foregroundStyle(focusGreen)
+                    } else if method == recommended {
                         Image(systemName: "sparkles")
                             .font(.caption2)
-                            .foregroundStyle(focusGreen)
+                            .foregroundStyle(focusGreen.opacity(0.6))
                     }
                 }
             }
