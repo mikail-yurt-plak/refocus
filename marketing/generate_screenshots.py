@@ -32,11 +32,15 @@ CANVAS = (1290, 2796)          # iPhone 6.9" App Store boyutu
 BG_TOP = (246, 248, 247)       # #F6F8F7
 BG_BOTTOM = (214, 232, 227)    # gradyanın alt tonu
 CAPTION_COLOR = "#173B34"      # koyu odak yeşili
-BEZEL_COLOR = (28, 32, 31)     # cihaz çerçevesi
-DEVICE_WIDTH = 1010            # ekranın şablondaki genişliği
+DEVICE_WIDTH = 1060            # kasanın şablondaki genişliği
 CAPTION_WIDTH = 1120
 CAPTION_SIZE = 76
 ICON_SIZE = 104
+
+# Gerçek iPhone kasası (fastlane frameit çerçevesi) ve ekran penceresi
+FRAME_PATH = ROOT / "frames" / "iphone-17-pro-max-silver.png"
+FRAME_SCREEN_OFFSET = (75, 66)
+FRAME_SCREEN_WIDTH = 1320
 
 RTL_LOCALES = {"ar-SA", "ar"}
 
@@ -84,33 +88,30 @@ def compose(raw_path: Path, caption_png: Path, out_path: Path) -> None:
     canvas.alpha_composite(caption, ((CANVAS[0] - caption.width) // 2, 252))
     caption_bottom = 252 + caption.height
 
-    # Ham ekran görüntüsü → yuvarlatılmış köşeli ekran
+    # Ham ekran görüntüsünü gerçek iPhone kasasına yerleştir
+    frame = Image.open(FRAME_PATH).convert("RGBA")
     raw = Image.open(raw_path).convert("RGB")
-    screen_h = int(DEVICE_WIDTH * raw.height / raw.width)
-    screen = raw.resize((DEVICE_WIDTH, screen_h), Image.LANCZOS)
-    screen_radius = 96
+    screen_h = int(FRAME_SCREEN_WIDTH * raw.height / raw.width)
+    screen = raw.resize((FRAME_SCREEN_WIDTH, screen_h), Image.LANCZOS)
 
-    # Cihaz gövdesi (bezel)
-    bezel = 20
-    device_w = DEVICE_WIDTH + bezel * 2
-    device_h = screen_h + bezel * 2
-    device_x = (CANVAS[0] - device_w) // 2
+    framed = Image.new("RGBA", frame.size, (0, 0, 0, 0))
+    framed.paste(screen, FRAME_SCREEN_OFFSET)
+    framed.alpha_composite(frame)  # kasa üstte: ekran pencere içinde kalır
+
+    device_h = int(DEVICE_WIDTH * framed.height / framed.width)
+    framed = framed.resize((DEVICE_WIDTH, device_h), Image.LANCZOS)
+    device_x = (CANVAS[0] - DEVICE_WIDTH) // 2
     device_y = max(caption_bottom + 72, 560)
 
-    # Yumuşak gölge
+    # Kasa silüetinden yumuşak gölge
+    silhouette = framed.split()[3].point(lambda a: min(a, 70))
     shadow = Image.new("RGBA", CANVAS, (0, 0, 0, 0))
-    ImageDraw.Draw(shadow).rounded_rectangle(
-        [device_x, device_y + 26, device_x + device_w, device_y + device_h + 26],
-        radius=screen_radius + bezel, fill=(20, 60, 50, 70))
+    shadow.paste(Image.new("RGBA", framed.size, (20, 60, 50, 255)),
+                 (device_x, device_y + 26), silhouette)
     shadow = shadow.filter(ImageFilter.GaussianBlur(36))
     canvas.alpha_composite(shadow)
 
-    # Gövde + ekran
-    body = Image.new("RGBA", (device_w, device_h), (0, 0, 0, 0))
-    ImageDraw.Draw(body).rounded_rectangle(
-        [0, 0, device_w, device_h], radius=screen_radius + bezel, fill=BEZEL_COLOR + (255,))
-    body.paste(screen, (bezel, bezel), rounded_mask(screen.size, screen_radius))
-    canvas.alpha_composite(body, (device_x, device_y))
+    canvas.alpha_composite(framed, (device_x, device_y))
 
     # Taşan kısmı kırp (cihaz alta taşarsa doğal görünür)
     out_path.parent.mkdir(parents=True, exist_ok=True)
