@@ -29,10 +29,6 @@ from PIL import Image, ImageDraw, ImageFilter
 
 ROOT = Path(__file__).parent
 CANVAS = (1290, 2796)          # iPhone 6.9" App Store boyutu
-BG_TOP = (246, 248, 247)       # #F6F8F7
-BG_BOTTOM = (214, 232, 227)    # gradyanın alt tonu
-CAPTION_COLOR = "#173B34"      # koyu odak yeşili
-DEVICE_WIDTH = 1060            # kasanın şablondaki genişliği
 CAPTION_WIDTH = 1120
 CAPTION_SIZE = 76
 ICON_SIZE = 104
@@ -41,16 +37,33 @@ ICON_SIZE = 104
 FRAME_PATH = ROOT / "frames" / "iphone-17-pro-max-silver.png"
 FRAME_SCREEN_OFFSET = (75, 66)
 FRAME_SCREEN_WIDTH = 1320
+SCREEN_CORNER_RADIUS = 118     # ekranın yuvarlak köşeleri (beyaz taşmayı önler)
+
+# Slayt stilleri: profesyonel setlerdeki gibi çeşitlilik.
+# bg: light (marka gradyanı) / accent (koyu odak yeşili, beyaz başlık)
+# device: full (tam cihaz) / peek (büyük, alttan kırpık)
+# tilt: derece cinsinden hafif eğim
+LIGHT_TOP, LIGHT_BOTTOM = (246, 248, 247), (214, 232, 227)
+ACCENT_TOP, ACCENT_BOTTOM = (46, 125, 111), (23, 59, 52)
+SLIDE_STYLES = [
+    {"bg": "accent", "device": "full", "tilt": 0},   # 1: kanca — marka rengi
+    {"bg": "light", "device": "peek", "tilt": 0},    # 2: büyük cihaz, alttan kırpık
+    {"bg": "light", "device": "peek", "tilt": -6},   # 3: hafif eğik
+    {"bg": "light", "device": "full", "tilt": 0},    # 4: sakin tam cihaz
+    {"bg": "accent", "device": "peek", "tilt": 0},   # 5: vurgu + kırpık
+    {"bg": "light", "device": "full", "tilt": 0},    # 6: sade kapanış
+]
 
 RTL_LOCALES = {"ar-SA", "ar"}
 
 
-def gradient_background() -> Image.Image:
-    img = Image.new("RGB", CANVAS, BG_TOP)
+def gradient_background(style: str) -> Image.Image:
+    top, bottom = (ACCENT_TOP, ACCENT_BOTTOM) if style == "accent" else (LIGHT_TOP, LIGHT_BOTTOM)
+    img = Image.new("RGB", CANVAS, top)
     draw = ImageDraw.Draw(img)
     for y in range(CANVAS[1]):
         t = y / CANVAS[1]
-        color = tuple(int(a + (b - a) * t) for a, b in zip(BG_TOP, BG_BOTTOM))
+        color = tuple(int(a + (b - a) * t) for a, b in zip(top, bottom))
         draw.line([(0, y), (CANVAS[0], y)], fill=color)
     return img
 
@@ -69,51 +82,74 @@ def render_captions(jobs: list) -> None:
                    check=True, capture_output=True)
 
 
-def compose(raw_path: Path, caption_png: Path, out_path: Path) -> None:
-    canvas = gradient_background().convert("RGBA")
-
-    # Uygulama simgesi (üstte, küçük ve sakin)
-    icon_path = ROOT.parent / "Sources/ReFocus/Resources/Assets.xcassets/AppIcon.appiconset/AppIcon-256.png"
-    if icon_path.exists():
-        icon = Image.open(icon_path).convert("RGBA").resize((ICON_SIZE, ICON_SIZE), Image.LANCZOS)
-        icon.putalpha(icon.split()[3])
-        mask = rounded_mask((ICON_SIZE, ICON_SIZE), ICON_SIZE // 4)
-        canvas.paste(icon, ((CANVAS[0] - ICON_SIZE) // 2, 96), mask)
-
-    # Başlık
-    caption = Image.open(caption_png).convert("RGBA")
-    if caption.width > CAPTION_WIDTH:
-        ratio = CAPTION_WIDTH / caption.width
-        caption = caption.resize((CAPTION_WIDTH, int(caption.height * ratio)), Image.LANCZOS)
-    canvas.alpha_composite(caption, ((CANVAS[0] - caption.width) // 2, 252))
-    caption_bottom = 252 + caption.height
-
-    # Ham ekran görüntüsünü gerçek iPhone kasasına yerleştir
+def framed_device(raw_path: Path) -> Image.Image:
+    """Ham ekran görüntüsünü gerçek iPhone kasasına yerleştirir.
+    Ekran, kasanın penceresine yuvarlak köşeli maskeyle oturur —
+    köşelerden beyaz taşma olmaz."""
     frame = Image.open(FRAME_PATH).convert("RGBA")
     raw = Image.open(raw_path).convert("RGB")
     screen_h = int(FRAME_SCREEN_WIDTH * raw.height / raw.width)
     screen = raw.resize((FRAME_SCREEN_WIDTH, screen_h), Image.LANCZOS)
 
     framed = Image.new("RGBA", frame.size, (0, 0, 0, 0))
-    framed.paste(screen, FRAME_SCREEN_OFFSET)
-    framed.alpha_composite(frame)  # kasa üstte: ekran pencere içinde kalır
+    framed.paste(screen, FRAME_SCREEN_OFFSET,
+                 rounded_mask(screen.size, SCREEN_CORNER_RADIUS))
+    framed.alpha_composite(frame)
+    return framed
 
-    device_h = int(DEVICE_WIDTH * framed.height / framed.width)
-    framed = framed.resize((DEVICE_WIDTH, device_h), Image.LANCZOS)
-    device_x = (CANVAS[0] - DEVICE_WIDTH) // 2
-    device_y = max(caption_bottom + 72, 560)
+
+def compose(raw_path: Path, caption_png: Path, out_path: Path, style: dict) -> None:
+    canvas = gradient_background(style["bg"]).convert("RGBA")
+    is_accent = style["bg"] == "accent"
+
+    # Uygulama simgesi (açık zeminli slaytlarda, üstte küçük ve sakin)
+    caption_top = 252
+    if not is_accent:
+        icon_path = ROOT.parent / "Sources/ReFocus/Resources/Assets.xcassets/AppIcon.appiconset/AppIcon-256.png"
+        if icon_path.exists():
+            icon = Image.open(icon_path).convert("RGBA").resize((ICON_SIZE, ICON_SIZE), Image.LANCZOS)
+            mask = rounded_mask((ICON_SIZE, ICON_SIZE), ICON_SIZE // 4)
+            canvas.paste(icon, ((CANVAS[0] - ICON_SIZE) // 2, 96), mask)
+    else:
+        caption_top = 200
+
+    # Başlık
+    caption = Image.open(caption_png).convert("RGBA")
+    if caption.width > CAPTION_WIDTH:
+        ratio = CAPTION_WIDTH / caption.width
+        caption = caption.resize((CAPTION_WIDTH, int(caption.height * ratio)), Image.LANCZOS)
+    canvas.alpha_composite(caption, ((CANVAS[0] - caption.width) // 2, caption_top))
+    caption_bottom = caption_top + caption.height
+
+    # Cihaz: stiline göre boyut, eğim ve kırpma
+    framed = framed_device(raw_path)
+    device_width = 1150 if style["device"] == "peek" else 1060
+    device_h = int(device_width * framed.height / framed.width)
+    framed = framed.resize((device_width, device_h), Image.LANCZOS)
+
+    if style["tilt"]:
+        framed = framed.rotate(style["tilt"], expand=True,
+                               resample=Image.BICUBIC)
+
+    device_x = (CANVAS[0] - framed.width) // 2
+    device_y = max(caption_bottom + 72, 520 if style["device"] == "peek" else 560)
 
     # Kasa silüetinden yumuşak gölge
-    silhouette = framed.split()[3].point(lambda a: min(a, 70))
-    shadow = Image.new("RGBA", CANVAS, (0, 0, 0, 0))
-    shadow.paste(Image.new("RGBA", framed.size, (20, 60, 50, 255)),
+    shadow_color = (0, 0, 0, 255) if is_accent else (20, 60, 50, 255)
+    silhouette = framed.split()[3].point(lambda a: min(a, 80))
+    shadow = Image.new("RGBA",
+                       (CANVAS[0], max(CANVAS[1], device_y + framed.height + 80)),
+                       (0, 0, 0, 0))
+    shadow.paste(Image.new("RGBA", framed.size, shadow_color),
                  (device_x, device_y + 26), silhouette)
-    shadow = shadow.filter(ImageFilter.GaussianBlur(36))
+    shadow = shadow.filter(ImageFilter.GaussianBlur(36)).crop((0, 0, *CANVAS))
     canvas.alpha_composite(shadow)
 
-    canvas.alpha_composite(framed, (device_x, device_y))
+    # Cihazı yerleştir; peek stilinde alt kısım tuval dışında kalır
+    visible_h = min(framed.height, CANVAS[1] - device_y)
+    canvas.alpha_composite(framed.crop((0, 0, framed.width, visible_h)),
+                           (device_x, device_y))
 
-    # Taşan kısmı kırp (cihaz alta taşarsa doğal görünür)
     out_path.parent.mkdir(parents=True, exist_ok=True)
     canvas.convert("RGB").save(out_path)
 
@@ -170,19 +206,21 @@ def main() -> None:
         with tempfile.TemporaryDirectory() as tmp:
             jobs = []
             for i in range(len(raws)):
+                style = SLIDE_STYLES[i % len(SLIDE_STYLES)]
                 jobs.append({
                     "text": captions[i],
                     "out": f"{tmp}/{i}.png",
                     "width": CAPTION_WIDTH,
                     "size": CAPTION_SIZE,
-                    "color": CAPTION_COLOR,
+                    "color": "#FFFFFF" if style["bg"] == "accent" else "#173B34",
                     "weight": "bold",
                 })
             render_captions(jobs)
 
             for i, raw in enumerate(raws):
                 out = ROOT / "store" / locale / "iphone-6.9" / f"screen-{i + 1}.png"
-                compose(raw, Path(tmp) / f"{i}.png", out)
+                compose(raw, Path(tmp) / f"{i}.png", out,
+                        SLIDE_STYLES[i % len(SLIDE_STYLES)])
         print(f"tamam: {locale} ({len(raws)} görsel)")
 
 
